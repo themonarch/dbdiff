@@ -5,8 +5,7 @@ echo config::get()->getConfig('app_name'); ?>.
 <?php
     if(config::get()->getConfig('environment') !== 'production'
         || (
-            user::hasUserLoggedIn()
-            && accessControl::get()->hasRequirement('admin')
+        accessControl::get()->hasRequirement('webmaster')
         )
     ){ ?>
     <a href="#" data-overlay-id="sql_time">
