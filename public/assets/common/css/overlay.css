@@ -1,0 +1,106 @@
+.modal-overlay{
+	display: none;
+}
+body.activeOverlay{
+	overflow: hidden;
+}
+#overlay-fade {
+    background-color: rgba(10, 10, 10, 0.45);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1010;
+    overflow: auto;
+    display: none;
+    cursor: pointer;
+}
+
+#overlay-fade.disableClose{
+	cursor: default;
+}
+
+#overlay-horizontal_center {
+    display: table;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#overlay-vertical_center {
+    display: table-row;
+}
+
+#overlay-vertical_center > .overlay-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 14px;
+}
+
+#overlay-vertical_center > .overlay-wrapper > .modal-overlay {
+
+    /*margin: -25px;*/
+	margin: 1% auto 6%;
+    display: block;
+
+    /* border-radius: 3px; */
+
+    cursor: default;
+    min-width: 260px;
+    overflow: visible;
+    position: relative;
+
+	text-shadow: none;
+	/*box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.5);*/
+
+
+}
+#overlay-vertical_center > .overlay-wrapper > .modal-overlay.theme1{
+	background-color: #FAFBFC;
+	background: rgb(255,255,255)
+    border: 1px solid #CCCCCC;
+    padding: 25px;
+}
+
+#overlay-fade .close_overlay {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    background-image: url("/assets/common/img/popup_sprite.png");
+    background-position: -3px -8px;
+    border-radius: 32px !important;
+    box-sizing: unset;
+    color: #666;
+    cursor: pointer;
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 13px;
+    margin: 1px;
+    overflow: hidden;
+    padding: 0 !important;
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    width: 32px;
+}
+
+#overlay-fade.disableClose .close_overlay {
+	display: none;
+}
+
+#overlay-fade.preventClose .close_overlay {
+    background-position: 0 -157px;
+    cursor: default;
+}
+
+#overlay-fade.loading{
+    background: rgba(0, 0, 0, 0.31) url("/assets/common/img/loader.gif") no-repeat scroll center center;
+    cursor: wait;
+}
+#overlay-fade.loading .modal-overlay{
+    display: none;
+}

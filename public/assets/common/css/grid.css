@@ -1,0 +1,117 @@
+/* ---------------------------------- */
+/* @Columns */
+
+body [class^="grid-"] {
+    display: inline;
+    float: left;
+    margin: 0 0;
+}
+body [class^="grid-"] > .gridpadding {
+    padding: 1.5em 1.2em;
+}
+/* ---------------------------------- */
+/* @Column Definitions */
+
+body .grid-1 { width: 8.33334%; position: relative; }
+body .grid-1-7 { width: 14.2857%; position: relative; }
+body .grid-1-8 { width: 12.5%; position: relative; }
+body .grid-2 { width: 16.6667%; position: relative; }
+body .grid-2-5 { width: 20%; position: relative; }
+body .grid-3 { width: 25%; position: relative; }
+body .grid-4 { width: 33.3334%; position: relative; }
+body .grid-5 { width: 41.6667%; position: relative; }
+body .grid-6 { width: 50%; position: relative; }
+body .grid-7 { width: 58.3334%; position: relative; }
+body .grid-8 { width: 66.6667%; position: relative; }
+body .grid-9 { width: 75%; position: relative; }
+body .grid-10 { width: 83.3334%; position: relative; }
+body .grid-11 { width: 91.6667%; position: relative; }
+body .grid-12 { width: 100%; position: relative; }
+body .grid-0 {
+    display: none;
+}
+
+body [class^="grid-"] .gridline.right {
+    right: -1px;
+}
+body [class^="grid-"] .gridline {
+    background-color: #cccccc;
+    border-right: 1px solid #ffffff;
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 1px;
+}
+
+body .gridcenter {
+    display: block;
+    float: none;
+    margin: 0 auto;
+    /*text-align: center;*//*usually applies*/
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+body {
+    zoom:1;
+}
+
+@media only screen and (max-width: 64em) {
+    body .grid-m-1 { width: 8.33334%; position: relative; }
+    body .grid-m-1-7 { width: 14.2857%; position: relative; }
+    body .grid-m-1-8 { width: 12.5%; position: relative; }
+    body .grid-m-2 { width: 16.6667%; position: relative; }
+    body .grid-m-2-5 { width: 20%; position: relative; }
+    body .grid-m-3 { width: 25%; position: relative; }
+    body .grid-m-4 { width: 33.3334%; position: relative; }
+    body .grid-m-5 { width: 41.6667%; position: relative; }
+    body .grid-m-6 { width: 50%; position: relative; }
+    body .grid-m-7 { width: 58.3334%; position: relative; }
+    body .grid-m-8 { width: 66.6667%; position: relative; }
+    body .grid-m-9 { width: 75%; position: relative; }
+    body .grid-m-10 { width: 83.3334%; position: relative; }
+    body .grid-m-11 { width: 91.6667%; position: relative; }
+    body .grid-m-12 { width: 100%; position: relative; }
+    body .grid-m-0 {
+        display: none;
+    }
+    body .grid-m-center {
+        text-align: center;
+    }
+    body .gridcenter-m {
+        display: block;
+        float: none;
+        margin: 0 auto;
+        /*text-align: center;*//*usually applies*/
+    }
+}
+
+@media only screen and (max-width: 40.063em) {
+    body .grid-s-1 { width: 8.33334%; position: relative; }
+    body .grid-s-1-7 { width: 14.2857%; position: relative; }
+    body .grid-s-1-8 { width: 12.5%; position: relative; }
+    body .grid-s-2 { width: 16.6667%; position: relative; }
+    body .grid-s-2-5 { width: 20%; position: relative; }
+    body .grid-s-3 { width: 25%; position: relative; }
+    body .grid-s-4 { width: 33.3334%; position: relative; }
+    body .grid-s-5 { width: 41.6667%; position: relative; }
+    body .grid-s-6 { width: 50%; position: relative; }
+    body .grid-s-7 { width: 58.3334%; position: relative; }
+    body .grid-s-8 { width: 66.6667%; position: relative; }
+    body .grid-s-9 { width: 75%; position: relative; }
+    body .grid-s-10 { width: 83.3334%; position: relative; }
+    body .grid-s-11 { width: 91.6667%; position: relative; }
+    body .grid-s-12 { width: 100%; position: relative; }
+    body .grid-s-0 {
+        display: none;
+    }
+    body .grid-s-center {
+        text-align: center;
+    }
+    body .gridcenter-s {
+        display: block;
+        float: none;
+        margin: 0 auto;
+        /*text-align: center;*//*usually applies*/
+    }
+}

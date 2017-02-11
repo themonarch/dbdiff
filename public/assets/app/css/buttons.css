@@ -1,0 +1,477 @@
+/**
+ * 	Common Button Styles
+ */
+.btn {
+
+    -moz-user-select: none;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.13), 1px 1px 0 rgba(255, 255, 255, 0.15) inset;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-variant: small-caps;
+    text-transform:uppercase;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: inherit;
+    padding: 0.3em 2em;
+    position: relative;
+    text-align: center;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.13);
+
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+
+}
+
+.btn > i {
+    margin: 0 -3px 0 -5px;
+    vertical-align: text-bottom;
+}
+.btn > i.single{
+    margin: 0 -5px 0 -5px;
+}
+
+.btn.btn-disabled,
+.btn.btn-wait {
+
+}
+
+.btn > .btn-inner-disabled,
+.btn > .btn-inner-wait {
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: default;
+    height: 100%;
+    left: -3px;
+    padding: 0 0 6px 6px;
+    position: absolute;
+    top: -3px;
+    width: 100%;
+}
+
+.btn > .btn-inner-wait {
+    cursor: wait;
+}
+
+
+.btn:hover{
+    text-decoration: none;
+}
+
+.btn:focus,
+.btn:active {
+    top: 1px;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+.btn.btn-large {
+    font-size: 20px;
+    padding: 16px 80px;
+    font-weight: bold;
+}
+.btn.btn-medium {/*equivalent to two line heights*/
+    font-size: 14px;
+    padding: 10px 16px;
+    font-weight: bold;
+}
+.btn.btn-small {
+    font-size: 10px;
+    padding: 4px 12px;
+}
+.btn.btn-tiny {
+    font-size: 9px;
+    line-height: 9px;
+    margin: 0;
+    padding: 2px 2px;
+}
+
+.btn.btn-inline {
+    overflow: hidden;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+button.btn.btn-tiny {
+    font-weight: 200;
+    line-height: 10px;
+    padding: 0 0 2px;
+}
+
+.btn.btn-tail:after {
+    bottom: -5px;
+    margin-right: -6px;
+    position: absolute;
+    right: 50%;
+
+   content: "";
+   position: absolute;
+   top: 100%;
+   border-top: 5px solid black;
+   border-top-color: inherit;
+   border-left: 5px solid transparent;
+   border-right: 5px solid transparent;
+}
+.btn.btn-gray.btn-tail:after {
+   border-top: 5px solid #C3C2BE;
+   border-top-color: #C3C2BE;
+   border-left: 5px solid transparent;
+   border-right: 5px solid transparent;
+}
+
+
+/**
+ *  Button COLORS
+ */
+.btn.btn-green {
+    background: #00aa03; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-green:hover {
+    background: #689c29;
+    color: #FFFFFF;
+}
+
+.btn.btn-green:focus,
+.btn.btn-green:active {
+    background: #9dbd76;
+}
+
+.btn.btn-red {
+    background: #FF3B55; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-red:hover {
+    background: #FF2945;
+    color: #FFFFFF;
+}
+
+.btn.btn-red:focus,
+.btn.btn-red:active {
+    background: #FE6176;
+}
+
+
+
+/**
+ * 	Button Black
+ */
+.btn.btn-black.style2{
+	background: rgb(66,66,66); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(66,66,66,1) 0%, rgba(38,38,38,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(66,66,66,1)), color-stop(100%,rgba(38,38,38,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(66,66,66,1) 0%,rgba(38,38,38,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(66,66,66,1) 0%,rgba(38,38,38,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(66,66,66,1) 0%,rgba(38,38,38,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(66,66,66,1) 0%,rgba(38,38,38,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424242', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
+
+    border-color: #000000 rgba(0, 0, 0, 0.77) rgba(0, 0, 0, 0.77) #000000;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.73), 1px 1px 0 rgba(255, 255, 255, 0.16) inset, -1px -1px 0 rgba(48, 48, 48, 0.73) inset;
+    text-shadow: 1px 1px 0 #000000;
+    color: #EEEEEE;
+}
+
+
+.btn.btn-black.style2:hover {
+	background: rgb(71,71,71); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(71,71,71,1) 0%, rgba(45,45,45,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(71,71,71,1)), color-stop(100%,rgba(45,45,45,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(45,45,45,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(45,45,45,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(71,71,71,1) 0%,rgba(45,45,45,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(71,71,71,1) 0%,rgba(45,45,45,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#474747', endColorstr='#2d2d2d',GradientType=0 ); /* IE6-9 */
+
+    border-color: #000000 rgba(0, 0, 0, 0.77) rgba(0, 0, 0, 0.77) #000000;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.43), 1px 1px 0 rgba(255, 255, 255, 0.24) inset, -1px -1px 0 rgba(48, 48, 48, 0.73) inset;
+    color: #FFFFFF;
+}
+
+.btn.btn-black.style2:focus,
+.btn.btn-black.style2:active {
+	background: rgb(45,45,45); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(45,45,45,1) 0%, rgba(71,71,71,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(45,45,45,1)), color-stop(100%,rgba(71,71,71,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(45,45,45,1) 0%,rgba(71,71,71,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(45,45,45,1) 0%,rgba(71,71,71,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(45,45,45,1) 0%,rgba(71,71,71,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(45,45,45,1) 0%,rgba(71,71,71,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d2d2d', endColorstr='#474747',GradientType=0 ); /* IE6-9 */
+
+    background-color: #222222;
+    border-color: #000000 rgba(0, 0, 0, 0.77) rgba(0, 0, 0, 0.77) #000000;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.73),
+    			1px 1px 0 rgba(255, 255, 255, 0.16) inset,
+    			-1px -1px 0 rgba(48, 48, 48, 0.73) inset;
+}
+
+
+
+/**
+ * 	Button Blue
+ */
+.btn.btn-blue {
+	background: #6CB5F4; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-blue:hover {
+	background: #51B1FF; /* Old browsers */
+   color: #FFFFFF;
+}
+
+.btn.btn-blue:focus,
+.btn.btn-blue:active {
+	background: #97C7EE; /* Old browsers */
+}
+
+
+
+/**
+ * 	Button Rose
+ */
+.btn.btn-rose {
+	background: #F5007A; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-rose:hover {
+	background: #FF007F; /* Old browsers */
+   color: #FFFFFF;
+}
+
+.btn.btn-rose:focus,
+.btn.btn-rose:active {
+	background: #FF56AA; /* Old browsers */
+}
+/**
+ * 	Button Black
+ */
+.btn.btn-black {
+	background: #222222; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-black:hover {
+	background: #33333; /* Old browsers */
+   color: #FFFFFF;
+}
+
+/**
+ * 	Button White
+ */
+.btn.btn-white {
+	background: #FFFFFF; /* Old browsers */
+    color: #444444;
+}
+
+
+.btn.btn-white:hover {
+	background: #FFFFFF; /* Old browsers */
+   color: #666666;
+}
+
+.btn.btn-white:focus,
+.btn.btn-white:active {
+	background: #FFFFFF; /* Old browsers */
+   color: #888888;
+}
+
+/**
+ * 	Button Gray
+ */
+.btn.btn-gray {
+	background: #8C8C8C; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-gray:hover {
+	background: #9C9C9C; /* Old browsers */
+   color: #FFFFFF;
+}
+
+.btn.btn-gray:focus,
+.btn.btn-gray:active {
+	background: #aeaeae; /* Old browsers */
+}
+
+/**
+ * 	Button Silver
+ */
+.btn.btn-silver {
+    background: #f5f5f5 none repeat scroll 0 0;
+    border-color: rgba(0, 0, 0, 0.22);
+   	color: #000000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 1px 1px 0 rgba(255, 255, 255, 0.61) inset
+}
+
+
+.btn.btn-silver:hover {
+	background: #FFFFFF; /* Old browsers */
+}
+
+.btn.btn-silver:focus,
+.btn.btn-silver:active {
+	background: #FAFAFA; /* Old browsers */
+}
+
+/**
+ * 	Button Link
+ */
+.btn.btn-link {
+	background: #ffffff; /* Old browsers */
+    color: #26a4ff;
+	box-shadow: none;
+	text-shadow: none;
+	font-weight: normal;
+}
+
+
+.btn.btn-link:hover {
+	color: #26A4FF;
+}
+
+.btn.btn-link:focus,
+.btn.btn-link:active {
+	color: rgb(72,193,249); /* Old browsers */
+}
+
+
+.btn.btn-full_width {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+}
+
+.btn.btn-yellow {
+	background: #FEB200; /* Old browsers */
+    color: #000000;
+}
+
+
+.btn.btn-yellow:hover {
+	background: #FCC33F;
+}
+
+.btn.btn-yellow:focus,
+.btn.btn-yellow:active {
+	background: #FFD06D; /* Old browsers */
+}
+
+
+
+/**
+ *  Button primary
+ */
+.btn.btn-primary,
+.btn.active {
+    border: 0px none;
+    box-shadow: none;
+    background: #f05949; /* Old browsers */
+    color: #FFFFFF;
+}
+
+.btn.btn-primary:hover,
+.btn.active:hover {
+    background: #e74c3c; /* Old browsers */
+   color: #FFFFFF;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.active:focus,
+.btn.active:active
+{
+    background: #f85241; /* Old browsers */
+}
+
+/**
+ *  Button Secondary
+ */
+.btn.btn-secondary {
+    background: #3c5064; /* Old browsers */
+    color: #FFFFFF;
+}
+
+
+.btn.btn-secondary:hover {
+    background: #f05949; /* Old browsers */
+   color: #FFFFFF;
+}
+
+.btn.btn-secondary:focus,
+.btn.btn-secondary:active {
+    background: #F76C5D; /* Old browsers */
+}
+
+/*
+.btn.btn-3d {
+    box-shadow: 0 -4px 0 rgba(0, 0, 0, 0.17) inset;
+}
+
+.btn.btn-3d:active,
+.btn.btn-3d:focus {
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.17) inset;
+}
+*/
+
+
+/**
+ * TOUCH BUTTONS
+ */
+.btn-touch {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #E1DDDD;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    cursor: pointer;
+    display: none;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.btn-touch-old {
+    border-color: #FFFFFF #DEDEDE #D6D6D6 #FFFFFF;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 2px #E8E8E8, 1px 1px 2px #D2D2D2 inset, -2px -2px 1px #FFFFFF inset;
+    color: #000000;
+    cursor: pointer;
+    display: none;
+    font-size: 18px;
+    padding: 10px;
+	background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.11) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(0,0,0,0.11)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0.11) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  rgba(0,0,0,0.11) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  rgba(0,0,0,0.11) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+	background: linear-gradient(135deg,  rgba(0,0,0,0.11) 0%,rgba(255,255,255,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c000000', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}

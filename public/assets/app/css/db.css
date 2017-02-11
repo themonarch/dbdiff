@@ -1,0 +1,80 @@
+
+#overlay-fade.compare_db > #overlay-horizontal_center {
+
+	/*width: 100%;*/
+
+}
+#compare_db.modal-overlay{
+	max-width: 1260px;
+}
+
+
+.diff-table {
+    padding: 0 0;
+}
+.diff-table th.diff.diff-source, .diff-table td.diff.diff-source {
+    border-right: 1px solid #eaeaea;
+    padding-left: 25px;
+}
+.diff-table th.diff.diff-target, .diff-table td.diff.diff-target {
+	padding-right: 35px;
+}
+
+.diff-table tr > td .diff-contents {
+	padding: 1px 0px;
+	white-space: pre-wrap;
+}
+.diff-table tr:hover > td .diff-contents {
+    background-color: #f5f0e5;
+}
+
+.diff-table table.table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-shadow: none;
+    width: 100%;
+}
+.diff-table .diff-linediff {
+    background-color: rgba(66, 66, 67, 0.03);
+    border: 1px solid #e7e7e7;
+    line-height: 18px;
+    min-height: 18px;
+}
+.diff-table td.diff {
+    vertical-align: top;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 25px;
+}
+
+.diff.diff-source del, .diff.diff-target ins {
+    background: #f8f7d4 none repeat scroll 0 0;
+    border: 1px solid #e6e39f;
+    color: #222222;
+    display: inline;
+    font-weight: bold;
+    margin: 0;
+    padding: 0 2px;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+.diff.diff-source ins.diff-line, .diff.diff-target del.diff-line {
+    background-color: transparent;
+    color: transparent;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: none;
+}
+
+.diff.diff-source ins, .diff.diff-target del {
+    background: #dfd none repeat scroll 0 0;
+    color: green;
+    text-decoration: none;
+    display: none;
+}
+
+.diff-table .diff-line-container {
+    white-space: pre-wrap;
+    min-height: 18px;
+}

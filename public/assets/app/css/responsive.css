@@ -1,0 +1,36 @@
+ /* min-width 641px, medium screens */
+@media only screen and (max-width: 40.063em) {
+
+}
+
+/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+
+
+}
+
+
+@media only screen and (max-width: 64em) {
+
+    #header-with-nav > .content > .main > .nav {
+        width: 100%;
+        padding: 0 0;
+    }
+
+    #header-with-nav > .content > .main > .nav > .nav-button-container{
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid #EEEEEE;
+        margin: 0 0;
+    }
+
+    #header-with-nav .nav-button-dropdown-contents {
+        position: relative;
+        text-align: center;
+    }
+
+    #header-with-nav .nav-button-dropdown-contents .ulnav li a {
+        text-align: center;
+    }
+
+}

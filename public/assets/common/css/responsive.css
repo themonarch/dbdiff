@@ -1,0 +1,129 @@
+/* min-width 641px, medium screens */
+@media only screen and (max-width: 50.063em) {
+
+	.unpad-left {
+		padding-left: 0!important;
+		padding-right: 0!important;
+	}
+	.unpad-right {
+		padding-right: 0!important;
+		padding-left: 0!important;
+	}
+
+	body, html {
+	    text-shadow: none;
+	}
+
+
+	/* HIDE SIDEBAR */
+	#wrapper{
+	    padding-left: 0px!important;
+	}
+	/* END HIDE SIDEBAR */
+
+
+
+	.hideMobile{
+	    display: none!important;
+	}
+
+	.btn-touch{
+		display: block;
+	}
+
+	.dropdown.active.hideMobile{
+	    display: block;
+	}
+
+	.dropdown.active {
+	    left: 0;
+	    width: 100%;
+	    margin-left: 0px;
+	    background-color: #F7F7F7;
+	    z-index: 10;
+	}
+	.dropdown.active .dropdown-contents {
+	    position: relative;
+	    top: auto;
+	    width: auto;
+	}
+	.dropdown.active .controls{
+		text-align: center;
+	}
+
+	.dropdown .controls, .dropdown .dropdown-select, .breadcrumbs .breadcrumb{
+		padding: 0.8em 1.6em!important;
+	}
+
+
+	.btn{
+		padding: 12px 16px;
+	}
+
+	.sidebar-container {
+		display: none;
+	}
+
+
+	#content-container > #header > .content {
+	    margin: 0;
+	    padding: 5px 1.5%;
+	    position: relative;
+	}
+
+	#content-container > #header > .content > .title{
+    	text-align: center;
+	}
+
+	#content-container > #header > .content > .title > h1 {
+		font-size: 2em;
+		max-width: 100%;
+		left: 61px;
+		right: 52px;
+	}
+
+	#content .page-placeholder {
+		padding-bottom: 102px;
+	}
+
+   .showMobile {
+        display: block!important;
+    }
+
+    #header-with-nav > .content > .main{
+        text-align: center;
+    }
+
+
+	.switches > .container > .switch {
+		padding: 8px 14px!important;
+	}
+}
+
+/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+
+    .sidebar-container .background {
+		width: 50%;
+	}
+
+	.hideTablet{
+	    display: none!important;
+	}
+
+	.showTablet {
+        display: block!important;
+	}
+
+	.switches > .container > .switch {
+		padding: 8px 14px!important;
+	}
+
+}
+
+@media only screen and (min-width: 64em) {
+    .hideDesktop {
+        display: none!important;
+    }
+}
+

@@ -1,0 +1,57 @@
+#product {
+	background: linear-gradient(
+		to bottom,
+		rgba(0, 119, 204, 0.24) 0%,
+		rgba(55, 42, 50, 0.26) 50%,
+		rgba(167, 147, 47, 0.28) 100%
+	) no-repeat fixed 0 0 / cover ,
+	url("../img/06_garage_product_04-2.jpg") no-repeat fixed 0 0 / cover  #000000;
+    margin-bottom: 0px;
+    padding: 0;
+    position: relative;
+}
+#product .section-content {
+	margin: 140px 0;
+	position: relative;
+}
+#product.section{
+	margin-bottom: 0px;
+}
+#header-without-nav {
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: -190px;
+    width: 100%;
+}
+#header-without-nav a.logo {
+	font-size: 48px;
+}
+#header-with-nav {
+	position: relative;
+	margin: 0px 0 0;
+}
+
+#header-without-nav .subtitle {
+    font-size: 50px;
+    font-weight: 900;
+}
+
+#header-with-nav.sticky {
+    top: 0;
+}
+
+@media all and (max-width: 1024px) {
+	#header-without-nav .subtitle {
+	    font-size: 28px;
+	}
+}
+.account_actions {
+    font-size: 13px;
+    font-weight: normal;
+    position: fixed;
+    right: 3%;
+    top: 17px;
+    z-index: 2;
+}
+

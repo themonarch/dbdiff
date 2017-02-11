@@ -1,0 +1,66 @@
+.form .form-element label{
+    display: block;
+    text-align: left;
+    color: #666666;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.form .form-element{
+    /*margin: 0 0 15px;*/
+   position: relative;
+}
+.form .form-element .input-wrapper.error .input-error{
+    border: 1px solid #C94343;
+    background-color: rgba(255, 213, 213, 0.29);
+    padding: 5px;
+
+}
+.form .form-element .input-error{
+    color: #B41717;
+    display: block;
+    text-align: center;
+}
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form select,
+.form textarea{
+    width: 100%;
+    box-sizing: border-box;
+
+
+}
+
+.form textarea{
+	/*min-height: 100px;*/
+}
+
+.form{
+}
+.form input, .form textarea{
+    outline: none;
+}
+
+
+
+.form .input-text.style2 input[type="text"]{
+	width: auto;
+}
+.form .input-text.style2{
+    margin-bottom: 0;
+    text-align: center;
+}
+.form .input-text.style2 label{
+    display: inline;
+}
+.form .form-element .input-wrapper.error .input-error{
+    margin: -1px 0 0;
+}
+.form .input-wrapper.error input[type="text"],
+.form .input-wrapper.error input[type="email"],
+.form .input-wrapper.error input[type="password"],
+.form .input-wrapper.error select,
+.form .input-wrapper.error textarea {
+    border: 1px solid #c94343;
+}

@@ -1,0 +1,270 @@
+.dropdown{
+	display: inline-block;
+	position: relative;
+	z-index: 2;
+}
+.dropdown .controls{
+	cursor: pointer;
+	white-space: nowrap;
+}
+.dropdown .controls span {
+margin-right: 20px;
+}
+.dropdown.open{
+    z-index: 10;
+}
+.dropdown > .dropdown-contents{
+	display: none;
+    left: 0;
+    min-width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+.dropdown.pull-right > .dropdown-contents{
+    right: 0;
+    left: auto;
+}
+.dropdown.right{
+	float: right;
+}
+.dropdown.right > .dropdown-contents{
+	right: 0px;
+	left: auto;
+}
+.dropdown .dropdown-select {
+   /* background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;*/
+    min-width: 150px;
+    position: relative;
+    display: block;
+    /*font-weight: bold;
+    min-width: 150px;
+    padding: 2px 16px;
+    text-align: center;
+    color: #444444;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.17) inset;*/
+}
+.dropdown.btn .dropdown-select {
+    border-bottom:  0px none;
+    border-right: 0px none;
+    border-top: 1px solid rgba(255, 255, 255, 0.24);
+}
+.dropdown.btn .dropdown-select:hover{
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+.dropdown.btn > .dropdown-contents {
+    border-radius: 3px;
+    border: 2px solid rgba(0, 0, 0, 0.33);
+}
+.dropdown.btn .dropdown-select,
+.dropdown.btn > .dropdown-contents
+{
+    background: inherit;
+    color: inherit;
+}
+.dropdown .controls i.open {
+    position: absolute;
+    right: 7px;
+}
+.dropdown.full-width{
+	display: block;
+	float: none;
+}
+.dropdown.full-width .dropdown-contents{
+	width: 100%;
+}
+
+
+
+
+/**DROPDOWN STYLES**/
+
+.dropdown.style1 .controls{
+    padding: 0px 24px;
+    margin: 0 0;
+    border-left: 2px solid transparent;
+	border-top: 1px solid transparent;
+	position: relative;
+	margin-top: -1px;
+}
+.dropdown.style1.right .controls{
+	border-bottom: 2px solid transparent;
+	border-left: 2px none;
+}
+
+
+
+.dropdown.style1 .dropdown-select.selected .note,
+.dropdown.style1 .dropdown-select:hover .note{
+	color: #636262;
+}
+.dropdown.style1 .dropdown-select.selected,
+.dropdown.style1 .dropdown-select:hover {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    color: #068AE7;
+}
+
+.dropdown.style1 .dropdown-select:hover {
+	color: #54B8FF;
+}
+
+
+.dropdown.style1 .dropdown-select .note {
+    color: #848484;
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+
+.dropdown.style1 .dropdown-select.disabled,
+.dropdown.style1 .dropdown-select.disabled .note {
+    color: #999999;
+    background-color: #EFEFEF;
+}
+
+
+.dropdown.style1.open .controls{
+	border-top: 1px solid #FFFFFF;
+}
+
+
+.dropdown.style1:hover .controls{
+	border-left: 2px solid #F9B117;
+}
+.dropdown.style1.open .controls, .dropdown.style1.open .dropdown-contents{
+	/*box-shadow: 0 0 3px rgba(0, 0, 0, 0.11), 1px 1px 1px #FFFFFF;*/
+	box-shadow: 0 1px 2px #A2A2A2;
+}
+.dropdown.style1.right:hover .controls{
+	border-bottom: 2px solid #F9B117;
+    border-left: 1px none;
+}
+.dropdown.style1.right.open .controls, .dropdown.style1.right.open .dropdown-contents{
+	border-bottom: 2px solid #F9B117;
+    border-left: 1px none;
+}
+
+
+
+.dropdown.style1 .dropdown-contents{
+    background-color: #F7F7F7;
+    white-space: nowrap;
+}
+
+
+.dropdown.style3 {
+    margin: 3px 3px 0 0;
+}
+
+.dropdown.style3 .controls span {
+	margin-right: 0px;
+}
+.dropdown.style3 .controls {
+    border: 1px solid #eeeeee;
+    font-size: 20px;
+    background-color: #FFFFFF;
+}
+
+.dropdown.style3 .dropdown-select{
+	padding: 8px 10px;
+
+}
+.dropdown.style2 .dropdown-select{
+	font-weight: normal;
+	padding: 0px 15px;
+}
+.dropdown.style2 .dropdown-select .add{
+    float: right;
+}
+.dropdown.style2 .dropdown-select label{
+	cursor: pointer;
+	display: block;
+	padding: 3px 0px;
+}
+
+
+.dropdown.style2 .controls{
+	position: relative;
+	border-left: 2px solid #CCCCCC;
+	color: #555555;
+    background: none repeat scroll 0 0 #F9F9F9;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    text-align: center;
+}
+
+.dropdown.style2 > .dropdown-contents{
+	position: relative;
+}
+
+.dropdown.style2 .dropdown-select.header {
+	text-align: left;
+	color: #777777;
+}
+
+.dropdown.style2:hover .controls{
+	border-left: 2px solid #F9B117;
+}
+
+.dropdown.style2.open .controls, .dropdown.style2.open .dropdown-contents{
+	/*box-shadow: 0 0 3px rgba(0, 0, 0, 0.11), 1px 1px 1px #FFFFFF;*/
+	box-shadow: 0 1px 2px #A2A2A2;
+}
+
+.dropdown.style2.right:hover .controls{
+	border-bottom: 2px solid #F9B117;
+    border-left: 1px none;
+}
+.dropdown.style2 .dropdown-select:hover,
+.dropdown.style2 .dropdown-select.selected {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+.dropdown.style2 .dropdown-select.header:hover {
+	background: inherit;
+
+}
+.dropdown.style2 .dropdown-select.header label{
+	cursor: default;
+}
+.dropdown.style2.right.open .controls, .dropdown.style1.right.open .dropdown-contents{
+	border-bottom: 2px solid #F9B117;
+    border-left: 1px none;
+}
+
+
+.dropdown.style-btn2 {
+
+}
+.dropdown.style2 .dropdown-contents{
+    background-color: #F7F7F7;
+}
+.dropdown.style-btn2 .dropdown-select{
+
+}
+.dropdown.style-btn2 .controls {
+    padding: 2px;
+}
+.dropdown.style-btn2 .controls i.open {
+    position: relative;
+    right: auto;
+}
+.dropdown.style-btn2 .controls span{
+    margin: 0px;
+}
+
+
+
+/** END DROPDOWN STYLES **/
+
