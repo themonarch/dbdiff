@@ -311,7 +311,7 @@ class user_framework {
         if($this->grants === null){
 
             //if user part of a user group
-            if($this->getCustomValue('user_group') != ''){
+            if($this->hasCustomValue('user_group')){
                 $group_grants = db::query('select * from `group_grants` where `group_id` = '
                     .db::quote(user::getUserLoggedIn()->getCustomValue('user_group')));
                 while($grant = $group_grants->fetchRow()){
@@ -340,7 +340,7 @@ class user_framework {
             }
         }
 
-        if($this->getCustomValue('user_group') === appUtils::getUserGroupID('Super Admin')){
+        if($this->hasCustomValue('user_group') && $this->getCustomValue('user_group') === appUtils::getUserGroupID('Super Admin')){
             return true;
         }
 
@@ -385,24 +385,33 @@ class user_framework {
      * returns null if not exists
      */
     function getCustomValue($field){
-    	if(isset($this->custom_values[$field])){
-    		return $this->custom_values[$field];
+    	if(!isset($this->custom_values[$field])){
+	        $query = db::query('select * from `user_store`
+	        	where `user_id` = '.$this->getID().'
+	        	and `name` = '.db::quote($field));
+	        if($query->rowCount() === 0){
+	        	$this->custom_values[$field] = null;
+	        }else{
+    			$this->custom_values[$field] = $query->fetchRow()->value;
+	        }
     	}
-        $limit = 50;
-        if(strlen($field) > $limit){
-            throw new toolboxException("Field name must be less than ".$limit." chars! name = ".$field, 1);
-        }
 
-        $query = db::query('select * from `user_store` where `user_id` = '.$this->getID().' and `name` = '.db::quote($field));
-        if($query->rowCount() === 0){
-        	$this->custom_values[$field] = null;
-            return null;
-        }
+    	if($this->custom_values[$field] === null){
+    		throw new userException('Custom user value not set: '.$field);
+    	}
 
-    	$this->custom_values[$field] = $query->fetchRow()->value;
-        return $this->custom_values[$field];
+		return $this->custom_values[$field];
 
     }
+
+	function hasCustomValue($field){
+		try{
+			$this->getCustomValue($field);
+			return true;
+		}catch(userException $e){
+			return false;
+		}
+	}
 
     function setCustomValue($field, $value){
         db::query('INSERT INTO `user_store` (`user_id`, `name`, `value`, `date_created`)

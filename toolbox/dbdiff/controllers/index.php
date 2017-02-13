@@ -16,8 +16,54 @@ class index_controller {
 		title::get()//add a descriptive title only for the homepage
 		    ->addCrumb('A Quick Schema Comparison & Sync Tool for MySQL Databases');
 
+		if(
+			utils::isPost()
+			&& isset($_POST['dynamic_form_submit'])
+			&& $_POST['dynamic_form_submit'] == 'demo'
+		){
 
-        if(//submitting main form (quick connect)
+			//create user if not exists
+			$user = $this->getUser();
+
+			//if demo db already exists
+			if($user->hasCustomValue('demo_sync_id')){
+				//get existing demo connection
+				$sync = sync::get($user->getCustomValue('demo_sync_id'));
+
+				//restore connection data
+
+			}else{
+
+				//host
+				$_POST['Host']['quick_connect-0'] = 'demo.'.config::getSetting('HTTP_HOST');
+				$_POST['Host']['quick_connect-1'] = 'demo.'.config::getSetting('HTTP_HOST');
+
+
+				//user
+				$_POST['User']['quick_connect-0'] = 'demo_'.$user->getStringID();
+				$_POST['User']['quick_connect-1'] = 'demo_'.$user->getStringID();
+
+				//pass
+				$_POST['Pass']['quick_connect-0'] = utils::getRandomString(8);
+				$_POST['Pass']['quick_connect-1'] = utils::getRandomString(8);
+
+				//port
+				$_POST['Port']['quick_connect-0'] = '3306';
+				$_POST['Port']['quick_connect-1'] = '3306';
+
+				//database
+
+			}
+
+			//disable input fields?
+
+			//set demo toggle active
+
+			formV2::storeValues();
+
+
+
+		}elseif(//submitting main form (quick connect)
             utils::isPost()
             && isset($_POST['widget_unique_id'])
             && $_POST['widget_unique_id'] == 'quick_diff'
@@ -98,7 +144,6 @@ class index_controller {
 
 	<input type="hidden" name="choose_db" value="true">
 	<input type="hidden" name="<?php echo $tpl->index; ?>" value="true">
-
             	<?php
             	formV2::storeValues();
             	page::get()->renderViews('database_table');
@@ -136,9 +181,11 @@ class index_controller {
 
 
 <div style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1">
-	<div data-tabs-container="" class="container">
-		<span class="switch active" data-tab="">Live</span>
-		<span class="switch " data-tab="">Demo</span>
+	<div class="container">
+		<span class="switch active" data-dynamic_form_submit="live">
+			Live</span>
+		<span class="switch" data-dynamic_form_submit="demo">
+			Demo</span>
 	</div>
 </div>
 		<div class="catchall"></div>
@@ -198,49 +245,60 @@ class index_controller {
 		return validator::isValid();
 	}
 
+	private $user;
+	function getUser(){
+		if($this->user !== null){
+			return $this->user;
+		}
+
+		//first set up a session if not already exists
+		$user = null;
+
+		//if not logged in and no guest account...
+		if(!user::isUserLoggedIn() && !user::isGuestLoggedIn()){
+			user::create(//create guest account
+				array('password' => utils::getRandomString(10)),//with a random password
+				true, //log current user into guest account
+				true //generate an excryption cookie
+			);
+
+            $user = new user(user::$last_created_user_id);
+
+		}else{//user already logged in as member or guest
+			$user = user::getUserLoggedIn();
+		}
+		$this->user = $user;
+		return $user;
+	}
+
 	function processQuickConnectForm(){
-			//first set up a session if not already exists
-			$user = null;
+		$this->getUser();
 
-			//if not logged in and no guest account...
-			if(!user::isUserLoggedIn() && !user::isGuestLoggedIn()){
-				user::create(//create guest account
-					array('password' => utils::getRandomString(10)),//with a random password
-					true, //log current user into guest account
-					true //generate an excryption cookie
-				);
+		//save connection #1
+		$conn_id_1 = $this->createConnection(
+			$_POST['Host']['quick_connect-0'],
+			$_POST['User']['quick_connect-0'],
+			$_POST['Password']['quick_connect-0'],
+			$_POST['Port']['quick_connect-0'],
+			$_POST['Database']['quick_connect-0']
+		);
 
-	            $user = new user(user::$last_created_user_id);
+		//save connection #2
+		$conn_id_2 = $this->createConnection(
+			$_POST['Host']['quick_connect-1'],
+			$_POST['User']['quick_connect-1'],
+			$_POST['Password']['quick_connect-1'],
+			$_POST['Port']['quick_connect-1'],
+			$_POST['Database']['quick_connect-1']
+		);
 
-			}else{//user already logged in as member or guest
-				$user = user::getUserLoggedIn();
-			}
+		//save comparison
+		$compare_id = $this->createComparison($conn_id_1, $conn_id_2,
+			$_POST['Database']['quick_connect-0'],
+			$_POST['Database']['quick_connect-1']
+		);
 
-			//save connection #1
-			$conn_id_1 = $this->createConnection(
-				$_POST['Host']['quick_connect-0'],
-				$_POST['User']['quick_connect-0'],
-				$_POST['Password']['quick_connect-0'],
-				$_POST['Port']['quick_connect-0'],
-				$_POST['Database']['quick_connect-0']
-			);
-
-			//save connection #2
-			$conn_id_2 = $this->createConnection(
-				$_POST['Host']['quick_connect-1'],
-				$_POST['User']['quick_connect-1'],
-				$_POST['Password']['quick_connect-1'],
-				$_POST['Port']['quick_connect-1'],
-				$_POST['Database']['quick_connect-1']
-			);
-
-			//save comparison
-			$compare_id = $this->createComparison($conn_id_1, $conn_id_2,
-				$_POST['Database']['quick_connect-0'],
-				$_POST['Database']['quick_connect-1']
-			);
-
-			return $compare_id;
+		return $compare_id;
 
 	}
 

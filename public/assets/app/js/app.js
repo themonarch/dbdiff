@@ -67,7 +67,7 @@ var App = function() {
      * structure should look like this:
      * <div data-tabs="">
      *  <nested divs>
-     *      <div data-tabs-container="">
+     *      <div data-tabs-container="(optional: id of element with data-tabs-contents if not within data-tabs element)">
      *          <div data-tab="">
      *          <div data-tab="">
      *  <nested divs>
@@ -116,10 +116,15 @@ var App = function() {
 
 
     _app.widgetTabsOpenActive = function(tabs_container){
-        var content_container = tabs_container.closest('[data-tabs]');
-        if(content_container.data('tabs-contents') == 'undefined'){
-            content_container = content_container.find('[data-tabs-contents]:first');
+        if(tabs_container.data('tabs-container') !== ''){
+            var content_container = $(tabs_container.data('tabs-container'));
+        }else{
+            var content_container = tabs_container.closest('[data-tabs]');
+            if(typeof content_container.data('tabs-contents') == 'undefined'){
+                content_container = content_container.find('[data-tabs-contents]:first');
+            }
         }
+
 
         var activeTabNum = -1;
         var activeTab = tabs_container.find('[data-tab].active');
@@ -238,7 +243,15 @@ var App = function() {
         _app.body = $('body');
 
         _app.body.delegate('[data-dynamic_form_submit]', 'click', function(event){
-			var form = $(this).parents('[data-dynamic_form]');
+        	var trigger = $(this);
+        	if(trigger.hasClass('active')){
+        		return false;
+        	}
+        	var trigger_val = '';
+        	if(trigger.data('dynamic_form_submit') != ''){
+				trigger_val = '&dynamic_form_submit='+trigger.data('dynamic_form_submit');
+        	}
+			var form = trigger.parents('[data-dynamic_form]');
             var output_destination = form.attr('data-output_destination');
 
             if(typeof form.attr('data-confirm') !== 'undefined'){
@@ -264,7 +277,7 @@ var App = function() {
             var replace_destination = false;
             _app.ajax(
                 href,
-                form.find(':input').serialize(),
+                form.find(':input').serialize()+trigger_val,
                 output_destination,
                 form.data('show_loader'),
                 undefined,
