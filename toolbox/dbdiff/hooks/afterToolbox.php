@@ -146,11 +146,6 @@ sidebarV2::get('top_nav')
             ->setHref('/')
     )
     ->addLink(
-        sidebarV2::createLink('Demo')
-            ->setMainView('/sidebar/menu_item.php')
-            ->setHref('/demo')
-    )
-    ->addLink(
         sidebarV2::createLink('Download')
 			->setInner('Download <div class="notifications rose">Coming Soon</div>')
             ->setMainView('/sidebar/menu_item.php')

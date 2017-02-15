@@ -16,11 +16,15 @@ class index_controller {
 		title::get()//add a descriptive title only for the homepage
 		    ->addCrumb('A Quick Schema Comparison & Sync Tool for MySQL Databases');
 
+        page::get()->set('demo', false);
+        //utils::vdd($_POST);
 		if(
 			utils::isPost()
 			&& isset($_POST['dynamic_form_submit'])
 			&& $_POST['dynamic_form_submit'] == 'demo'
 		){
+
+		    page::get()->set('demo', true);
 
 			//create user if not exists
 			$user = $this->getUser();
@@ -44,14 +48,16 @@ class index_controller {
 				$_POST['User']['quick_connect-1'] = 'demo_'.$user->getStringID();
 
 				//pass
-				$_POST['Pass']['quick_connect-0'] = utils::getRandomString(8);
-				$_POST['Pass']['quick_connect-1'] = utils::getRandomString(8);
+				$_POST['Password']['quick_connect-0'] = utils::getRandomString(8);
+				$_POST['Password']['quick_connect-1'] = utils::getRandomString(8);
 
 				//port
 				$_POST['Port']['quick_connect-0'] = '3306';
 				$_POST['Port']['quick_connect-1'] = '3306';
 
 				//database
+				$_POST['Database']['quick_connect-0'] = 'demo-1_'.$user->getStringID();
+				$_POST['Database']['quick_connect-1'] = 'demo-2_'.$user->getStringID();
 
 			}
 
@@ -65,6 +71,7 @@ class index_controller {
 
 		}elseif(//submitting main form (quick connect)
             utils::isPost()
+            && !(isset($_POST['dynamic_form_submit']) && $_POST['dynamic_form_submit'] == 'live')//not switching to live form
             && isset($_POST['widget_unique_id'])
             && $_POST['widget_unique_id'] == 'quick_diff'
             && $this->isValidQuickConnectForm()
@@ -176,15 +183,15 @@ class index_controller {
 		//if no active session
 			//show demo toggle
 			page::get()
-    ->addView(function(){ ?>
+    ->addView(function($tpl){ ?>
         <div class="catchall"></div>
 
 
 <div style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1">
 	<div class="container">
-		<span class="switch active" data-dynamic_form_submit="live">
+		<span class="switch <?php if(!$tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="live">
 			Live</span>
-		<span class="switch" data-dynamic_form_submit="demo">
+		<span class="switch <?php if($tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="demo">
 			Demo</span>
 	</div>
 </div>
