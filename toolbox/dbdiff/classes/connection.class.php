@@ -102,7 +102,9 @@ class connection{
 				$this->getPort());
 			db::setDB();
 		}catch(toolboxException $e){
-			throw new connectionException($e->getMessage(), 1);
+			throw new connectionException('Error while trying to connect to '
+				.utils::htmlEncode($this->getHost()).' with error message: <b>'
+				.utils::htmlEncode($e->getMessage()).'</b>');
 		}
 
 		return $this;

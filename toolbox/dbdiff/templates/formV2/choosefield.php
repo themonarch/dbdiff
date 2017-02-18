@@ -51,7 +51,7 @@ if(!isset($value_display_name)){
              <?php } ?>
              />
 
-                    <div class="picker">
+                    <div class="picker <?php if($disabled != false){ ?>disabled<?php } ?>">
                         <div class="grid-9">
                             <div class="picker-value-container">
                                 <?php if($value !== ''){ ?>
@@ -70,12 +70,13 @@ if(!isset($value_display_name)){
                             </div>
                         </div>
                         <div class="grid-3">
-                        	<?php if(isset($ajax_url)){ ?>
+                        	<?php if(isset($ajax_url) && $disabled == false){ ?>
                             <a href="<?php echo $ajax_url; ?>"
                             class="btn picker-action btn-blue"
                             data-overlay-id="<?php echo $overlay_id; ?>">Choose</a>
                             <?php }else{ ?>
-                            <button type="submit" name="submit" class="btn picker-action btn-medium btn-blue"
+                            <button <?php if($disabled == true){ ?> disabled="disabled"<?php } ?> type="submit" name="submit" class="btn picker-action btn-medium btn-<?php
+                            	if($disabled != false) echo 'gray'; else echo 'blue'; ?>"
                             	value="<?php echo $name; ?>">Choose</button>
                             <?php } ?>
                         </div>

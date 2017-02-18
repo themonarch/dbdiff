@@ -14,8 +14,16 @@ class compare_controller {
         $profile_id = router::get()->getParam('profile_id');
         $widget = widgetHelper::create();
 		$sync = sync::get($profile_id);
-
-
+//connect
+try{
+	$source_conn = $sync->getSourceConnection();
+	$source_conn->connect();
+	$target_conn = $sync->getTargetConnection();
+	$target_conn->connect();
+}catch(connectionException $e){
+	throw new softPublicException($e->getMessage());
+}
+$sync->updateLastViewed();
 		$widget
             ->set('grid_classes', '')
 			->set('profile_id', $profile_id)

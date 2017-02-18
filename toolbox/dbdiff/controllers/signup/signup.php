@@ -95,6 +95,7 @@ class signup_controller {
 		return true;
 
 	}
+
     function __construct(){
 
 		if(utils::isPost()){

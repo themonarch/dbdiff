@@ -11,14 +11,38 @@ class index_controller {
 
     }
 
+	function setDemoConnectionPostData(){
+
+		//host
+		$_POST['Host']['quick_connect-0'] = 'demo.'.config::getSetting('HTTP_HOST');
+		$_POST['Host']['quick_connect-1'] = 'demo.'.config::getSetting('HTTP_HOST');
+
+
+		//user
+		$_POST['User']['quick_connect-0'] = 'demo_'.$this->user->getStringID();
+		$_POST['User']['quick_connect-1'] = 'demo_'.$this->user->getStringID();
+
+		//pass
+		$_POST['Password']['quick_connect-0'] = '';
+		$_POST['Password']['quick_connect-1'] = '';
+
+		//port
+		$_POST['Port']['quick_connect-0'] = '3306';
+		$_POST['Port']['quick_connect-1'] = '3306';
+
+		//database
+		$_POST['Database']['quick_connect-0'] = 'dbdiff-demos-1';
+		$_POST['Database']['quick_connect-1'] = 'dbdiff-demos-2';
+	}
+
     function __construct(){
 
-		title::get()//add a descriptive title only for the homepage
+		title::get()//add a descriptive title for the homepage
 		    ->addCrumb('A Quick Schema Comparison & Sync Tool for MySQL Databases');
 
-        page::get()->set('demo', false);
-        //utils::vdd($_POST);
-		if(
+	    page::get()->set('demo', false);
+
+		if(//if clicked the demo toggle
 			utils::isPost()
 			&& isset($_POST['dynamic_form_submit'])
 			&& $_POST['dynamic_form_submit'] == 'demo'
@@ -38,36 +62,25 @@ class index_controller {
 
 			}else{
 
-				//host
-				$_POST['Host']['quick_connect-0'] = 'demo.'.config::getSetting('HTTP_HOST');
-				$_POST['Host']['quick_connect-1'] = 'demo.'.config::getSetting('HTTP_HOST');
-
-
-				//user
-				$_POST['User']['quick_connect-0'] = 'demo_'.$user->getStringID();
-				$_POST['User']['quick_connect-1'] = 'demo_'.$user->getStringID();
-
-				//pass
-				$_POST['Password']['quick_connect-0'] = utils::getRandomString(8);
-				$_POST['Password']['quick_connect-1'] = utils::getRandomString(8);
-
-				//port
-				$_POST['Port']['quick_connect-0'] = '3306';
-				$_POST['Port']['quick_connect-1'] = '3306';
-
-				//database
-				$_POST['Database']['quick_connect-0'] = 'demo-1_'.$user->getStringID();
-				$_POST['Database']['quick_connect-1'] = 'demo-2_'.$user->getStringID();
-
+				$this->setDemoConnectionPostData();
 			}
-
-			//disable input fields?
-
-			//set demo toggle active
 
 			formV2::storeValues();
 
 
+
+		}elseif(//submitting main form (quick connect) for a DEMO
+            utils::isPost()
+            && !(isset($_POST['dynamic_form_submit'])
+            && $_POST['dynamic_form_submit'] == 'live')//not switching to live form
+            && isset($_POST['widget_unique_id'])
+            && $_POST['widget_unique_id'] == 'quick_diff'
+            && isset($_POST['demo'])
+            && $_POST['demo'] === 'true'
+			&& ($profile_id = $this->processQuickConnectDemoForm())
+        ){
+			//new profile created successfully ... go to the comparison
+			utils::redirectTo('/compare/'.$profile_id);
 
 		}elseif(//submitting main form (quick connect)
             utils::isPost()
@@ -206,11 +219,9 @@ class index_controller {
 			</div>
 			<div class="catchall spacer-3"></div>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
-				<p>Find schema differences in your databases easily, no signup or email required! Just use the form below.
-					<br>Not ready to use a live database? Then check out our <a href="/demo">demo database</a> that you can play with
-					<br>to get a feel for things without any worry.</p>
+				<p>Find schema differences in your databases easily, no signup or email required! Just use the form below.</p>
 
-				<div class="catchall spacer-5"></div>
+				<div class="catchall spacer-4"></div>
 			</div>
 		<?php }, 'content-narrow');
 
@@ -276,10 +287,138 @@ class index_controller {
 		}
 		$this->user = $user;
 		return $user;
+		return new user();
 	}
 
 	function processQuickConnectForm(){
 		$this->getUser();
+
+		//save connection #1
+		$conn_id_1 = $this->createConnection(
+			$_POST['Host']['quick_connect-0'],
+			$_POST['User']['quick_connect-0'],
+			$_POST['Password']['quick_connect-0'],
+			$_POST['Port']['quick_connect-0'],
+			$_POST['Database']['quick_connect-0']
+		);
+
+		//save connection #2
+		$conn_id_2 = $this->createConnection(
+			$_POST['Host']['quick_connect-1'],
+			$_POST['User']['quick_connect-1'],
+			$_POST['Password']['quick_connect-1'],
+			$_POST['Port']['quick_connect-1'],
+			$_POST['Database']['quick_connect-1']
+		);
+
+		//save comparison
+		$compare_id = $this->createComparison($conn_id_1, $conn_id_2,
+			$_POST['Database']['quick_connect-0'],
+			$_POST['Database']['quick_connect-1']
+		);
+
+		return $compare_id;
+
+	}
+
+	function processQuickConnectDemoForm(){
+		$user = $this->getUser();
+
+
+
+		//create the table(s) on db1
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."`");
+		db::query("CREATE TABLE `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."` (
+	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	`post_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`post_date_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`post_status` ENUM('publish','draft','trash') NOT NULL DEFAULT 'publish' COLLATE 'utf8mb4_unicode_520_ci',
+	`comment_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
+	`ping_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
+	`post_password` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+	`post_name` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+	`to_ping` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`pinged` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`post_modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`post_modified_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`post_content_filtered` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+	`post_parent` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	`guid` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+	`menu_order` INT(11) NOT NULL DEFAULT '0',
+	`post_type` VARCHAR(20) NOT NULL DEFAULT 'post' COLLATE 'utf8mb4_unicode_520_ci',
+	`post_mime_type` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+	`comment_count` BIGINT(20) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `post_name` (`post_name`),
+	INDEX `post_parent` (`post_parent`),
+	INDEX `post_author` (`post_author`),
+	INDEX `type_status_date` (`post_type`, `post_date`, `id`)
+)
+COLLATE='utf8mb4_unicode_520_ci'
+ENGINE=InnoDB
+");
+
+
+
+		//create the table(s) on db2
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."`");
+		db::query("CREATE TABLE `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."` (
+					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+					`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+					`post_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+					`post_date_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+					`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`post_status` VARCHAR(20) NOT NULL DEFAULT 'publish' COLLATE 'utf8mb4_unicode_520_ci',
+					`comment_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
+					`ping_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
+					`post_password` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+					`post_name` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+					`to_ping` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`pinged` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`post_modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+					`post_modified_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+					`post_content_filtered` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
+					`post_parent` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+					`guid` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+					`menu_order` INT(11) NOT NULL DEFAULT '0',
+					`post_type` VARCHAR(20) NOT NULL DEFAULT 'post' COLLATE 'utf8mb4_unicode_520_ci',
+					`post_mime_type` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
+					`comment_count` BIGINT(20) NOT NULL DEFAULT '0',
+					PRIMARY KEY (`ID`),
+					INDEX `type_status_date` (`post_type`, `post_date`, `ID`),
+					INDEX `post_parent` (`post_parent`),
+					INDEX `post_author` (`post_author`)
+				)
+				COLLATE='utf8mb4_unicode_520_ci'
+				ENGINE=InnoDB
+				AUTO_INCREMENT=4");
+
+		//create user on db1 with access to table(s)
+		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'");
+		db::query("DROP USER 'demo_".$user->getStringID()."'@'localhost'");
+		db::query("CREATE USER 'demo_".$user->getStringID()."'@'localhost' IDENTIFIED BY ''");
+		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'");
+		db::query("GRANT SELECT, ALTER, DELETE, DROP,
+		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
+		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-1`.`wp_posts-"
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'");
+
+		//create user on db2 with access to table(s)
+		//db::query("CREATE USER 'demo_".$user->getStringID()."'@'localhost' IDENTIFIED BY ''");
+		//db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'");
+		db::query("GRANT SELECT, ALTER, DELETE, DROP,
+		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
+		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-2`.`wp_posts-"
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'");
+
+
+		$this->setDemoConnectionPostData();
 
 		//save connection #1
 		$conn_id_1 = $this->createConnection(
@@ -394,6 +533,20 @@ class index_controller {
 	}
 
 	function createComparison($conn1, $conn2, $table1, $table2){
+		//if already exists
+		$row = db::query('select * from `db_sync_profiles`
+		where `user_id` = '.db::quote(user::getUserLoggedIn()->getID()).'
+		and `target_conn_id` = '.db::quote($conn2).'
+		and `target_db` = '.db::quote($table2).'
+		and `source_conn_id` = '.db::quote($conn1).'
+		and `source_db` = '.db::quote($table1).'
+		')->fetchRow();
+
+		if($row !== null){
+			return $row->id;
+		}
+
+
 		$sync_id = utils::getRandomString();
 
 		db::query('insert into `db_sync_profiles` (
@@ -405,7 +558,7 @@ class index_controller {
 			`source_db`,
 			`sync_direction`,
 			`description`,
-			`date_created_or_last_synced`
+			`last_viewed`
 		) VALUES (
 			'.db::quote($sync_id).',
 			'.db::quote(user::getUserLoggedIn()->getID()).',

@@ -18,6 +18,12 @@ class sync{
 		return $this->getData('id');
 	}
 
+	function updateLastViewed(){
+		db::query('update `db_sync_profiles` set `last_viewed` = now() where `id` = '.db::quote($this->getID()));
+		return $this;
+		return new sync();
+	}
+
 	function getData($key){
 		if(!isset($this->data->{$key})){
 			throw new toolboxException("Error: $key not set!", 1);

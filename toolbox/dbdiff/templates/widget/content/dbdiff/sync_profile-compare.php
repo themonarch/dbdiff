@@ -166,7 +166,8 @@ $dt = datatableV2::create()
     ->setPaginationDestination('#'.$widget_id)
 	->addView(function($tpl){ ?>
 	    <div class="datatable-info datatable-section">
-	        <b><?php echo $tpl->right+$tpl->left+$tpl->different; ?></b> out of <b><?php echo $tpl->getTotalRows(); ?></b> tables mismatched.
+	        <b><?php echo $tpl->synced; ?></b> out of <b><?php
+	        echo $tpl->getTotalRows(); ?></b> tables match.
 	    </div>
 	<?php }, 'footer')
     ->renderViews();

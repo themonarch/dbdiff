@@ -8,7 +8,7 @@ if(user::isUserLoggedIn() || user::isGuestLoggedIn()){
 $_POST['widget_unique_id'] = $widget_unique_id;
 $dt = datatableV2::create()
 	->set('widget_id', $widget_id)
-	->setOrderBy('`date_created_or_last_synced` desc')
+	->setOrderBy('`last_viewed` desc')
 	->enableSearch()
 	->clearViews('no_data')
 	->addView(function(){ ?>
@@ -39,17 +39,28 @@ $dt->setColSetting('targetname', 'internal_field_name', '`target`.`name`');
 
 $dt->enableSearch(3, false);
 
+$dt->defineCol('last_viewed', 'Last Viewed', function($val, $rows, $dt, $col){
+	?>
+<span title="<?php
+            echo $val;
+        ?> +0000" class="timeago"><?php
+            echo $val;
+        ?></span>
+<?php });
+
 $dt->defineCol('id', 'Action', function($val, $rows, $dt, $col){ ?>
     <a href="/compare/<?php
 		echo $val; ?>" class="btn btn-small btn-blue">Compare</a>
-<?php });
+<?php })
+	->setColSetting(3, 'style', 'width: 140px;');
 $dt->enableSearch(4, false)
     ->set('post_data', urlencode(json_encode($_POST)))
-	->setColSetting(2, 'style', 'width: 140px;')
+	->setColSetting(2, 'style', 'width: 160px;')
 	->setSortInline();
 
 $dt->setSelect('`id`, `source`.`name` as `sourcename`,
 `target`.`name` as `targetname`,
+`last_viewed`,
 `source_db`,
 `target_db`,
 `sync_direction`,

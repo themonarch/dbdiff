@@ -1419,6 +1419,10 @@ user-select: none;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.picker.disabled .picker-value {
+    background-color: #eaeae7;
+
+}
 .picker .picker-icon {
     background: transparent none repeat scroll 0 0;
     border: medium none;

@@ -1322,7 +1322,10 @@ table.table.style4 > thead > tr > th > input {
     border-left: 0px none;
     padding: 4px 5px 4px 50px;
 }
-
+table.table.style4 > thead > tr > th > input:disabled {
+    padding: 4px 5px 4px 5px;
+    text-align: center;
+}
 table.table.style4 th > .icon_input {
     color: #a6a6a6;
     cursor: default;
@@ -1348,7 +1351,7 @@ table.table.style4 th .index_icon.unique {
 table.table.style4 th > .icon_input_right {
     color: #a6a6a6;
     cursor: pointer;
-    margin: 0 0 0 -23px;
+    margin: 0 0 0 -40px;
     padding: 5px 3px;
     position: absolute;
 }

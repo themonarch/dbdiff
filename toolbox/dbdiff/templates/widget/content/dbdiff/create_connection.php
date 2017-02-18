@@ -11,6 +11,9 @@ messages::readMessages($index);
 <?php messages::printMessages('quick_connect-'.$index); ?>
 
 <div class="catchall spacer-1"></div>
+<?php if(page::get()->demo){ ?>
+	<input type="hidden" name="demo" value="true">
+<?php } ?>
 <?php
 	page::create()
 		->setMainView('generic_layout/table-form-horizontal-v2.php')
