@@ -155,10 +155,10 @@ sidebarV2::get('top_nav')
 page::get()//add it to the top nav
 	->addView(sidebarV2::get('top_nav'), 'nav')
 	->addView(function(){
+		//TODO: read .git/HEAD to get the modified time of current branch
 		$time = date('Y-m-d H:i:s', filemtime('../.git/logs/refs/heads/master')); ?>
-		Last updated: <span class="timeago" title="<?php echo $time; ?> +0000"><?php
-echo $time;
-				?></span>
+		Last updated: <span class="timeago" title="<?php
+		echo $time; ?> +0000"><?php echo $time; ?></span>
 	<?php }, 'top_nav-left');
 
 if(user::isUserLoggedIn()){
