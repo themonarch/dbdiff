@@ -92,9 +92,15 @@ page::get()->setMainView('main/app.php')
     ->addView(function(){ ?>
         <div class="catchall padding-3-5"></div>
     <?php }, 'top_spacing')
+    ->addView(function(){ ?>
+        <div class="catchall padding-3-5"></div>
+    <?php }, 'bottom_spacing')
     ->addView(function($tpl){
         $tpl->renderViews('top_spacing');
     }, 'pre-header')
+    ->addView(function($tpl){
+        $tpl->renderViews('bottom_spacing');
+    }, 'content')
     ->addView(function($tpl){//wrap messages in a view so that we can disable it if needed.
         $tpl->renderViews('print_messages');
     }, 'pre-content')
@@ -157,7 +163,7 @@ page::get()//add it to the top nav
 	->addView(function(){
 		//TODO: read .git/HEAD to get the modified time of current branch
 		$time = date('Y-m-d H:i:s', filemtime('../.git/logs/refs/heads/master')); ?>
-		Last updated: <span class="timeago" title="<?php
+		Last update: <span class="timeago" title="<?php
 		echo $time; ?> +0000"><?php echo $time; ?></span>
 	<?php }, 'top_nav-left');
 
