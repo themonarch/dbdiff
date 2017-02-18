@@ -153,20 +153,20 @@ sidebarV2::get('top_nav')
     );
 
 page::get()//add it to the top nav
-	->addView(sidebarV2::get('top_nav'), 'nav');
+	->addView(sidebarV2::get('top_nav'), 'nav')
+	->addView(function(){
+		$time = date('Y-m-d H:i:s', filemtime('../.git/logs/refs/heads/master')); ?>
+		Last updated: <span class="timeago" title="<?php echo $time; ?> +0000"><?php
+echo $time;
+				?></span>
+	<?php }, 'top_nav-left');
 
 if(user::isUserLoggedIn()){
 
     $acl->grant('member');//allow user to see pages requiring login
 
     page::get()
-	        ->addView('elements/account_nav.php', 'top_nav_extra_items')
-			->addView(function(){
-				$time = date('Y-m-d H:i:s', filemtime('../.git/logs/refs/heads/master')); ?>
-				Last updated: <span class="timeago" title="<?php echo $time; ?> +0000"><?php
-echo $time;
-				?></span>
-			<?php }, 'top_nav-left');
+	        ->addView('elements/account_nav.php', 'top_nav_extra_items');
 
     //get user's custom perms
     foreach(user::getUserLoggedIn()->getGrants() as $grant){
