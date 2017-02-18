@@ -541,7 +541,7 @@ border-right: 0px none;
 }
 
 #header-with-nav .top_nav .right{
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-overflow: ellipsis;
     text-align: right;
 }
