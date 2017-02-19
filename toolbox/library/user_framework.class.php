@@ -384,7 +384,7 @@ class user_framework {
     /**
      * returns null if not exists
      */
-    function getCustomValue($field){
+    function getCustomValue($field, $throw_exception = true){
     	if(!isset($this->custom_values[$field])){
 	        $query = db::query('select * from `user_store`
 	        	where `user_id` = '.$this->getID().'
@@ -397,7 +397,10 @@ class user_framework {
     	}
 
     	if($this->custom_values[$field] === null){
-    		throw new userException('Custom user value not set: '.$field);
+    		if($throw_exception){
+    			throw new userException('Custom user value not set: '.$field);
+			}
+			return null;
     	}
 
 		return $this->custom_values[$field];

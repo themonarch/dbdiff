@@ -1023,7 +1023,7 @@ class utils {
 
     }
 
-    static function sendEmail($email_address, $subject_line, $body_content, $plaintext = false){
+    static function sendEmail($email_address, $subject_line, $body_content, $from = null, $plaintext = false){
         if($plaintext){
             $linebreak = "\n";
             $content_type = 'text/plain';
@@ -1038,20 +1038,21 @@ class utils {
             $email_to = $email_address;
         }
 
+		if($from === null){
+			$from = "From: ".config::get()->getConfig('app_name')." <support@".config::get()->getConfig('HTTP_HOST').">\r\n"
+                    . 'MIME-Version: 1.0' . "\r\n"
+                    . 'Content-type: '.$content_type.'; charset=UTF-8';
+		}
+
         mail($email_to,
                 $subject_line,
-                $body_content
-                    .$linebreak.$linebreak.'Thanks,'
-                    .$linebreak.config::get()->getConfig('app_name').' Team'
-                    .$linebreak.config::get()->getConfig('HTTP_PROTOCOL').'://'.config::get()->getConfig('HTTP_HOST').'',
-                "From: ".config::get()->getConfig('app_name')." <support@".config::get()->getConfig('HTTP_HOST').">\r\n"
-                    . 'MIME-Version: 1.0' . "\r\n"
-                    . 'Content-type: '.$content_type.'; charset=UTF-8');
+                $body_content,
+                $from);
 
     }
 
-    static function sendEmailPlaintext($email_address, $subject_line, $body_content){
-        self::sendEmail($email_address, $subject_line, $body_content, true);
+    static function sendEmailPlaintext($email_address, $subject_line, $body_content, $from = null){
+        self::sendEmail($email_address, $subject_line, $body_content, $from, true);
     }
 
     static function array2delimited($array, $key_value_delimiter = ' => ', $element_delimiter = "\n"){

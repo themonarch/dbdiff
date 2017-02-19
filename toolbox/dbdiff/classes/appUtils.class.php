@@ -10,9 +10,12 @@ class appUtils {
             $email_to = $email_address;
         }
 
-        mail($email_to,
-                $subject_line,
-                $body_content
+		if(!appUtils::isProduction()){
+			utils::logNonFatalError('Would have sent email: ' .$body_content);
+			return;
+		}
+
+		utils::sendEmail($email_to, $subject_line, $body_content
                     .'<br><br>Thanks,'
                     .'<br>'.config::get()->getConfig('app_name').' Team'
                     .'<br>'.config::get()->getConfig('HTTP_PROTOCOL').'://'.config::get()->getConfig('HTTP_HOST').'',

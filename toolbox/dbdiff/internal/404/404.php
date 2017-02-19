@@ -20,9 +20,6 @@ class _404_internal {
         $page->clearViews()
             ->addView(function(){
 
-                menu::get('top_nav')
-                    ->setActive(false)
-                    ->render();
 
             }, 'nav')
             ->setMainView('main/app.php')

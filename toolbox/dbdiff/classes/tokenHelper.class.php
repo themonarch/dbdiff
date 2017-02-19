@@ -36,28 +36,24 @@ class tokenHelper {
         }elseif($this->token_type === 'email_change'){
             $new_email = $this->user_object->getCustomValue('email_change');
 
-            if($new_email === null){
-                throw new toolboxException("No email address to change to.", 1);
-            }
-
             //make sure new email set and different from old
             if($this->user_object->getEmail() === $new_email){
                 //don't send
                 $this->user_object->deleteValue('email_change', $new_email);
-                throw new userException("Change to email is same as current email address.", 1);
+                throw new softPublicException("Change to email is same as current email address.", 1);
             }
 
             if(db::query('select count(*) as `count` from `users` where `email_address` = '.db::quote($new_email))
                 ->fetchRow()->count > 0
             ){
                 $this->user_object->deleteValue('email_change', $new_email);
-                throw new userException("This email address is already associated with another account.", 1);
+                throw new softPublicException("This email address is already associated with another account.", 1);
             }
 
             //make sure user isn't over limit
             if($this->isOverLimit()){
                 //don't send
-                throw new userException("Please wait at least 24 hours to request another email change.
+                throw new softPublicException("Please wait at least 24 hours to request another email change.
                 If you are experiencing issues with your account please contact us.", 1);
             }
 
@@ -75,7 +71,7 @@ class tokenHelper {
             //make sure user isn't over limit
             if($this->isOverLimit()){
                 //don't send
-                throw new userException("Please wait at least 24 hours to request another password reset email.
+                throw new softPublicException("Please wait at least 24 hours to request another password reset email.
                 If you are experiencing issues with your account please contact us.", 1);
             }
 
@@ -111,7 +107,7 @@ class tokenHelper {
     private $sent_count;
     private function getSentCount(){
         if($this->sent_count === null){
-            $this->sent_count = (int)$this->user_object->getCustomValue($this->token_type.'_sent_count');
+            $this->sent_count = (int)$this->user_object->getCustomValue($this->token_type.'_sent_count', false);
         }
         return $this->sent_count;
     }
