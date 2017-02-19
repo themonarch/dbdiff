@@ -18,7 +18,7 @@ class tokenHelper {
             }
 
             //make sure user isn't over limit
-            if($this->isOverLimit()){
+            if($this->user_object->getCounter($this->token_type, '60 seconds') >= 5){
                 //don't send
                 throw new userException("Please wait at least 24 hours to request another verification email.
                 If you are experiencing issues with your account please contact us.", 1);
@@ -31,7 +31,7 @@ class tokenHelper {
             }
 
             //increase count
-            $this->updateCounts();
+            $this->user_object->increaseCounter($this->token_type);
 
         }elseif($this->token_type === 'email_change'){
             $new_email = $this->user_object->getCustomValue('email_change');
@@ -69,7 +69,7 @@ class tokenHelper {
 
         }elseif($this->token_type === 'password_reset'){
             //make sure user isn't over limit
-            if($this->isOverLimit()){
+            if($this->user_object->getCounter($this->token_type, '60 seconds') >= 5){
                 //don't send
                 throw new softPublicException("Please wait at least 24 hours to request another password reset email.
                 If you are experiencing issues with your account please contact us.", 1);
@@ -82,7 +82,7 @@ class tokenHelper {
             }
 
             //increase count
-            $this->updateCounts();
+            $this->user_object->increaseCounter($this->token_type);
 
 
         }elseif($this->token_type === 'quick_login'){
@@ -110,20 +110,6 @@ class tokenHelper {
             $this->sent_count = (int)$this->user_object->getCustomValue($this->token_type.'_sent_count', false);
         }
         return $this->sent_count;
-    }
-
-    private function isOverLimit(){
-        if(
-            //if already sent 5 or more times
-            $this->getSentCount() >= 5
-            //within last 24 hrs
-            && strtotime($this->user_object->getCustomValue($this->token_type.'_sent_date')) > strtotime('-24 hours')
-        ){
-            return true;
-        }
-
-        return false;
-
     }
 
     function getUnusedToken(){

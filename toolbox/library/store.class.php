@@ -29,38 +29,21 @@ class store {
 
 	}
 
-	function createTableIfNotExists(){
-		//if table NOT exists
-		db::query("CREATE TABLE `store` (
-				`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`name` VARCHAR(250) NOT NULL,
-				`value` VARCHAR(2000) NOT NULL,
-				`date_created` DATETIME NOT NULL,
-				`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				UNIQUE INDEX `name` (`name`)
-			)
-			COMMENT='generic storage'
-			COLLATE='utf8_general_ci'
-			ENGINE=MEMORY
-			AUTO_INCREMENT=1;
-		");
-
-		return $this;
-		return new store();
-	}
 
 	/**
 	 * Returns null if value not set.
 	 */
-	function getValue($field){
+	function getValue($field, $type = 'none', $type_id = 0){
         $limit = 250;
         if(strlen($field) > $limit){
             throw new toolboxException("Field name must be less than ".$limit." chars! name = ".$field, 1);
         }
 
 		if($this->driver == 'db'){
-			$query = db::query('select * from `store` where `name` = '.db::quote($field));
+			$query = db::query('select * from `data_store`
+			where `type` = '.db::quote($type).'
+			and `type_id` = '.db::quote($type_id).'
+			and `name` = '.db::quote($field));
 			if($query->rowCount() === 0){
 				return null;
 			}
@@ -85,13 +68,13 @@ class store {
 
 	}
 
-	function setValue($field, $value){
+	function setValue($field, $value, $type = 'none', $type_id = 0){
 		if($this->driver == 'db'){
 		    if($value === null){
 		        $value = '';
 		    }
-			db::query('INSERT INTO `store` (`name`, `value`, `date_created`)
-						VALUES ('.db::quote($field).', '.db::quote($value).', NOW())
+			db::query('INSERT INTO `data_store` (`type`, `type_id`, `name`, `value`, `date_created`)
+						VALUES ('.db::quote($type).', '.db::quote($type_id).', '.db::quote($field).', '.db::quote($value).', NOW())
 						ON DUPLICATE KEY UPDATE `value` = '.db::quote($value).'');
 		}elseif($this->driver == 'apc'){
 			apc_store($field, $value);
@@ -105,12 +88,12 @@ class store {
 		return new store();
 	}
 
-	function increaseCounter($field){
+	function increaseCounter($field, $type = 'none', $type_id = 0){
 		if($this->driver == 'db'){
-			db::query('INSERT INTO `store` (`name`, `value`, `date_created`)
-				VALUES ('.db::quote($field).', 1, NOW())
+			db::query('INSERT INTO `data_store` (`type`, `type_id`, `name`, `value`, `date_created`)
+				VALUES ('.db::quote($type).', '.db::quote($type_id).', '.db::quote($field).', 1, NOW())
 				ON DUPLICATE KEY UPDATE `value` = `value`+1');
-            return $this->getValue($field);
+            return $this->getValue($field, $type, $type_id);
 		}elseif($this->driver == 'apc'){
 			if(!($count = apc_inc($field))){
 				$this->setValue($field, 1, true);
@@ -125,12 +108,12 @@ class store {
 
 	}
 
-	function decreaseCounter($field){
+	function decreaseCounter($field, $type = 'none', $type_id = 0){
 		if($this->driver == 'db'){
-			db::query('INSERT INTO `store` (`name`, `value`, `date_created`)
-				VALUES ('.db::quote($field).', 1, NOW())
+			db::query('INSERT INTO `data_store` (`type`, `type_id`, `name`, `value`, `date_created`)
+				VALUES ('.db::quote($type).', '.db::quote($type_id).', '.db::quote($field).', 1, NOW())
 				ON DUPLICATE KEY UPDATE `value` = `value`-1');
-            return $this->getValue($field);
+            return $this->getValue($field, $type, $type_id);
 		}elseif($this->driver == 'apc'){
 			if(!($count = apc_dec($field))){
 				$this->setValue($field, 0, true);
@@ -145,9 +128,32 @@ class store {
 
 	}
 
-	function deleteValue($field){
+	function getCounter($name, $reset_interval, $type = 'none', $type_id = 0){
 		if($this->driver == 'db'){
-			db::query('delete from `store` where `name` = '.db::quote($field));
+            $row = db::query('select * from `data_store`
+			where `type` = '.db::quote($type).'
+			and `type_id` = '.db::quote($type_id).'
+			and `name` = '.db::quote($name).'
+            and `date_created` > '.db::quote(date('Y-m-d H:i:s', strtotime('-'.$reset_interval))))->fetchRow();
+            if($row === null){
+                $this->deleteValue($name, $type, $type_id);
+                return 0;
+            }
+
+            return (int)$row->value;
+
+		}
+
+        throw new toolboxException('Can\'t do a counter for '.$this->driver);
+
+	}
+
+	function deleteValue($field, $type = 'none', $type_id = 0){
+		if($this->driver == 'db'){
+			db::query('delete from `data_store`
+			where `type` = '.db::quote($type).'
+			and `type_id` = '.db::quote($type_id).'
+			and `name` = '.db::quote($field));
 		}elseif($this->driver == 'apc'){
 			apc_delete($field);
 		}elseif($this->driver == 'xcache'){

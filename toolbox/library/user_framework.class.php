@@ -386,14 +386,7 @@ class user_framework {
      */
     function getCustomValue($field, $throw_exception = true){
     	if(!isset($this->custom_values[$field])){
-	        $query = db::query('select * from `user_store`
-	        	where `user_id` = '.$this->getID().'
-	        	and `name` = '.db::quote($field));
-	        if($query->rowCount() === 0){
-	        	$this->custom_values[$field] = null;
-	        }else{
-    			$this->custom_values[$field] = $query->fetchRow()->value;
-	        }
+	        $this->custom_values[$field] = store::get('db')->getValue($field, 'user', $this->getID());
     	}
 
     	if($this->custom_values[$field] === null){
@@ -416,10 +409,12 @@ class user_framework {
 		}
 	}
 
+	function increaseCounter($field, $type = 'none', $type_id = 0){
+		store::get('db')->increaseCounter($field, 'user', $this->getID());
+	}
+
     function setCustomValue($field, $value){
-        db::query('INSERT INTO `user_store` (`user_id`, `name`, `value`, `date_created`)
-                    VALUES ('.$this->getID().', '.db::quote($field).', '.db::quote($value).', NOW())
-                    ON DUPLICATE KEY UPDATE `value` = '.db::quote($value).', `date_updated` = NOW()');
+		store::get('db')->setValue($field, $value, 'user', $this->getID());
 
         return $this;
         return new store();
@@ -431,7 +426,9 @@ class user_framework {
         return new store();
     }
 
-
+	function getCounter($name, $reset_interval){
+		return store::get('db')->getCounter($name, $reset_interval, 'user', $this->getID());
+	}
 
     function sendEmailChange($new_email){
 

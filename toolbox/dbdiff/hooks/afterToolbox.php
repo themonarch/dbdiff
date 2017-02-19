@@ -115,6 +115,7 @@ page::get()->setMainView('main/app.php')
 			}
      	</style>
      <?php }, 'before_body_end')
+	 ->setNoClear('before_body_end')
     ->addView('elements/top_nav.php', 'header-with-nav')
     ->setNoClear('header-with-nav');
 

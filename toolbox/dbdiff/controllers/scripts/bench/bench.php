@@ -3,6 +3,11 @@ namespace toolbox;
 class bench_controller {
 
     function __construct(){
+
+		//utils::vd(store::get()->increaseCounter('test'));
+		utils::vdd(store::get()->getCounter('test', '10 seconds'));
+
+
         page::get()
             ->addView(
             tasks::create(__CLASS__)

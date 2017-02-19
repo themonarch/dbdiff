@@ -7,7 +7,6 @@ class password_reset_controller {
         page::get()
             ->set('title', 'Reset Password');
 
-
         $router = router::get();
         if($router->getParam('user_id_string') === false){
             return $this->invalid();
@@ -16,15 +15,11 @@ class password_reset_controller {
             return $this->invalid();
         }
 
-
-
-
         try{//validate user
             $user = user::getByStringID($router->getParam('user_id_string'));
         }catch(userNotFound $e){
             return $this->invalid();
         }
-
 
         //validate token
         $token_data = db::query('select * from `user_tokens`
@@ -32,16 +27,11 @@ class password_reset_controller {
                             and `token` = '.db::quote($router->getParam('password_reset_token')).'
                             and `token_type` = "password_reset"')->fetchRow();
 
-
-
-
-
         if($token_data === null){
             return $this->invalid();
         }elseif($token_data->used === '1'){
             return $this->invalid();
         }
-
 
         if($_SERVER['REQUEST_METHOD'] === 'POST' ){
             //confirm new pass

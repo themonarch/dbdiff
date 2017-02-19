@@ -90,7 +90,9 @@ class forgot_password_controller {
 					<?php
 					messages::printMessages('messages', 'style5');
 					messages::output('Submit the email address associated with your account and we will send you
-            				an email containing instructions on how to reset your password.', 'notice', 'style5');
+            				an email containing instructions on how to reset your password.
+            				<br><b>WARNING: Existing connection passwords will be lost after your
+            				account password is changed.</b>', 'notice', 'style5');
                     form::textField()
                             ->setTypeText()
                             ->setName('email')

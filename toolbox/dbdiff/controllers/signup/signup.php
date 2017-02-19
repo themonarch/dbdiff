@@ -60,9 +60,11 @@ class signup_controller {
 				//generate new encryption key
 				user::generateEncryptionCookie($_POST['password']);
 
+				//get all user's connections
 				$connections = db::query('select * from db_connections
 					where user_id = '.db::quote($guest->getID()));
 
+				//re-encrypt all old passwords with new encryption key
 				while($connection = $connections->fetchRow()){
 					$old_pass = utils::decrypt($connection->password, $old_key);
 					$new_pass = $guest->encrypt($old_pass);
