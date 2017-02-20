@@ -24,20 +24,23 @@ $dt = datatableV2::create()
 		<div class="catchall spacer-3"></div>
 	<?php }, 'no_data');
 
-$dt->defineCol('sourcename', 'Connection #1', function($val, $rows, $dt, $col){
-    echo utils::htmlEncode($val.' ('.($rows->source_db).')');
+$dt->defineCol('sourcename', '[Development] Filter by Table', function($val, $rows, $dt, $col){
+    echo utils::htmlEncode($val).'<br><span class="notifications">'.utils::htmlEncode($rows->source_db).'</span>';
 });
-$dt->setColSetting('sourcename', 'internal_field_name', '`source`.`name`');
+$dt->setColSetting('sourcename', 'internal_field_name', '`source_db`');
 
 $dt->enableSearch(2, false);
 $dt->enableSort(2, false);
 
-$dt->defineCol('targetname', 'Connection #2', function($val, $rows, $dt, $col){
-    echo utils::htmlEncode(($val).' ('.($rows->target_db).')');
+$dt->defineCol('targetname', '[Production] Filter by Table', function($val, $rows, $dt, $col){
+    echo utils::htmlEncode($val).'<br><span class="notifications">'.utils::htmlEncode($rows->target_db).'</span>';
 });
-$dt->setColSetting('targetname', 'internal_field_name', '`target`.`name`');
+$dt->setColSetting('targetname', 'internal_field_name', '`target_db`');
+
+$dt->setColSetting(0, 'style-td', 'text-align: center;');
 
 $dt->enableSearch(3, false);
+$dt->enableSort(3, false);
 
 $dt->defineCol('last_viewed', 'Last Viewed', function($val, $rows, $dt, $col){
 	?>
@@ -49,8 +52,21 @@ $dt->defineCol('last_viewed', 'Last Viewed', function($val, $rows, $dt, $col){
 <?php });
 
 $dt->defineCol('id', 'Action', function($val, $rows, $dt, $col){ ?>
-    <a href="/compare/<?php
+	<form data-confirm="Are you sure you want to delete this comparison?
+	 `<?php
+	echo $rows->source_db;
+	?>` vs. `<?php
+	echo $rows->target_db;
+	?>`" id="row_<?php echo $val; ?>"
+	data-show_loader="#row_<?php echo $val; ?>"
+	data-ajax_replace="true" data-ajax_form="#row_<?php echo $val;
+	?>" action="/ajax/delete_comparison/<?php echo $val; ?>" style="display: inline-block;">
+	<button style="padding: 3px 5px;" type="submit" class="btn btn-small btn-silver">
+		<i class="icon-trash-empty single"></i>
+	</button>
+    &nbsp;<a href="/compare/<?php
 		echo $val; ?>" class="btn btn-small btn-blue">Compare</a>
+	</form>
 <?php })
 	->setColSetting(3, 'style', 'width: 140px;');
 $dt->enableSearch(4, false)
@@ -58,8 +74,8 @@ $dt->enableSearch(4, false)
 	->setColSetting(2, 'style', 'width: 160px;')
 	->setSortInline();
 
-$dt->setSelect('`id`, `source`.`name` as `sourcename`,
-`target`.`name` as `targetname`,
+$dt->setSelect('`id`, concat(`source`.`user`, "@",`source`.`host`) as `sourcename`,
+concat(`target`.`user`, "@",`target`.`host`) as `targetname`,
 `last_viewed`,
 `source_db`,
 `target_db`,

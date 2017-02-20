@@ -2,7 +2,7 @@
 namespace toolbox;
 messages::readMessages($index);
 ?>
-<form data-ajax_form="#<?php echo $widget_id; ?>"
+<form autocomplete="off" data-ajax_form="#<?php echo $widget_id; ?>"
     data-show_loader="#<?php echo $widget_id; ?>"
     data-ajax_replace="true"
     class="form" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
@@ -14,6 +14,8 @@ messages::readMessages($index);
 <?php if(page::get()->demo){ ?>
 	<input type="hidden" name="demo" value="true">
 <?php } ?>
+<input style="display:none" type="text" name="fakeusernameremembered"/>
+<input style="display:none" type="password" name="fakepasswordremembered"/>
 <?php
 	page::create()
 		->setMainView('generic_layout/table-form-horizontal-v2.php')
@@ -22,6 +24,9 @@ messages::readMessages($index);
 		->setArray('rows', 'Host',
 			formV2::textField()
 				->setLabel('Host')
+				->setPlaceholder('Ex: example.com')
+				->setNote('Need to connect to your localhost? It\'s easy,
+					<a data-ajax_overlay="" href="/learn_localhost" data-overlay-id="learn_localhost">learn how!</a>')
 	            ->setTypeText()
                 ->setDisabled(page::get()->demo)
 	            ->setName('Host['.$index.']')
@@ -33,6 +38,7 @@ messages::readMessages($index);
 			formV2::textField()
 				->setLabel('User')
 	            ->setTypeText()
+				->setPlaceholder('Ex: Root')
                 ->setDisabled(page::get()->demo)
 	            ->setName('User['.$index.']')
 				->addView(function(){ ?>

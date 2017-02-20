@@ -11,10 +11,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title><?php echo title::get()->getTitleString(); ?></title>
-        <?php if(isset($meta_description)){ ?>
-        <meta name="description" content="<?php echo $meta_description; ?>" />
-        <?php }
-
+        <?php
         $this->renderViews('start_of_head_tag');
 		?>
 

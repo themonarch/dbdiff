@@ -50,6 +50,8 @@ errorHandler::get()->addCallback(function($e){
         .'the problem persists.');
     }
 
+	title::get()->setSubtitleDisabled();
+
     page::get()->setHttpResponseCode(500)//Internal Server Error
         ->set('title', 'Error &laquo; '.config::get()->getConfig('app_name'))
         ->clearViews()//clear out any templates we were going to show to user.
@@ -157,6 +159,7 @@ sidebarV2::get('top_nav')
 			->setInner('Download <div class="notifications rose">Coming Soon</div>')
             ->setMainView('/sidebar/menu_item.php')
             ->setHref('/download')
+            ->setLinkAttributes('data-overlay-id="download"')
     );
 
 page::get()//add it to the top nav

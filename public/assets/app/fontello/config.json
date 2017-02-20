@@ -503,6 +503,12 @@
       "css": "lock",
       "code": 59464,
       "src": "fontawesome"
+    },
+    {
+      "uid": "f48ae54adfb27d8ada53d0fd9e34ee10",
+      "css": "trash-empty",
+      "code": 59465,
+      "src": "fontawesome"
     }
   ]
 }

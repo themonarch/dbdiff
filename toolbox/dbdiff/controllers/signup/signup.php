@@ -134,6 +134,8 @@ class signup_controller {
                                 ->setTypePassword()
                                 ->setName('password')
                                 ->setPlaceholder('')
+								->setNote('<b>IMPORTANT:</b> Your password is your account encryption key.
+								If you lose it, some account data will <b>not be recoverable!</b>')
                                 ->render();?>
                             <div class="catchall spacer"></div>
                         <?php
@@ -152,7 +154,7 @@ class signup_controller {
                             <div class="catchall spacer"></div>
                         <?php
 
-                        if(user::ipHasAccount()){ ?>
+                        //if(user::ipHasAccount()){ ?>
 <div class="form-element">
 <div class="input-wrapper">
     <label>Check the Box to Prove You're Not a Robot: </label>
@@ -162,7 +164,7 @@ class signup_controller {
    </div>
 </div>
 
-                        <?php } ?>
+                        <?php //} ?>
                         <div style="text-align: right; margin: 15px 0px 0;">
                             <div class="grid-6">
                             <div class="" style="text-align: center;">Already have an account?

@@ -37,6 +37,7 @@
 }
 
 .form{
+	border-radius: inherit;
 }
 .form input, .form textarea{
     outline: none;

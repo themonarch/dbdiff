@@ -147,7 +147,7 @@ data-ajax_replace="true" data-form_toggle="false"
 data-ajax_form="#<?php echo $dt->widget_id; ?>"
 action="/dbdiff/manage_databases/sync_profile/ZrHY/compare/table/db_connections"
 method="post" style="display: inline-block;">
-	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected Alters</button>
+	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected SQL on Development</button>
 </form>
 
 			</div>
@@ -161,7 +161,7 @@ data-ajax_replace="true" data-form_toggle="false"
 data-ajax_form="#<?php echo $dt->widget_id; ?>"
 action="/dbdiff/manage_databases/sync_profile/ZrHY/compare/table/db_connections"
 method="post" style="display: inline-block;">
-	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected Alters</button>
+	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected SQL on Production</button>
 </form>
 
 			</div>

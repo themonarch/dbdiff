@@ -22,6 +22,17 @@ class widgetHelper {
         return new widgetHelper();
     }
 
+	function addView(
+    	$view_path,
+    	$group = 'automatically-rendered',
+    	$position = null
+	){
+		$this->page->addView($view_path, $group, $position);
+
+        return $this;
+        return new widgetHelper();
+	}
+
     private $view_hook = 'content-narrow';
     function setHook($view_hook){
         $this->view_hook = $view_hook;

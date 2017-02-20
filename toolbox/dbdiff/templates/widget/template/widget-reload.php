@@ -3,6 +3,7 @@
 	class="widget <?php echo $class; ?>"
 	style="<?php if(isset($style)) echo $style; ?>">
     <div class="widget-header">
+    	<?php $this->renderViews('header'); ?>
         <?php echo $title; ?>
         <div class="widget-header-controls">
     	    <form method="post" action="<?php
