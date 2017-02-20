@@ -21,6 +21,11 @@
 
 
 <div class="catchall"></div>
+<form data-show_loader="#<?php echo $widget_id; ?>"
+data-ajax_replace="true" data-form_toggle="false"
+data-ajax_form="#<?php echo $widget_id; ?>"
+action="/compare/<?php echo $sync_id; ?>/table/<?php echo $table_name; ?>"
+method="post" style="display: inline-block;">
 <?php
 datatableV2::create()
 	->enableSearch(false)
@@ -29,6 +34,8 @@ datatableV2::create()
 	->set('widget_id', $widget_id)
 	->set('source_create', $source_create.';')
 	->set('target_create', $target_create.';')
+	->set('table_name', $table_name)
+	->set('sync_id', $sync_id)
 	->setContainerClass('diff-table')
 	->setTableClass(' shrink-width')
 	->setStmt(new data_stmt($diff))
@@ -69,7 +76,10 @@ foreach($updater->getUpdates($dt->source_create, $dt->target_create) as $sql){
 $editor1_id = utils::getRandomString();
 ?>
 		<tr>
-			<td style="width: 20px; vertical-align: middle; padding: 0px 5px;"><input type="checkbox" name="alter" class="btn btn-tiny btn-blue" value="run"></td>
+			<td style="width: 20px; vertical-align: middle; padding: 0px 5px;">
+			    <input type="checkbox" name="sqls[dev][]" class="btn btn-tiny btn-blue" value="<?php
+			    echo utils::htmlEncode($sql);
+			    ?>"></td>
 			<td><div class="datatable" id="editor_<?php
 	echo $editor1_id; ?>" style="width: 100%;"><?php
 	echo $sql.';'."\n";
@@ -113,7 +123,9 @@ foreach($updater->getUpdates($dt->target_create, $dt->source_create) as $sql){
 $editor2_id = utils::getRandomString();
 ?>
 		<tr><td style="width: 20px; vertical-align: middle; padding: 0px 5px;">
-	<input type="checkbox" name="alter" class="btn btn-tiny btn-blue" value="run"></td>
+                <input type="checkbox" name="sqls[prod][]" class="btn btn-tiny btn-blue" value="<?php
+                echo utils::htmlEncode($sql);
+                ?>"></td>
 			<td><div class="datatable" id="editor_<?php
 	echo $editor2_id; ?>" style="width: 100%;"><?php
 	echo $sql.';'."\n";
@@ -142,13 +154,9 @@ if(!$changes) echo '#table schemas match!';
 			<td class="diff diff-source" data-col="line">
 				<div class="catchall spacer-1"></div>
 			<div style="text-align: center;">
-<form data-show_loader="#<?php echo $dt->widget_id; ?>"
-data-ajax_replace="true" data-form_toggle="false"
-data-ajax_form="#<?php echo $dt->widget_id; ?>"
-action="/dbdiff/manage_databases/sync_profile/ZrHY/compare/table/db_connections"
-method="post" style="display: inline-block;">
-	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected SQL on Development</button>
-</form>
+
+	<button class="btn btn-black btn-medium" value="dev" name="alter" type="submit">Run Selected SQL on Development</button>
+
 
 			</div>
 <div class="catchall spacer-2"></div>
@@ -156,13 +164,7 @@ method="post" style="display: inline-block;">
 			<td class="diff diff-target" data-col="line2">
 				<div class="catchall spacer-1"></div>
 			<div style="text-align: center;">
-<form data-show_loader="#<?php echo $dt->widget_id; ?>"
-data-ajax_replace="true" data-form_toggle="false"
-data-ajax_form="#<?php echo $dt->widget_id; ?>"
-action="/dbdiff/manage_databases/sync_profile/ZrHY/compare/table/db_connections"
-method="post" style="display: inline-block;">
-	<button class="btn btn-black btn-medium" value="View Diff" type="submit">Run Selected SQL on Production</button>
-</form>
+	<button class="btn btn-black btn-medium" value="prod" name="alter" type="submit">Run Selected SQL on Production</button>
 
 			</div>
 
@@ -174,8 +176,11 @@ method="post" style="display: inline-block;">
     ->renderViews();
 
 	?>
-
+</form>
 <div class="catchall spacer-2"></div>
 
 </div>
+<?php
+page::get()->renderViews('sql_runner');
+?>
 <div class="catchall-border style2"></div>

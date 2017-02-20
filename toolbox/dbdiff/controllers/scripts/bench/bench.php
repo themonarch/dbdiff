@@ -4,19 +4,19 @@ class bench_controller {
 
     function __construct(){
 
-		//utils::vd(store::get()->increaseCounter('test'));
-		utils::vdd(store::get()->getCounter('test', '10 seconds'));
 
 
         page::get()
             ->addView(
             tasks::create(__CLASS__)
-                ->setCheckInTime(1)
-                ->setMaxCheckInTime(5)
+                ->setCheckInTime(10)
+                ->setMaxCheckInTime(15)
 				->set('config', config::get())
-                ->setMaxExecutionTime(10)
+                ->setMaxExecutionTime(100)
                 ->setTaskCallback(function(tasks $task, $row){
-    	file_get_contents('../toolbox/library/db.class.php');
+
+db::query('INSERT INTO `test` (`data`) VALUES ('.db::quote(utils::getRandomString(150)).')');
+
                 }), 'content-narrow');
 
 

@@ -23,7 +23,7 @@ class statsV2 {
         $this->process_name .= $name;
 
         //delete stat if last update more than X minutes ago
-        db::query('delete from `store` where `name` = '.db::quote($this->process_name).'
+        db::query('delete from `data_store` where `name` = '.db::quote($this->process_name).'
         AND `date_updated` <= date_sub(now(), interval 15 minute)');
 
         if($this->store->getValue($this->process_name) !== null){
@@ -268,7 +268,7 @@ class statsV2 {
     }
 
     static function deleteNoCheckin($proc, $seconds){
-        $row = db::query('select * from `store` where `name` = '.db::quote('stats-'.$proc))->fetchRow();
+        $row = db::query('select * from `data_store` where `name` = '.db::quote('stats-'.$proc))->fetchRow();
 
         //if not running
         if($row === null){
@@ -282,7 +282,7 @@ class statsV2 {
 
 
         //delete the record
-        db::query('delete from `store` where `id` = '.$row->id);
+        db::query('delete from `data_store` where `id` = '.$row->id);
 
         $row->data = json_decode($row->value);
 
@@ -292,7 +292,7 @@ class statsV2 {
 
     static function getstatsV2($name){
         $json = '{"Tasks Per Second":0,"Tasks Completed":0,"Progress":0,"Peak RAM Usage":0,"PID":0}';
-        $query = db::query('select * from `store` where `name` = '.db::quote($name));
+        $query = db::query('select * from `data_store` where `name` = '.db::quote($name));
         if($query->rowCount() !== 0){
             $row = $query->fetchRow()->value;
             if($row !== '' && $row !== '1'){

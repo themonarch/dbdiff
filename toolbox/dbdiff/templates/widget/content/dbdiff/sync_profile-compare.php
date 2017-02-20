@@ -6,7 +6,7 @@ $sync = sync::get($profile_id);
 
 //connect to database
 $source_conn = $sync->getSourceConnection();
-$source_conn->connect();
+//$source_conn->connect();
 
 //select all tables
 $query = $source_conn->query('select `TABLE_NAME`,
@@ -26,7 +26,7 @@ while($row = $query->fetchRow()){
 
 //connect
 $target_conn = $sync->getTargetConnection();
-$target_conn->connect();
+//$target_conn->connect();
 
 //select all tables
 $query = $target_conn->query('select `TABLE_NAME`,

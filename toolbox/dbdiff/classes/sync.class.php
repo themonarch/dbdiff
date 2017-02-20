@@ -32,6 +32,15 @@ class sync{
 		return $this->data->{$key};
 	}
 
+    function connectSource(){
+        $this->getSourceConnection()->connect($this->getSourceDB());
+    }
+
+    function connectTarget(){
+        $this->getTargetConnection()->connect($this->getTargetDB());
+
+    }
+
 	function getName(){
 		$name = trim($this->getData('description'));
 		if($name == ''){

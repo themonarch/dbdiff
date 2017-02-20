@@ -88,16 +88,18 @@ class connection{
 		return new db_stmt();
 	}
 
-	function connect(){
+	function connect($db = null){
 		if(db::isConnected($this->getID())){
-			return $this;
+			//return $this;
+			throw new toolboxException('Already connected to DB with id of: '.$this->getID());
+
 		}
 		try{//try connection
 			db::connect(
 				$this->getHost(),
 				$this->getUser(),
 				$this->getPass(),
-				null,
+				$db,
 				$this->getID(),
 				$this->getPort());
 			db::setDB();
