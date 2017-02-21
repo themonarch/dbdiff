@@ -64,7 +64,7 @@ while($row = $query->fetchRow()){
 	}
 }
 
-usort($tables, function($a, $b){
+/*usort($tables, function($a, $b){
 
 	if($a->synced === 'synced' && $b->synced !== 'synced'){
 		return 999999;
@@ -74,7 +74,7 @@ usort($tables, function($a, $b){
 	}
 	//return strcasecmp($a->table_name, $b->table_name);
 
-});
+});*/
 
 
 
