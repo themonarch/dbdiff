@@ -22,6 +22,9 @@ class db_async_stmt{
         if($this->reaped) return false;
         $this->reaped = true;
 	    $result = $this->stmt->reap_async_query();
+		if($result === false){
+			throw new dbException($this->stmt->error);
+		}
 		return new db_stmt($result, $this->stmt->insert_id, $this->stmt->affected_rows);
 	}
 

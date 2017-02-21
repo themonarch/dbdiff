@@ -207,7 +207,7 @@ class db {
 
     public static function asyncQuery($sql, $db_id = null){
         db::execute($sql, $db_id, MYSQLI_ASYNC);
-		$stmt = new db_async_stmt(db::getMysqli());
+		$stmt = new db_async_stmt(db::getMysqli($db_id));
 		return $stmt;
         return new db_async_stmt();
     }

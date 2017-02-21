@@ -178,9 +178,9 @@ if(!$changes) echo '#table schemas match!';
 	?>
 </form>
 <div class="catchall spacer-2"></div>
-
-</div>
 <?php
 page::get()->renderViews('sql_runner');
 ?>
+</div>
+
 <div class="catchall-border style2"></div>

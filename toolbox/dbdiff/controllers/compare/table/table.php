@@ -24,22 +24,49 @@ class table_controller {
         $target_conn = $sync->getTargetConnection();
         $sync->connectTarget();
 
-        $source_create = $sync->getSourceCreate($table_name);
-        $target_create = $sync->getTargetCreate($table_name);
-
-        $diff = explode("\n", utils::htmlDiff($source_create, $target_create));
-        foreach($diff as $key => &$value){
-            $diff[$key] = (object)array('line' => $value);
-        }
-
-
 		//add sql runner widget
 		widgetHelper::create()
-			->setHook('sql_runner')
+			->setHook('sql_runner-inner')
 			->set('title', 'SQL History')
-			->add(function(){
-				echo 'sql runner';
+			->set('class', 'style4')
+			->add(function($tpl){
+datatableV2::create()
+    ->setSelect('*')
+    ->setFrom('`db_connections`')
+    ->setWhere('`user_id` = '.user::getUserLoggedIn()->getID())
+    ->defineCol('name', 'Connection', function($val, $rows){
+        return connection::get($rows->connection_id)->getName();
+    })
+    ->defineCol('host', 'Host', function($val, $rows){
+        return connection::get($rows->connection_id)->getHost();
+    })
+    ->defineCol('date', 'Date Added', function($val){
+        return '<span title="'.$val.'" class="timeago">'.$val.'</span>';
+    })
+    ->defineCol('connection_id', 'Actions', function($val){ ?>
+        <a href="#"
+            class="btn btn-small btn-blue"
+            data-overlay-id="connect"
+            title="Edit Connection">Connect</a>
+        <a href="#"
+            class="btn btn-small btn-silver"
+            data-overlay-id="edit_connection"
+            title="Edit Connection"><i class="icon-edit"></i></a>
+    <?php })
+    ->setPaginationDestination('#'.$tpl->widget_id)
+    ->setPaginationLink($tpl->widget_url)
+    ->renderViews();
+
 			}, 'widget-reload.php', 'sql_runner');
+
+		page::get()->addView(function(){ ?>
+<div class="header-line style2">
+    <div class="inner">Alter History</div>
+    <div class="gradient-line"></div>
+</div>
+<div class="catchall spacer"></div>
+			<?php page::get()->renderViews('sql_runner-inner'); ?>
+		<?php }, 'sql_runner');
 
 		if(
 			utils::isPost()
@@ -60,11 +87,10 @@ class table_controller {
 
 			//get connection id
 			$connection_id = db::query('select connection_id() as `connection_id`', $db_id)->fetchRow()->connection_id;
+			$individual_sql_limit = ($total_execution_limit-10)/count($_POST['sqls'][$_POST['alter']]);
 
 			//loop each sql for selected db
 			foreach($_POST['sqls'][$_POST['alter']] as $key => $sql){
-
-
 
                 //add to sql history table with connection id
                 db::query('INSERT INTO `sql_history` (
@@ -79,32 +105,63 @@ class table_controller {
                         '.db::quote($sql).'
                     )');
 
-                //execute the sql asyncroniously?
+                //execute the sql asyncroniously so we don't hang on long queries
                 $async_query = db::asyncQuery($sql, $db_id);
-
-                //check for error using mysqli error
 
                 //update query history as running
 
-                //while not reaped
+                //start timer for individual query
+				$timer = stopWatch::create();
+
+                //while query not finished
+                while(!$async_query->isReady()){
+                	if($timer->getElapsedTime() > $individual_sql_limit){
+                		break;//hit time limit
+                	}
+
                     //sleep for 3 seconds
+                    sleep(3);
 
                     //update last checked status?
 
                     //if over time limit for single sql
                     //(($total_execution_limit-10)/$number_of_sqls), set status to unknown
                     //and msg that it wasn't complete after X seconds
+                }
 
                 //if reaped
-                    //update to success
+                if($async_query->isReady()){
+                	try{
+                		$sql_time = $timer->getElapsedTime();
+	                	$result = $async_query->reapRow();//reap instead of fetch b/c nothing to fetch!
+
+	                    //update to success
+
+					}catch(dbException $e){//if the db responded with an error
+						//update sql history with error msg & failed status
+
+						//throw it to the browser
+						throw new softPublicException($e->getMessage());
+					}
+				}
 
 			}
 
 
 		}else{//don't render the sql runner
-			page::get()->clearViews('sql_runner');
+			//page::get()->clearViews('sql_runner');
 
 		}
+
+
+
+        $source_create = $sync->getSourceCreate($table_name);
+        $target_create = $sync->getTargetCreate($table_name);
+
+        $diff = explode("\n", utils::htmlDiff($source_create, $target_create));
+        foreach($diff as $key => &$value){
+            $diff[$key] = (object)array('line' => $value);
+        }
 
 
         $widget = widgetHelper::create()

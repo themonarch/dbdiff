@@ -14,7 +14,7 @@ class stopWatch {
 	 * Start or reset the timer to start from now.
 	 */
 	function startTimer(){
-			$this->start_time = microtime(true);
+		$this->start_time = microtime(true);
 	}
 
 	/**
