@@ -133,7 +133,7 @@ datatableV2::create()
                 if($async_query->isReady()){
                 	try{
                 		$sql_time = $timer->getElapsedTime();
-	                	$result = $async_query->reapRow();//reap instead of fetch b/c nothing to fetch!
+	                	$result = $async_query->freeUpQuery();//free up instead of fetch b/c nothing to fetch!
 
 	                    //update to success
 
