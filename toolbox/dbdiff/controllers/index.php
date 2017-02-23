@@ -43,6 +43,9 @@ class index_controller {
 
     function __construct(){
 
+		messages::readMessages('quick_connect-0');
+		messages::readMessages('quick_connect-1');
+
 		title::get()//add a descriptive title for the homepage
 		    ->addCrumb('A Quick Schema Comparison & Sync Tool for MySQL Databases');
 
@@ -203,12 +206,10 @@ and generate alter SQL to syncronize your MySQL databases.">
 
 
 		//if no active session
-			//show demo toggle
-			page::get()
-    ->addView(function($tpl){ ?>
+		//show demo toggle
+		page::get()
+    		->addView(function($tpl){ ?>
         <div class="catchall"></div>
-
-
 <div style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1">
 	<div class="container">
 		<span class="switch <?php if(!$tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="live">
@@ -218,7 +219,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 	</div>
 </div>
 		<div class="catchall"></div>
-    <?php }, 'quick_diff-header');
+			<?php }, 'quick_diff-header');
 
 		//Main heading contents
 		page::get()->addView(function(){ ?>
@@ -515,7 +516,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 			return true;
 		}catch(toolboxException $e){
 			//show error msg
-			messages::setErrorMessage($e->getMessage(), 'quick_connect-'.$index);
+			messages::setErrorMessage($e->getMessage(), $index);
         	formV2::storeValues();
 			return false;
 		}

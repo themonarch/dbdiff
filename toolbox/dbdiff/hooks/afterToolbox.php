@@ -116,8 +116,8 @@ page::get()->setMainView('main/app.php')
 			  src: local('Pacifico Regular'), local('Pacifico-Regular'), url('/assets/common/webfonts/yunJt0R8tCvMyj_V4xSjafesZW2xOQ-xsNqO47m55DA.woff') format('woff');
 			}
      	</style>
-     <?php }, 'before_body_end')
-	 ->setNoClear('before_body_end')
+     <?php }, 'end_of_head_tag')
+	 ->setNoClear('end_of_head_tag')
     ->addView('elements/top_nav.php', 'header-with-nav')
     ->setNoClear('header-with-nav');
 

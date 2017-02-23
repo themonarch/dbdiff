@@ -2,13 +2,13 @@
 namespace toolbox;
 messages::readMessages($index);
 ?>
-<form autocomplete="off" data-ajax_form="#<?php echo $widget_id; ?>"
+<form data-ajax_form="#<?php echo $widget_id; ?>"
     data-show_loader="#<?php echo $widget_id; ?>"
     data-ajax_replace="true"
     class="form" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 
 <div class="catchall"></div>
-<?php messages::printMessages('quick_connect-'.$index); ?>
+<?php messages::printMessages($index); ?>
 
 <div class="catchall spacer-1"></div>
 <?php if(page::get()->demo){ ?>

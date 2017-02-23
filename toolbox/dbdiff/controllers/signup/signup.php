@@ -134,8 +134,8 @@ class signup_controller {
                                 ->setTypePassword()
                                 ->setName('password')
                                 ->setPlaceholder('')
-								->setNote('<b>IMPORTANT:</b> Your password is your account encryption key.
-								If you lose it, some account data will <b>not be recoverable!</b>')
+								->setNote('<b>IMPORTANT:</b> Your password will be your account\'s encryption key.
+								We don\'t store passwords, so if you forget it, some account data will <b>not be recoverable!</b>')
                                 ->render();?>
                             <div class="catchall spacer"></div>
                         <?php

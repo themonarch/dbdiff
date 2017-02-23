@@ -15,15 +15,25 @@ class compare_controller {
         $profile_id = router::get()->getParam('profile_id');
         $widget = widgetHelper::create();
 		$sync = sync::get($profile_id);
-//connect
-try{
+
+try{//connect
 	$source_conn = $sync->getSourceConnection();
 	$source_conn->connect();
+}catch(connectionException $e){
+	messages::setErrorMessage($e->getMessage(), 'quick_connect-0');
+	utils::redirectTo('/compare/'.$sync->getID().'/edit');
+	//router::get()->to('/compare/'.$sync->getID().'/edit');
+}
+
+try{//connect
 	$target_conn = $sync->getTargetConnection();
 	$target_conn->connect();
 }catch(connectionException $e){
-	throw new softPublicException($e->getMessage());
+	messages::setErrorMessage($e->getMessage(), 'quick_connect-1');
+	utils::redirectTo('/compare/'.$sync->getID().'/edit');
+	//router::get()->to('/compare/'.$sync->getID().'/edit');
 }
+
 $sync->updateLastViewed();
 		$widget
             ->set('grid_classes', '')
