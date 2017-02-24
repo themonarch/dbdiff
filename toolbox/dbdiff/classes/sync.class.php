@@ -33,11 +33,11 @@ class sync{
 	}
 
     function connectSource(){
-        $this->getSourceConnection()->connect($this->getSourceDB());
+        $this->getSourceConnection()->connect();
     }
 
     function connectTarget(){
-        $this->getTargetConnection()->connect($this->getTargetDB());
+        $this->getTargetConnection()->connect();
 
     }
 
@@ -58,7 +58,7 @@ class sync{
 	}
 
 	function getSourceConnection(){
-		return connection::get($this->getData('source_conn_id'));
+		return connection::get($this->getData('source_conn_id'), $this->getSourceDB(), '-source');
 		return new connection();
 	}
 
@@ -83,6 +83,22 @@ class sync{
 		}
 	}
 
+	function updateTargetConnection($connection_id, $db){
+		db::query('update `db_sync_profiles`
+			set `target_db` = '.db::quote($db).',
+			`target_conn_id` = '.db::quote($connection_id).'
+			where `id` = '.db::quote($this->getID())
+		);
+	}
+
+	function updateSourceConnection($connection_id, $db){
+		db::query('update `db_sync_profiles`
+			set `source_db` = '.db::quote($db).',
+			`source_conn_id` = '.db::quote($connection_id).'
+			where `id` = '.db::quote($this->getID())
+		);
+	}
+
 
 	function getSourceDB(){
 		return $this->getData('source_db');
@@ -93,7 +109,7 @@ class sync{
 	}
 
 	function getTargetConnection(){
-		return connection::get($this->getData('target_conn_id'));
+		return connection::get($this->getData('target_conn_id'), $this->getTargetDB(), '-target');
 		return new sync();
 	}
 

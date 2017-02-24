@@ -78,9 +78,9 @@ datatableV2::create()
 
 		    //get selected db
 		    if($_POST['alter'] === 'prod'){
-		        $db_id = $sync->getData('target_conn_id');
+		        $db_id = $sync->getTargetConnection()->getDBID();
 		    }elseif($_POST['alter'] === 'dev'){
-                $db_id = $sync->getData('source_conn_id');
+                $db_id = $sync->getSourceConnection()->getDBID();
 		    }else{
                 throw new softPublicException('Invalid form submit, please try again.');
 		    }
@@ -153,10 +153,12 @@ datatableV2::create()
 
 		}
 
-
-
-        $source_create = $sync->getSourceCreate($table_name);
-        $target_create = $sync->getTargetCreate($table_name);
+		try{
+	        $source_create = $sync->getSourceCreate($table_name);
+	        $target_create = $sync->getTargetCreate($table_name);
+		}catch(dbException $e){
+			throw new softPublicException($e->getMessage());
+		}
 
         $diff = explode("\n", utils::htmlDiff($source_create, $target_create));
         foreach($diff as $key => &$value){

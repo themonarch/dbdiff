@@ -64,11 +64,13 @@ $dt->defineCol('id', 'Action', function($val, $rows, $dt, $col){ ?>
 	<button style="padding: 3px 5px;" type="submit" class="btn btn-small btn-silver">
 		<i class="icon-trash-empty single"></i>
 	</button>
+	&nbsp;<a href="/compare/<?php
+		echo $val; ?>/edit" data-max_width="1000" data-overlay-id="edit" class="btn btn-small btn-silver">Edit</a>
     &nbsp;<a href="/compare/<?php
 		echo $val; ?>" class="btn btn-small btn-blue">Compare</a>
 	</form>
 <?php })
-	->setColSetting(3, 'style', 'width: 140px;');
+	->setColSetting(3, 'style', 'width: 180px;');
 $dt->enableSearch(4, false)
     ->set('post_data', urlencode(json_encode($_POST)))
 	->setColSetting(2, 'style', 'width: 160px;')

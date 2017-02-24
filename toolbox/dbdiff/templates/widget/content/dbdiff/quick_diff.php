@@ -1,7 +1,10 @@
 <?php namespace toolbox; ?>
+<?php if(!isset($widget_unique_id)){
+	 $widget_unique_id = 'quick_diff';
+} ?>
 <div id="quick_connect_form"
 	data-dynamic_form=""
-	data-action=""
+	data-action="<?php echo $_SERVER['REQUEST_URI']; ?>"
     data-ajax_replace="true"
     data-output_destination="#<?php echo $widget_id; ?>"
     data-show_loader="#quick_connect_form">
@@ -56,15 +59,6 @@
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
 
 
 

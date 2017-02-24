@@ -313,8 +313,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 			$_POST['Host']['quick_connect-0'],
 			$_POST['User']['quick_connect-0'],
 			$_POST['Password']['quick_connect-0'],
-			$_POST['Port']['quick_connect-0'],
-			$_POST['Database']['quick_connect-0']
+			$_POST['Port']['quick_connect-0']
 		);
 
 		//save connection #2
@@ -322,8 +321,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 			$_POST['Host']['quick_connect-1'],
 			$_POST['User']['quick_connect-1'],
 			$_POST['Password']['quick_connect-1'],
-			$_POST['Port']['quick_connect-1'],
-			$_POST['Database']['quick_connect-1']
+			$_POST['Port']['quick_connect-1']
 		);
 
 		//save comparison
@@ -527,7 +525,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 	 * attempts creating a new connection,
 	 * returns false on fail, with error msg already set
 	 */
-	function createConnection($host, $user, $pass, $port, $database){
+	function createConnection($host, $user, $pass, $port){
 		$row = db::query('select `connection_id` from `db_connections`
 			 where `user_id` = '.db::quote(user::getUserLoggedIn()->getID()).'
 			 and `host` = '.db::quote($host).'

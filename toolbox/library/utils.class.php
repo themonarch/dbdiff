@@ -27,6 +27,18 @@ class utils {
         return $out;
     }
 
+	static function postHas($index, $value = null){
+		if(!isset($_POST[$index])){
+			return false;
+		}
+		if($value === null){
+			return true;
+		}
+
+		return ($_POST[$index] === $value);
+
+	}
+
     static function ifElse($value, $equals_to, $else){
         if($value === $equals_to){
             return $else;

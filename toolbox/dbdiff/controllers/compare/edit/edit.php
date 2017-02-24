@@ -4,7 +4,9 @@ class edit_controller {
 
     function __construct(){
 
+
         //initializations
+        title::get()->addCrumb('Edit');
         $profile_id = router::get()->getParam('profile_id');
         $sync = sync::get($profile_id);
 
@@ -14,11 +16,32 @@ class edit_controller {
 
 		if(//submitting main form
             utils::isPost()
-            && isset($_POST['widget_unique_id'])
-            && $_POST['widget_unique_id'] == 'quick_diff'
+            && utils::postHas('widget_unique_id', 'quick_diff')
             && $this->isValidQuickConnectForm()
-			&& ($profile_id = $this->processQuickConnectForm())
         ){
+
+		//update the connection #1
+		$conn_id_1 = $this->createConnection(
+			$_POST['Host']['quick_connect-0'],
+			$_POST['User']['quick_connect-0'],
+			$_POST['Password']['quick_connect-0'],
+			$_POST['Port']['quick_connect-0']
+		);
+
+		//update the connection #2
+		$conn_id_2 = $this->createConnection(
+			$_POST['Host']['quick_connect-1'],
+			$_POST['User']['quick_connect-1'],
+			$_POST['Password']['quick_connect-1'],
+			$_POST['Port']['quick_connect-1']
+		);
+
+		//update the sync profile
+		$sync->updateSourceConnection($conn_id_1, $_POST['Database']['quick_connect-0']);
+		$sync->updateTargetConnection($conn_id_2, $_POST['Database']['quick_connect-1']);
+
+
+
 			//changes saved successfully, go to comparison
 			utils::redirectTo('/compare/'.$profile_id);
 
@@ -46,38 +69,7 @@ class edit_controller {
 				->set('name', 'Database['.$index.']')
                 ->set('connection_id', 'dbsync-'.$index)
 				->setHook('database_table')
-				->add(function($tpl){
-					$_POST['widget_unique_id'] = $tpl->widget_unique_id;
-					datatableV2::create()
-						->setPaginationLimit(1)
-						->setLimit(5)
-						->set('container_class', 'style1')
-						->set('name', $tpl->name)
-						->enableSearch(1, false)
-						->setSortInline()
-					    ->setSelect('*,
-					        "N/A" as `tables`,
-					        "N/A" as `size`')
-					    ->setFrom('`information_schema`.`SCHEMATA`')
-					    ->set('db', $tpl->connection_id)
-					    ->set('post_data', urlencode(json_encode($_POST)))
-					    ->defineCol('SCHEMA_NAME', 'Database')
-					    ->defineCol('SCHEMA_NAME', 'Actions', function($val, $rows, $dt){ ?>
-					            <button type="submit" name="<?php echo $dt->name; ?>"
-					                    class="btn btn-small btn-blue" value=<?php
-					                    echo db::quote($val); ?>>Choose Database</button>
-					    <?php })
-						->addView(function(){ ?>
-					    <div class="catchall spacer-2"></div>
-						<?php }, 'pre-table')
-						->addView(function(){ ?>
-					    <div class="catchall spacer-2"></div>
-						<?php }, 'post-table')
-					    ->renderViews();
-
-				}, 'blank.php', 'database_list');
-
-
+				->add('dbdiff/database_list.php', 'blank.php', 'database_list');
 
 
 		    //render form containing the list of databases
@@ -102,30 +94,29 @@ class edit_controller {
 
         }
 
+		//resture connection details if submitted by user
         if(messages::readMessages('form', 'Host') === null){
 
+			//host
+			$_POST['Host']['quick_connect-0'] = $sync->getSourceConnection()->getHost();
+			$_POST['Host']['quick_connect-1'] = $sync->getTargetConnection()->getHost();
 
-		//host
-		$_POST['Host']['quick_connect-0'] = 'demo.'.config::getSetting('HTTP_HOST');
-		$_POST['Host']['quick_connect-1'] = 'demo.'.config::getSetting('HTTP_HOST');
 
+			//user
+			$_POST['User']['quick_connect-0'] = $sync->getSourceConnection()->getUser();
+			$_POST['User']['quick_connect-1'] = $sync->getTargetConnection()->getUser();
 
-		//user
-		$_POST['User']['quick_connect-0'] = 'demo_'.$this->getUser()->getStringID();
-		$_POST['User']['quick_connect-1'] = 'demo_'.$this->getUser()->getStringID();
+			//pass
+			$_POST['Password']['quick_connect-0'] = $sync->getSourceConnection()->getPass();
+			$_POST['Password']['quick_connect-1'] = $sync->getTargetConnection()->getPass();
 
-		//pass
-		$_POST['Password']['quick_connect-0'] = 'test';
-		$_POST['Password']['quick_connect-1'] = 'test';
+			//port
+			$_POST['Port']['quick_connect-0'] = $sync->getSourceConnection()->getPort();
+			$_POST['Port']['quick_connect-1'] = $sync->getTargetConnection()->getPort();
 
-		//port
-		$_POST['Port']['quick_connect-0'] = '3306';
-		$_POST['Port']['quick_connect-1'] = '3306';
-
-		//database
-		$_POST['Database']['quick_connect-0'] = 'dbdiff-demos-1';
-		$_POST['Database']['quick_connect-1'] = 'dbdiff-demos-2';
-
+			//database
+			$_POST['Database']['quick_connect-0'] = $sync->getSourceDB();
+			$_POST['Database']['quick_connect-1'] = $sync->getTargetDB();
 
 			//recreate the connection forms
 			formV2::storeValues();
@@ -162,55 +153,11 @@ class edit_controller {
         widgetHelper::create()
             ->set('title', 'Edit Diff')
             ->set('class', 'style3')
-            ->add('dbdiff/quick_diff.php', 'widget-reload.php', 'quick_diff');
+            ->add('dbdiff/quick_diff.php', 'widget-reload.php', utils::isAjax());
 
 
 
     }
-
-	function processQuickConnectForm(){
-		$this->getUser();
-
-		//save connection #1
-		$conn_id_1 = $this->createConnection(
-			$_POST['Host']['quick_connect-0'],
-			$_POST['User']['quick_connect-0'],
-			$_POST['Password']['quick_connect-0'],
-			$_POST['Port']['quick_connect-0'],
-			$_POST['Database']['quick_connect-0']
-		);
-
-		//save connection #2
-		$conn_id_2 = $this->createConnection(
-			$_POST['Host']['quick_connect-1'],
-			$_POST['User']['quick_connect-1'],
-			$_POST['Password']['quick_connect-1'],
-			$_POST['Port']['quick_connect-1'],
-			$_POST['Database']['quick_connect-1']
-		);
-
-		//save comparison
-		$compare_id = $this->createComparison($conn_id_1, $conn_id_2,
-			$_POST['Database']['quick_connect-0'],
-			$_POST['Database']['quick_connect-1']
-		);
-
-		return $compare_id;
-
-	}
-
-	private $user;
-	function getUser(){
-		if($this->user !== null){
-			return $this->user;
-		}
-
-		$user = user::getUserLoggedIn();
-
-		$this->user = $user;
-		return $user;
-		return new user();
-	}
 
 	function isValidDatabase(){
 		if($_POST['submit'] === 'Database[quick_connect-0]'){
@@ -272,12 +219,11 @@ class edit_controller {
 		}
 	}
 
-
 	/**
 	 * attempts creating a new connection,
 	 * returns false on fail, with error msg already set
 	 */
-	function createConnection($host, $user, $pass, $port, $database){
+	function createConnection($host, $user, $pass, $port){
 		$row = db::query('select `connection_id` from `db_connections`
 			 where `user_id` = '.db::quote(user::getUserLoggedIn()->getID()).'
 			 and `host` = '.db::quote($host).'
@@ -314,50 +260,6 @@ class edit_controller {
 		return $db_id;
 	}
 
-	function createComparison($conn1, $conn2, $table1, $table2){
-		//if already exists
-		$row = db::query('select * from `db_sync_profiles`
-		where `user_id` = '.db::quote(user::getUserLoggedIn()->getID()).'
-		and `target_conn_id` = '.db::quote($conn2).'
-		and `target_db` = '.db::quote($table2).'
-		and `source_conn_id` = '.db::quote($conn1).'
-		and `source_db` = '.db::quote($table1).'
-		')->fetchRow();
-
-		if($row !== null){
-			return $row->id;
-		}
-
-
-		$sync_id = utils::getRandomString();
-
-		db::query('insert into `db_sync_profiles` (
-			`id`,
-			`user_id`,
-			`target_conn_id`,
-			`target_db`,
-			`source_conn_id`,
-			`source_db`,
-			`sync_direction`,
-			`description`,
-			`last_viewed`
-		) VALUES (
-			'.db::quote($sync_id).',
-			'.db::quote(user::getUserLoggedIn()->getID()).',
-			'.db::quote($conn2).',
-			'.db::quote($table2).',
-			'.db::quote($conn1).',
-			'.db::quote($table1).',
-			"both",
-			"",
-			now()
-		)');
-
-		return $sync_id;
-
-
-	}
-
 	function isValidQuickConnectForm(){
         validator::validate('Host', 'general');
         validator::validate('User', 'general');
@@ -392,20 +294,9 @@ class edit_controller {
 					return false;
 				}
 			}
-
-
-
-
 		}
 
 		return validator::isValid();
 	}
-
-    static function passThru(){
-        title::get()
-            ->addCrumb('Edit');
-
-
-    }
 
 }

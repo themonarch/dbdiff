@@ -169,6 +169,12 @@ $dt = datatableV2::create()
 	        <b><?php echo $tpl->synced; ?></b> out of <b><?php
 	        echo $tpl->getTotalRows(); ?></b> tables match.
 	    </div>
+	    <div class="datatable-info datatable-section">
+	        <a href="/compare/<?php echo $tpl->profile_id; ?>/edit"
+	        data-max_width="1000"
+	        data-overlay-id="edit"
+	        class="btn btn-small btn-silver">Edit this Comparison</a>
+	    </div>
 	<?php }, 'footer')
     ->renderViews();
 

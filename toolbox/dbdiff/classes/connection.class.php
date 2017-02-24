@@ -2,7 +2,9 @@
 class connection{
 
 	private $connection_data;
-    function __construct($connection_id){
+	private $db;
+	private $prefix;
+    function __construct($connection_id, $db, $prefix){
     	$query = db::query('select * from `db_connections`
     		where `connection_id` = '.db::quote($connection_id).'
     		and `user_id` = '.db::quote(user::getUserLoggedIn()->getID()));
@@ -12,6 +14,8 @@ class connection{
 		}
 
 		$this->connection_data = $query->fetchRow();
+		$this->db = $db;
+		$this->prefix = $prefix;
 
 
     }
@@ -84,14 +88,19 @@ class connection{
 	}
 
 	function query($sql){
-		return db::query($sql, $this->getID());
+		return db::query($sql, $this->getDBID());
 		return new db_stmt();
 	}
 
-	function connect($db = null){
-		if(db::isConnected($this->getID())){
+    function getDBID(){
+        return $this->getID().'-'.$this->db.'-'.$this->prefix;
+    }
+
+	function connect(){
+	    $db_id = $this->getDBID();
+		if(db::isConnected($db_id)){
 			//return $this;
-			throw new toolboxException('Already connected to DB with id of: '.$this->getID());
+			throw new toolboxException('Already connected to DB with id of: '.$db_id);
 
 		}
 		try{//try connection
@@ -99,8 +108,8 @@ class connection{
 				$this->getHost(),
 				$this->getUser(),
 				$this->getPass(),
-				$db,
-				$this->getID(),
+				$this->db,
+				$db_id,
 				$this->getPort());
 			db::setDB();
 		}catch(toolboxException $e){
@@ -117,11 +126,15 @@ class connection{
      * (creates it if not exists)
      */
     private static $instances = array();
-    public static function get($name = 'singleton'){
-        if (!isset(self::$instances[$name])) {
-            self::$instances[$name] = new self($name);
+    public static function get($name = 'singleton', $db = '', $prefix = ''){
+        if (
+            !isset(self::$instances[$name])
+            || !isset(self::$instances[$name][$db])
+            || !isset(self::$instances[$name][$db][$prefix])
+        ){
+            self::$instances[$name][$db][$prefix] = new self($name, $db, $prefix);
         }
-        return self::$instances[$name];
+        return self::$instances[$name][$db][$prefix];
         return new self();
         return new connection();
     }
