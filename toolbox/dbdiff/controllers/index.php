@@ -354,8 +354,6 @@ and generate alter SQL to syncronize your MySQL databases.">
 		db::query("CREATE TABLE `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."` (
 			`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-			`post_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-			`post_date_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 			`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
 			`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
 			`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
@@ -392,8 +390,6 @@ and generate alter SQL to syncronize your MySQL databases.">
 		db::query("CREATE TABLE `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."` (
 					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-					`post_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-					`post_date_gmt` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 					`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
 					`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
 					`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
