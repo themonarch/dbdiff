@@ -423,22 +423,22 @@ and generate alter SQL to syncronize your MySQL databases.">
 				AUTO_INCREMENT=4", 'demo');
 
 		//create user on db1 with access to table(s)
-		//db::query("DROP USER 'demo_".$user->getStringID()."'@'%'", 'demo');
+		//db::query("DROP USER 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 		db::query("CREATE USER 'demo_".$user->getStringID()
-			."'@'%' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
-		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'%'", 'demo');
+			."'@'".$_SERVER['SERVER_ADDR']."' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
+		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
 		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-1`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'%'", 'demo');
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 
 		//create user on db2 with access to table(s)
-		//db::query("CREATE USER 'demo_".$user->getStringID()."'@'%' IDENTIFIED BY ''");
-		//db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'%'");
+		//db::query("CREATE USER 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."' IDENTIFIED BY ''");
+		//db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'");
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
 		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-2`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'%'", 'demo');
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 
 		$this->setDemoConnectionPostData();
 
