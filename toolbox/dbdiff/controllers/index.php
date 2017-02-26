@@ -423,9 +423,15 @@ and generate alter SQL to syncronize your MySQL databases.">
 				AUTO_INCREMENT=4", 'demo');
 
 		//create user on db1 with access to table(s)
-		//db::query("DROP USER 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
-		db::query("CREATE USER 'demo_".$user->getStringID()
-			."'@'".$_SERVER['SERVER_ADDR']."' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
+		$username = 'demo_'.$user->getStringID();
+		$query = db::query('SELECT `user` FROM `mysql`.`user` where `user` = '
+			.db::quote($username), 'demo');
+		if($query->rowCount() > 0){
+			db::query("DROP USER '".$username."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
+		}
+
+		db::query("CREATE USER '".$username."'@'".$_SERVER['SERVER_ADDR']
+			."' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
 		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
