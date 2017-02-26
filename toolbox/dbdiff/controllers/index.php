@@ -339,8 +339,18 @@ and generate alter SQL to syncronize your MySQL databases.">
 
 		$demo_db_pass = $user->getCustomValue('demo_db_pass');
 
+		//connect to demo db
+		db::connect(
+			'demo.'.config::getSetting('HTTP_HOST'),
+			config::getSetting('HTTP_HOST'),
+			config::getSetting('demo_db', 'pass'),
+			'',
+			'demo'
+		);
+		db::setDB();
+
 		//create the table(s) on db1
-		db::query("DROP TABLE IF EXISTS `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."`");
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."`", 'demo');
 		db::query("CREATE TABLE `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."` (
 			`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -373,12 +383,12 @@ and generate alter SQL to syncronize your MySQL databases.">
 		)
 		COLLATE='utf8mb4_unicode_520_ci'
 		ENGINE=InnoDB
-		");
+		", 'demo');
 
 
 
 		//create the table(s) on db2
-		db::query("DROP TABLE IF EXISTS `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."`");
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."`", 'demo');
 		db::query("CREATE TABLE `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."` (
 					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -410,17 +420,18 @@ and generate alter SQL to syncronize your MySQL databases.">
 				)
 				COLLATE='utf8mb4_unicode_520_ci'
 				ENGINE=InnoDB
-				AUTO_INCREMENT=4");
+				AUTO_INCREMENT=4", 'demo');
 
 		//create user on db1 with access to table(s)
-		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'");
-		db::query("DROP USER 'demo_".$user->getStringID()."'@'localhost'");
-		db::query("CREATE USER 'demo_".$user->getStringID()."'@'localhost' IDENTIFIED BY '".$demo_db_pass."'");
-		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'");
+		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'", 'demo');
+		db::query("DROP USER 'demo_".$user->getStringID()."'@'localhost'", 'demo');
+		db::query("CREATE USER 'demo_".$user->getStringID()
+			."'@'localhost' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
+		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'", 'demo');
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
 		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-1`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'");
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'", 'demo');
 
 		//create user on db2 with access to table(s)
 		//db::query("CREATE USER 'demo_".$user->getStringID()."'@'localhost' IDENTIFIED BY ''");
@@ -428,7 +439,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
 		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-2`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'");
+		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'localhost'", 'demo');
 
 		$this->setDemoConnectionPostData();
 
