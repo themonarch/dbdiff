@@ -362,7 +362,9 @@ class utils {
 
             mkdir($path.'/combined/'.$type, 0777, true);
             //create new combined file
-            @ob_flush();
+	        if(ob_get_length() > 0){
+	            ob_flush();
+	        }
             ob_start();
             foreach($array as $path_file){
                 include $path.$path_file;
