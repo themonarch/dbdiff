@@ -423,7 +423,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 				AUTO_INCREMENT=4", 'demo');
 
 		//create user on db1 with access to table(s)
-		db::query("DROP USER 'demo_".$user->getStringID()."'@'localhost'", 'demo');
+		//db::query("DROP USER 'demo_".$user->getStringID()."'@'localhost'", 'demo');
 		db::query("CREATE USER 'demo_".$user->getStringID()
 			."'@'localhost' IDENTIFIED BY '".$demo_db_pass."'", 'demo');
 		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'localhost'", 'demo');
