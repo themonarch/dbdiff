@@ -199,7 +199,7 @@ class user_framework {
 				cookieHelper::create()->destroyCookie('encryption_token');
 				cookieHelper::create()->destroyCookie('login');
 			}catch(toolboxException $e){}
-			throw softPublicException('Your session was not found or it may have expired. Please log in to continue.');
+			throw new softPublicException('Your session was not found or it may have expired. Please log in to continue.');
 		}
 
 		return $_COOKIE['encryption_token'];

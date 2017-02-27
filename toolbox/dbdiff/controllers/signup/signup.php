@@ -31,7 +31,7 @@ class signup_controller {
 			return false;
 		}
 
-		if(user::ipHasAccount() && !isset($_REQUEST['g-recaptcha-response'])){
+		if(!isset($_REQUEST['g-recaptcha-response'])){
             messages::setErrorMessage('Please check the reCAPTHCA box below.');
 			return false;
 		}
@@ -115,9 +115,7 @@ class signup_controller {
 			->set('style', 'max-width: 420px; margin: 0 auto;')
 			->set('class', 'style3')
             ->add(function($tpl){ ?>
-<?php if(user::ipHasAccount()){ ?>
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<?php } ?>
 				<form class="form padding" method="post" action="/signup"
 					data-ajax_form="#<?php echo $tpl->widget_id; ?>">
                         <?php
@@ -152,9 +150,6 @@ class signup_controller {
                                 ->setName('website')
                                 ->render(); ?>
                             <div class="catchall spacer"></div>
-                        <?php
-
-                        //if(user::ipHasAccount()){ ?>
 <div class="form-element">
 <div class="input-wrapper">
     <label>Check the Box to Prove You're Not a Robot: </label>
@@ -164,7 +159,6 @@ class signup_controller {
    </div>
 </div>
 
-                        <?php //} ?>
                         <div style="text-align: right; margin: 15px 0px 0;">
                             <div class="grid-6">
                             <div class="" style="text-align: center;">Already have an account?

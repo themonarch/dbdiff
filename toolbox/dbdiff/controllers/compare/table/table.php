@@ -3,20 +3,19 @@ namespace toolbox;
 class table_controller {
 
 	static function setup(){
-		router::get()
+		router::get()//require a table name param
 			->setMaxParams(1)
 			->setMinParams(1);
 	}
 
     function __construct(){
 
-
 		router::get()->extractParam('table_name');
 
         //initializations
         $profile_id = router::get()->getParam('profile_id');
         $table_name = router::get()->getParam('table_name');
-        $sync = sync::get($profile_id);
+        $sync = sync::get($profile_id);//we already know it belongs to current user (see compare.php passthru)
 
         $source_conn = $sync->getSourceConnection();
         $sync->connectSource();
@@ -29,42 +28,14 @@ class table_controller {
 			->setHook('sql_runner-inner')
 			->set('title', 'SQL History')
 			->set('class', 'style4')
-			->add(function($tpl){
-datatableV2::create()
-    ->setSelect('*')
-    ->setFrom('`db_connections`')
-    ->setWhere('`user_id` = '.user::getUserLoggedIn()->getID())
-    ->defineCol('name', 'Connection', function($val, $rows){
-        return connection::get($rows->connection_id)->getName();
-    })
-    ->defineCol('host', 'Host', function($val, $rows){
-        return connection::get($rows->connection_id)->getHost();
-    })
-    ->defineCol('date', 'Date Added', function($val){
-        return '<span title="'.$val.'" class="timeago">'.$val.'</span>';
-    })
-    ->defineCol('connection_id', 'Actions', function($val){ ?>
-        <a href="#"
-            class="btn btn-small btn-blue"
-            data-overlay-id="connect"
-            title="Edit Connection">Connect</a>
-        <a href="#"
-            class="btn btn-small btn-silver"
-            data-overlay-id="edit_connection"
-            title="Edit Connection"><i class="icon-edit"></i></a>
-    <?php })
-    ->setPaginationDestination('#'.$tpl->widget_id)
-    ->setPaginationLink($tpl->widget_url)
-    ->renderViews();
-
-			}, 'widget-reload.php', 'sql_runner');
+			->add('dbdiff/sql_history.php', 'widget-reload.php', 'sql_runner');
 
 		page::get()->addView(function(){ ?>
-<div class="header-line style2">
-    <div class="inner">Alter History</div>
-    <div class="gradient-line"></div>
-</div>
-<div class="catchall spacer"></div>
+			<div class="header-line style2">
+			    <div class="inner">Alter History</div>
+			    <div class="gradient-line"></div>
+			</div>
+			<div class="catchall spacer"></div>
 			<?php page::get()->renderViews('sql_runner-inner'); ?>
 		<?php }, 'sql_runner');
 
@@ -72,9 +43,12 @@ datatableV2::create()
 			utils::isPost()
 			&& isset($_POST['alter'])
 		){
+			if(!isset($_POST['sqls']) || empty($_POST['sqls'][$_POST['alter']])){
+                throw new softPublicException('Click the checkbox next to each SQL query you want to run.');
+			}
 
-            $total_execution_limit = 300;//may set harsher limits in the future
-            set_time_limit($total_execution_limit);
+            $total_execution_limit = 3000;//may set harsher limits in the future
+            set_time_limit($total_execution_limit+10);
 
 		    //get selected db
 		    if($_POST['alter'] === 'prod'){
@@ -87,58 +61,70 @@ datatableV2::create()
 
 			//get connection id
 			$connection_id = db::query('select connection_id() as `connection_id`', $db_id)->fetchRow()->connection_id;
-			$individual_sql_limit = ($total_execution_limit-10)/count($_POST['sqls'][$_POST['alter']]);
+			$individual_sql_limit = ($total_execution_limit)/count($_POST['sqls'][$_POST['alter']]);
 
 			//loop each sql for selected db
 			foreach($_POST['sqls'][$_POST['alter']] as $key => $sql){
 
                 //add to sql history table with connection id
-                db::query('INSERT INTO `sql_history` (
+                $sql_id = db::query('INSERT INTO `sql_history` (
                         `sync_id`,
                         `direction`,
                         `server_session_id`,
-                        `sql`
+                        `sql`,
+                        `date_updated`
                     ) VALUES (
                         '.db::quote($sync->getID()).',
                         '.db::quote($_POST['alter']).',
                         '.db::quote($connection_id).',
-                        '.db::quote($sql).'
-                    )');
+                        '.db::quote($sql).',
+                        now()
+                    )')->last_insert_id();
 
                 //execute the sql asyncroniously so we don't hang on long queries
                 $async_query = db::asyncQuery($sql, $db_id);
 
-                //update query history as running
-
-                //start timer for individual query
+                //start timer for this query
 				$timer = stopWatch::create();
 
                 //while query not finished
                 while(!$async_query->isReady()){
-                	if($timer->getElapsedTime() > $individual_sql_limit){
-                		break;//hit time limit
+                	if($timer->getElapsedTime() > $individual_sql_limit){//time limit hit
+                		//update status to unknown
+                		db::query('update `sql_history` set `status` = "unknown",
+                		`status_msg` = '.db::quote('Waited '.$timer->getElapsedTime().' seconds with no response.')
+                		.', `date_updated` = now()
+                		where `id` = '.db::quote($sql_id));
+
+                		break;//stop waiting on this query
                 	}
+
+            		//update status progress
+            		db::query('update `sql_history` set `status` = "running",
+            		`status_msg` = '.db::quote('Waiting  '.$timer->getElapsedTime().' seconds with no response.')
+            		.', `date_updated` = now() where `id` = '.db::quote($sql_id));
 
                     //sleep for 3 seconds
                     sleep(3);
 
-                    //update last checked status?
-
-                    //if over time limit for single sql
-                    //(($total_execution_limit-10)/$number_of_sqls), set status to unknown
-                    //and msg that it wasn't complete after X seconds
                 }
 
-                //if reaped
+                //if query completed
                 if($async_query->isReady()){
                 	try{
                 		$sql_time = $timer->getElapsedTime();
 	                	$result = $async_query->freeUpQuery();//free up instead of fetch b/c nothing to fetch!
 
 	                    //update to success
+	            		db::query('update `sql_history` set `status` = "completed",
+	            		`status_msg` = '.db::quote('Completed successfully in  '.$timer->getElapsedTime().' seconds.')
+	            		.', `date_updated` = now() where `id` = '.db::quote($sql_id));
 
 					}catch(dbException $e){//if the db responded with an error
 						//update sql history with error msg & failed status
+	            		db::query('update `sql_history` set `status` = "failed",
+	            		`status_msg` = '.db::quote($e->getMessage())
+	            		.', `date_updated` = now() where `id` = '.db::quote($sql_id));
 
 						//throw it to the browser
 						throw new softPublicException($e->getMessage());

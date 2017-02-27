@@ -51,6 +51,24 @@ $sync->updateLastViewed();
             ->add('dbdiff/sync_profile-compare.php', 'widget-reload.php');
 
 
+
+		//some spacing
+		page::get()->addView(function(){ ?>
+			<div class="catchall spacer-2"></div>
+			<div class="catchall spacer-5"></div>
+<div class="header-line style2">
+    <div class="inner">SQL History</div>
+    <div class="gradient-line"></div>
+</div>
+<div class="catchall spacer-1"></div>
+		<?php }, 'content-narrow');
+
+		//add sql runner widget
+		widgetHelper::create()
+			->set('title', 'SQL History')
+			->set('class', 'style4')
+			->add('dbdiff/sql_history.php', 'widget-reload.php', 'sql_runner');
+
 		//some spacing
 		page::get()->addView(function(){ ?>
 			<div class="catchall spacer-2"></div>
@@ -81,7 +99,7 @@ $sync->updateLastViewed();
 		accessControl::get()
             ->removeRequired('member')//login not required for these pages
 			->requires('session', function(){//but an active session is
-			    messages::setErrorMessage('Session has expired or wasn\'t created.');
+			    messages::setErrorMessage('Your session has expired or cookies were deleted.');
 			    utils::redirectTo('/login');
 			});
 

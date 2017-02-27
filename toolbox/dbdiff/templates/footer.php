@@ -18,14 +18,6 @@ echo config::get()->getConfig('app_name'); ?>.
  | RAM: <?php echo benchmark::create()->getRamUsage(); ?> MB
  | CPU: <?php echo benchmark::create()->getCpuLoad(); ?>
  | Time: <?php echo date('M d, Y  g:i:s A T'); ?>
- | DB Clock Lag: <?php
-if(db::isConnected()){
-$query = db::query('select DATE_FORMAT(NOW(),\'%b %d %Y %h:%i:%s %p\') as `time`');
-    if($query->rowCount() > 0){
-        //echo $query->fetchRow()->time;
-       echo time() - strtotime($query->fetchRow()->time) .' Sec.';
-    }
-} ?>
 <?php if(isset($version)){ ?>
  | <a href="/version">Version <?php echo $version->version; ?></a>
 updated <span class="timeago" title="<?php echo $version->date; ?>Z"><?php echo $version->date; ?>Z</span>
