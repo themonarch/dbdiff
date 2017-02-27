@@ -16,7 +16,7 @@ $dt = datatableV2::create()
 		<div class="catchall spacer-3"></div>
 <div class="notice-container ">
 <div class="notice">
-    <img class="icon" src="//dev.dbdiff.com/assets/app/img/1024px-Infobox_info_icon.svg-white.png">
+    <img class="icon" src="/assets/app/img/1024px-Infobox_info_icon.svg-white.png">
 <span class="contents">
     No recent comparisons found.</span>
 </div>

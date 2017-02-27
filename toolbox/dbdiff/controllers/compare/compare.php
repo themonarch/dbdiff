@@ -41,10 +41,8 @@ $sync->updateLastViewed();
 			->set('title', $sync->getName())
 			->addView(function(){ ?>
 <div class="widget-header-controls left">
-<a class="btn btn-small btn-silver" href="/" class=""><i class="icon-angle-double-left"></i> Back</a>
+<a class="btn btn-small btn-silver" href="/"><i class="icon-angle-double-left"></i> Back</a>
 </div>
-
-
 			<?php }, 'header')
 			->set('class', 'style4')
             ->set('widget_margin', false)
@@ -57,7 +55,7 @@ $sync->updateLastViewed();
 			<div class="catchall spacer-2"></div>
 			<div class="catchall spacer-5"></div>
 <div class="header-line style2">
-    <div class="inner">SQL History</div>
+    <div class="inner">SQL History for this Comparison</div>
     <div class="gradient-line"></div>
 </div>
 <div class="catchall spacer-1"></div>

@@ -26,8 +26,9 @@ class table_controller {
 		//add sql runner widget
 		widgetHelper::create()
 			->setHook('sql_runner-inner')
-			->set('title', 'SQL History')
+			->set('title', 'SQL History for `'.utils::htmlEncode($table_name).'`')
 			->set('class', 'style4')
+			->set('table', $table_name)
 			->add('dbdiff/sql_history.php', 'widget-reload.php', 'sql_runner');
 
 		page::get()->addView(function(){ ?>
@@ -63,6 +64,10 @@ class table_controller {
 			$connection_id = db::query('select connection_id() as `connection_id`', $db_id)->fetchRow()->connection_id;
 			$individual_sql_limit = ($total_execution_limit)/count($_POST['sqls'][$_POST['alter']]);
 
+			//TODO: if any pending/running queries on this table, don't allow alter (take into account possible stuck queries?)
+
+
+			$sql_ids = [];
 			//loop each sql for selected db
 			foreach($_POST['sqls'][$_POST['alter']] as $key => $sql){
 
@@ -70,16 +75,25 @@ class table_controller {
                 $sql_id = db::query('INSERT INTO `sql_history` (
                         `sync_id`,
                         `direction`,
+                        `table`,
                         `server_session_id`,
                         `sql`,
                         `date_updated`
                     ) VALUES (
                         '.db::quote($sync->getID()).',
                         '.db::quote($_POST['alter']).',
+                        '.db::quote($table_name).',
                         '.db::quote($connection_id).',
                         '.db::quote($sql).',
                         now()
                     )')->last_insert_id();
+					$sql_ids[$key] = $sql_id;
+
+			}
+
+			foreach ($sql_ids as $key => $sql_id) {
+				$sql = $_POST['sqls'][$_POST['alter']][$key];
+
 
                 //execute the sql asyncroniously so we don't hang on long queries
                 $async_query = db::asyncQuery($sql, $db_id);
@@ -125,6 +139,14 @@ class table_controller {
 	            		db::query('update `sql_history` set `status` = "failed",
 	            		`status_msg` = '.db::quote($e->getMessage())
 	            		.', `date_updated` = now() where `id` = '.db::quote($sql_id));
+
+						//set pending queries to cancelled
+	            		db::query('update `sql_history` set `status` = "cancelled",
+	            		`status_msg` = "Cancelled because a previous query failed.",
+	            		`date_updated` = now()
+	            		where `sync_id` = '.db::quote($sql_id).'
+	            		and `table` = '.db::quote($table_name).'
+	            		and `status` = "pending"');
 
 						//throw it to the browser
 						throw new softPublicException($e->getMessage());

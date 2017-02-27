@@ -111,7 +111,7 @@ $dt = datatableV2::create()
     ->defineCol('synced', 'Vs.', function($val, $row, $dt){
 		$dt->{$val}++;
 		if($val === 'synced'){ ?>
-			<i class="icon-ok"></i><br>Matching
+			<i class="icon-ok"></i><br>Identical
 		<?php }elseif($val === 'right'){ ?>
 			<i class="icon-right"></i><br>Missing
 		<?php }elseif($val === 'left'){ ?>
