@@ -2,7 +2,7 @@
 <?php if(!isset($widget_unique_id)){
 	 $widget_unique_id = 'quick_diff';
 } ?>
-<div id="quick_connect_form"
+<div style="border-radius: inherit;" id="quick_connect_form"
 	data-dynamic_form=""
 	data-action="<?php echo $_SERVER['REQUEST_URI']; ?>"
     data-ajax_replace="true"
@@ -70,7 +70,7 @@
 <div class="datatable-info datatable-section">
 	<div style="max-width: 400px; margin: 0 auto;">
  	<input type="hidden" name="widget_unique_id" value="<?php echo $widget_unique_id; ?>">
-        <input class="btn btn-silver  btn-medium btn-3d btn-full_width"
+        <input class="btn btn-blue btn-medium btn-3d btn-full_width"
             name="submit" value="Compare" data-dynamic_form_submit="" type="submit">
 </div>
 </div>

@@ -51,7 +51,7 @@ messages::readMessages($index);
 	            ->setTypePassword()
                 ->setDisabled(page::get()->demo)
 	            ->setName('Password['.$index.']')
-				->setNote('Passwords are encrypted with a master key stored <span style="font-weight: 600;">only</span> in your browser.')
+				->setNote('We\'ll encrypt your passwords with a randomly generated master key stored <span style="font-weight: 600;">only</span> in your browser.')
 				->addView(function(){ ?>
 					<div class="catchall spacer-1"></div>
 				<?php })
@@ -69,6 +69,7 @@ messages::readMessages($index);
         )->setArray('rows', 'Database',
 			formV2::choosefield()
 				->setLabel('Database')
+                ->set('btn_color', 'silver')
                 ->setDisabled(page::get()->demo)
                 ->setName('Database['.$index.']')
 		)->renderViews();

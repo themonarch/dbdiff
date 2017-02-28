@@ -224,29 +224,56 @@ and generate alter SQL to syncronize your MySQL databases.">
 		//Main heading contents
 		page::get()->addView(function(){ ?>
 			<div style="text-align: center; font-size: 40px; text-transform: uppercase; color: #787878; font-weight: 900; margin-bottom: 1%;">
-			Compare MySQL Databases for Differences<br>
-			Syncronize Diverged Schemas with <span class="text-important">a Click</span>
+			Check MySQL Databases for Differences<br>
+			Syncronize Schemas with <span class="text-important">a Click</span>
 			</div>
 			<div class="catchall spacer-3"></div>
-			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
-				<p>Find schema differences in your databases easily, no signup or email required! Just use the form below.</p>
+			<div style="text-align: center; max-width: 850px; margin: 0 auto;">
 
-				<div class="catchall spacer-4"></div>
+            <div class="header-line style2">
+                <div class="inner">Features</div>
+                <div class="gradient-line"></div>
+            </div>
+            <div class="grid-6 grid-s-12">
+            <ul class="list">
+                <li><b>Compare Databases</b> - Visually see mismatching or missing tables between two databases across any servers.</li>
+                <li><b>Schema Diff</b> - View side by side schema comparison for each table so you can see what's different in a glance.</li>
+                <li><b>Migration Script Generator</b> - Automatically generate SQL alter scripts for both target or source servers.</li>
+                <li><b>Execute Migration Scripts</b> - Run your migration scripts for either target or source database ,
+                    with options to pick and choose individual changes to sync.</li>
+            </ul>
+            </div>
+            <div class="grid-6 grid-s-12">
+            <ul class="list">
+                <li><b>Migration Status & History</b> - View all migration scripts you ran, see status of long running alters with
+                    option to kill already running migrations.</li>
+                <li><b>Localhost Connect</b> - Connect to a server running on your local machine (using thrid-party software),
+                    even if you are behind a NAT or firewall</li>
+                <li><b>Save Comparisons</b> - All your comparisons are saved to your account with encryption so you can
+                    quickly and securely re-run your comparisons at any time.
+                    </li>
+            </ul>
+            </div>
+            <div class="catchall spacer-1"></div>
+            <div class="catchall spacer-3"></div>
+			<p>Try it now! No signup or email required.</p>
+            <div class="catchall spacer-1"></div>
+			<i class="icon-down-open-big"></i>
+
+			<div class="catchall spacer-3"></div>
 			</div>
 		<?php }, 'content-narrow');
 
 		//main container for quick connect templates
         widgetHelper::create()
-            ->set('title', 'Quick Diff')
-            ->set('class', 'style3')
-            ->add('dbdiff/quick_diff.php', 'widget-reload.php', 'quick_diff');
+            ->add('dbdiff/quick_diff.php', 'panel.php', 'quick_diff');
 
 		//some spacing after the quick connect form
 		page::get()->addView(function(){ ?>
 			<div class="catchall spacer-2"></div>
 			<div class="catchall spacer-5"></div>
 <div class="header-line style2">
-    <div class="inner">Recent Diffs</div>
+    <div class="inner">Saved Comparisons</div>
     <div class="gradient-line"></div>
 </div>
 <div class="catchall spacer-1"></div>

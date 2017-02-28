@@ -2,6 +2,14 @@
 if(!isset($value_display_name)){
     $value_display_name = $value;
 }
+
+if(!isset($btn_color)){
+    $btn_color = 'blue';
+}
+
+if($disabled != false) $btn_color = 'gray';
+
+
 ?>
 <div class="form-element input-choose" id="input-choose-<?php echo utils::toSlug($name); ?>">
 <div class="input-wrapper <?php echo $wrapper_class; ?>">
@@ -75,8 +83,9 @@ if(!isset($value_display_name)){
                             class="btn picker-action btn-blue"
                             data-overlay-id="<?php echo $overlay_id; ?>">Choose</a>
                             <?php }else{ ?>
-                            <button <?php if($disabled == true){ ?> disabled="disabled"<?php } ?> type="submit" name="submit" class="btn picker-action btn-medium btn-<?php
-                            	if($disabled != false) echo 'gray'; else echo 'blue'; ?>"
+                            <button <?php if($disabled == true){ ?> disabled="disabled"<?php } ?> type="submit"
+                                name="submit" class="btn picker-action btn-medium btn-<?php
+                                echo $btn_color; ?>"
                             	value="<?php echo $name; ?>">Choose</button>
                             <?php } ?>
                         </div>

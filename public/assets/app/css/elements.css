@@ -1003,7 +1003,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 
     padding: 15px 5%;
 }
-
+.form_panel.style5{
+    background-color: #F7F7F7;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 0px;
+    box-shadow: 0 1px 0 #ffffff inset;
+}
 .table_dropdown .form_panel.style3{
     border-bottom: 1px dashed rgba(0, 0, 0, 0.28);
     border-top: 1px dashed rgba(0, 0, 0, 0.28);

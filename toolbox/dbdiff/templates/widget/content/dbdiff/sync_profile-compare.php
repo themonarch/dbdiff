@@ -121,7 +121,7 @@ $dt = datatableV2::create()
 		<?php }
     })
 	->setColSetting(1, 'style', 'width: 80px;')
-	->setColSetting(3, 'style', 'width: 120px;')
+	->setColSetting(3, 'style', 'width: 130px;')
     ->setCallback('pretd', function($dt, $col, $val, $row, $field_name){
         if($row->synced === 'different'){
             $dt->setColSetting($field_name, 'class', 'diff-different');
@@ -136,7 +136,7 @@ $dt = datatableV2::create()
     ->defineCol('target_table_name', $target_conn->getName().'<br>`'.$sync->getTargetDB().'`', function($val, $row){
 			return $row->table_name;
     })
-    ->defineCol('table_name', 'Compare', function($val, $rows, $dt){
+    ->defineCol('table_name', 'Details', function($val, $rows, $dt){
         $this->data['last_row_id'] = utils::getRandomString(8);
 		if($rows->synced == 'synced'){
 			$btn_style = 'gray';
@@ -155,8 +155,8 @@ $dt = datatableV2::create()
         	?>data-ajax_replace="false" <?php
         	?>data-show_loader="#<?php echo $this->widget_id;
         		?> .row_expand-<?php echo $this->data['last_row_id']; ?> .destination "><?php
-        	?><button type="submit" value="View Diff" class="btn btn-<?php
-        		echo $btn_style; ?> btn-small">View Diff</button><?php
+        	?><button type="submit" value="Schema Diff" class="btn btn-<?php
+        		echo $btn_style; ?> btn-small">Schema Diff</button><?php
         	?></form>
             <?php
 
