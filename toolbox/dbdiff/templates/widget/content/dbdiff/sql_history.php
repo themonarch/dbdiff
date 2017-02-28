@@ -28,6 +28,7 @@ datatableV2::create()
     ->setColSetting(1, 'style', 'width: 140px;')
 	->setSort(2, 'desc')
 	->enableSort(3, false)
+	->enableSort(0, false)
 	->enableSearch(3, false)
 	->enableSearch(2, false)
 	->setSortInline()
@@ -36,15 +37,21 @@ datatableV2::create()
     <?php })
     ->setColSetting(2, 'style', 'width: 160px;')
     ->setColSetting(3, 'style', 'width: 160px;')
-    ->defineCol('id', 'Actions', function($val, $cols){ ?>
-    	<?php if(!in_array($cols->status, array('completed', 'failed'))){ ?>
-        <a href="#"
-            class="btn btn-small btn-red"
-            data-overlay-id="connect"
-            title="Edit Connection">Kill</a>
+    ->defineCol('id', 'Actions', function($val, $rows){ ?>
+    	<?php if(in_array($rows->status, array('running', 'pending'))){ ?>
+	<form data-confirm="Are you sure you want to attempt to kill this query?"
+	id="row_<?php echo $val; ?>"
+	data-show_loader="#row_<?php echo $val; ?>"
+	data-ajax_replace="true" data-ajax_form="#row_<?php echo $val;
+	?>" action="/compare/<?php
+        	echo $rows->sync_id; ?>/kill_query/<?php echo $val; ?>" style="display: inline-block;">
+	<button style="padding: 3px 5px;" type="submit" class="btn btn-small btn-red">
+		Kill
+	</button>
+	</form>
         <?php } ?>
         <a href="/compare/<?php
-        	echo $cols->sync_id; ?>/sql_history/<?php echo $cols->id; ?>"
+        	echo $rows->sync_id; ?>/sql_history/<?php echo $rows->id; ?>"
             class="btn btn-small btn-silver"
             data-overlay-id="view_sql"
             title="Edit Connection">View SQL</a>

@@ -21,7 +21,11 @@ class db_async_stmt{
 	private function reapRow(){
         if($this->reaped) return false;
         $this->reaped = true;
-	    $result = $this->stmt->reap_async_query();
+		try{
+	    	$result = $this->stmt->reap_async_query();
+		}catch(toolboxError $e){
+			throw new dbException($e->getMessage());
+		}
 		if($result === false){
 			throw new dbException($this->stmt->error);
 		}

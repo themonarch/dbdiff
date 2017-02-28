@@ -64,7 +64,31 @@ class table_controller {
 			$connection_id = db::query('select connection_id() as `connection_id`', $db_id)->fetchRow()->connection_id;
 			$individual_sql_limit = ($total_execution_limit)/count($_POST['sqls'][$_POST['alter']]);
 
-			//TODO: if any pending/running queries on this table, don't allow alter (take into account possible stuck queries?)
+			//update stuck queries
+			$stuck_count = db::query('update `sql_history`
+			set `status` = "unknown"
+			where `sync_id` = '.db::quote($sync->getID()).'
+			and `status` = "running"
+			and `table` = '.db::quote($table_name).'
+			and `date_updated` < date_sub(now(), interval 1 minute)')->rowCount();
+
+			if($stuck_count > 0){//cancel pending queries if one got stuck
+				db::query('update `sql_history`
+					set `status` = "cancelled",
+					`status_msg` = "Cancelled because one of the queries in the batch had an unknown status."
+					where `sync_id` = '.db::quote($sync->getID()).'
+					and `table` = '.db::quote($table_name).'
+					and `status` = "pending"')->rowCount();
+
+			}
+
+			//if any running queries for this table, don't let user run more
+			if(db::query('select * from `sql_history`
+			where `sync_id` = '.db::quote($sync->getID()).'
+			and `status` = "running"
+			and `table` = '.db::quote($table_name))->rowCount() > 0){
+				throw new softPublicException('There is a running query for this table, please wait for it to finish.');
+			}
 
 
 			$sql_ids = [];
@@ -93,6 +117,12 @@ class table_controller {
 
 			foreach ($sql_ids as $key => $sql_id) {
 				$sql = $_POST['sqls'][$_POST['alter']][$key];
+
+				//check query hasn't been cancelled
+				$sql_row = db::query('select * from `sql_history` where `id` = '.$sql_id)->fetchRow();
+				if($sql_row->status !== 'pending'){
+					continue;
+				}
 
 
                 //execute the sql asyncroniously so we don't hang on long queries
