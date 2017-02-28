@@ -611,7 +611,7 @@ var App = function() {
             error: function(jqXHR, textStatus, errorThrown){
                 if(jqXHR.getResponseHeader('X-Error_msg') !== null){
                     alert('Error: ' + jqXHR.getResponseHeader('X-Error_msg'));
-                }else{
+                }else if(errorThrown != ''){
                     alert(textStatus+ ': '+errorThrown);
                 }
             },

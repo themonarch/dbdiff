@@ -29,16 +29,21 @@ class table_controller {
 			->set('title', 'SQL History for `'.utils::htmlEncode($table_name).'`')
 			->set('class', 'style4')
 			->set('table', $table_name)
-			->add('dbdiff/sql_history.php', 'widget-reload.php', 'sql_runner');
+			->add('dbdiff/sql_history.php', 'widget-reload.php', 'table_sql_runner');
 
 		page::get()->addView(function(){ ?>
+			<div style="text-align: center; color: #777777;">
+				<b>Pro Tip:</b> Alters taking long to finish? Click the reload button on the
+				widget below to view query status and more details.</div>
+			<div class="catchall spacer-2"></div>
+
 			<div class="header-line style2">
 			    <div class="inner">Alter History</div>
 			    <div class="gradient-line"></div>
 			</div>
 			<div class="catchall spacer"></div>
 			<?php page::get()->renderViews('sql_runner-inner'); ?>
-		<?php }, 'sql_runner');
+		<?php }, 'expanded_row_contents-footer');
 
 		if(
 			utils::isPost()
@@ -186,9 +191,6 @@ class table_controller {
 			}
 
 
-		}else{//don't render the sql runner
-			//page::get()->clearViews('sql_runner');
-
 		}
 
 		try{
@@ -203,18 +205,37 @@ class table_controller {
             $diff[$key] = (object)array('line' => $value);
         }
 
+		//add table diff widget
+		widgetHelper::create()
+			->setHook('expanded_row_contents')
+			->set('source_name', $source_conn->getName(), false)
+			->set('source_db', $sync->getSourceDB(), false)
+			->set('target_name', $target_conn->getName(), false)
+			->set('target_db', $sync->getTargetDB(), false)
+			->set('source_create', $source_create, false)
+			->set('target_create', $target_create, false)
+			->set('diff', $diff, false)
+			->set('title', 'Migration Scripts', false)
+			->set('class', 'style4')
+			->set('sync_id', $sync->getID(), false)
+			->set('table_name', $table_name, false)
+			->add('dbdiff/sync_profile-schema.php', 'widget-reload.php', 'table_schema_diff');
 
         $widget = widgetHelper::create()
-			->set('source_name', $source_conn->getName())
-			->set('source_db', $sync->getSourceDB())
-			->set('target_name', $target_conn->getName())
-			->set('target_db', $sync->getTargetDB())
-			->set('source_create', $source_create)
-			->set('target_create', $target_create)
-			->set('diff', $diff)
-			->set('sync_id', $sync->getID())
-			->set('table_name', $table_name)
-            ->add('/dbdiff/sync_profile-schema.php', 'minimal.php', utils::isAjax());
+            ->add(function(){ ?>
+<div class="form_panel style3">
+<div class="catchall spacer-2"></div>
+<?php
+page::get()->renderViews('expanded_row_contents');
+?>
+<?php
+page::get()->renderViews('expanded_row_contents-footer');
+?>
+<div class="catchall spacer"></div>
+</div>
+
+<div class="catchall-border style2"></div>
+            <?php }, 'minimal.php', utils::isAjax());
 
     }
 

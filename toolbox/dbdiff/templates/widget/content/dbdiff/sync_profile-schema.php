@@ -1,6 +1,7 @@
 <?php namespace toolbox; ?>
-<div class="form_panel style3">
-
+<div class="form_panel style4">
+<div class="catchall"></div>
+<div class="catchall spacer-2"></div>
 <div class="grid-6">
 <div style="text-align: center; margin: -7px 0px 0px; position: relative; z-index: 1; font-variant: all-small-caps;">[ Development ]</div>
 	<div class="header-line style4">
@@ -178,9 +179,4 @@ if(!$changes) echo '#table schemas match!';
 	?>
 </form>
 <div class="catchall spacer-2"></div>
-<?php
-page::get()->renderViews('sql_runner');
-?>
 </div>
-
-<div class="catchall-border style2"></div>
