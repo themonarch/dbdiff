@@ -2,35 +2,37 @@
 namespace toolbox;
 class appUtils {
 
-    static function sendEmail($email_address, $subject_line, $body_content, $from = null){
+    static function sendEmail($to, $subject, $message, $from = null){
 
-        if(is_array($email_address)){
-            $email_to = implode(', ', $email_address);
-        }else{
-            $email_to = $email_address;
+        if(is_array($to)){
+            $to = implode(', ', $to);
         }
-
-		if(!appUtils::isProduction()){
-			utils::logNonFatalError('Would have sent email: ' .$body_content);
-			return;
-		}
 
         if($from == null){
-            $from = config::get()->getConfig('app_name')." <support@".config::get()->getConfig('HTTP_HOST').'>';
-        }else{
-            $from = $from;
+            $from = config::get()->getConfig('app_name')." <contact@".config::get()->getConfig('HTTP_HOST').'>';
         }
 
-        mail($email_to,$subject_line,$body_content,$from);
-        return;
+        // To send HTML mail, the Content-type header must be set
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/html; charset=utf-8';
 
-		utils::sendEmail($email_to, $subject_line, $body_content
-                    .'<br><br>Thanks,'
-                    .'<br>'.config::get()->getConfig('app_name').' Team'
-                    .'<br>'.config::get()->getConfig('HTTP_PROTOCOL').'://'.config::get()->getConfig('HTTP_HOST').'',
-                    "From: ".$from."\r\n"
-                    . 'MIME-Version: 1.0' . "\r\n"
-                    . 'Content-type: text/html; charset=iso-8859-1');
+        // Additional headers
+        $headers[] = 'To: '.$to;
+        $headers[] = 'From: '.$from;
+        //$headers[] = 'Cc: birthdayarchive@example.com';
+        //$headers[] = 'Bcc: birthdaycheck@example.com';
+
+
+        if(!appUtils::isProduction()){
+            utils::logNonFatalError('Would have sent email: ' .$message);
+            return;
+        }
+
+        // Mail it
+        if(!mail($to, $subject, $message, implode("\r\n", $headers))){
+            throw new toolboxError('Failed to send email: '
+                .utils::array2string(array($to, $subject, $message, implode("\r\n", $headers))));
+        }
 
     }
 
