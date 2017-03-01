@@ -14,10 +14,9 @@ class appUtils {
 
         // To send HTML mail, the Content-type header must be set
         $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'Content-type: text/html; charset=utf-8';
+        $headers[] = 'Content-type: text/plain; charset=utf-8';
 
         // Additional headers
-        $headers[] = 'To: '.$to;
         $headers[] = 'From: '.$from;
         //$headers[] = 'Cc: birthdayarchive@example.com';
         //$headers[] = 'Bcc: birthdaycheck@example.com';
