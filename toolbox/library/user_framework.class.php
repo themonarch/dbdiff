@@ -386,7 +386,7 @@ class user_framework {
      */
     function getCustomValue($field, $throw_exception = true){
     	if(!isset($this->custom_values[$field])){
-	        $this->custom_values[$field] = store::get('db')->getValue($field, 'user', $this->getID());
+	        $this->custom_values[$field] = dataStore::get('db')->getValue($field, 'user', $this->getID());
     	}
 
     	if($this->custom_values[$field] === null){
@@ -409,12 +409,16 @@ class user_framework {
 		}
 	}
 
+    function getCounter($name, $reset_interval){
+        return dataStore::get('db')->getCounter($name, $reset_interval, 'user', $this->getID());
+    }
+
 	function increaseCounter($field, $type = 'none', $type_id = 0){
-		store::get('db')->increaseCounter($field, 'user', $this->getID());
+		dataStore::get('db')->increaseCounter($field, 'user', $this->getID());
 	}
 
     function setCustomValue($field, $value){
-		store::get('db')->setValue($field, $value, 'user', $this->getID());
+		dataStore::get('db')->setValue($field, $value, 'user', $this->getID());
 
         return $this;
         return new store();
@@ -426,9 +430,6 @@ class user_framework {
         return new store();
     }
 
-	function getCounter($name, $reset_interval){
-		return store::get('db')->getCounter($name, $reset_interval, 'user', $this->getID());
-	}
 
     function sendEmailChange($new_email){
 

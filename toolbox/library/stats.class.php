@@ -18,7 +18,7 @@ class stats {
         $this->timer = stopWatch::create();
         $this->run_timer = stopWatch::create();
         $this->benchmark = benchmark::create();
-        $this->store = store::get('stats', 'db');
+        $this->store = dataStore::get('stats', 'db');
         $this->config = config::get();
         $this->process_name .= $name;
 

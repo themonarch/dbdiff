@@ -514,7 +514,7 @@ class utils {
 
 
     static function increaseStatCount($stat_name, $time_period){
-        $store = store::get();
+        $store = dataStore::get();
         //store the fact that a page was served
         $stats_array = $store->getValue($stat_name);
         if(!is_array($stats_array)){
@@ -546,7 +546,7 @@ class utils {
     }
 
     static function increaseStatAvg($stat_name, $time_period, $value){
-        $store = store::get();
+        $store = dataStore::get();
 
         $stats_array = $store->getValue($stat_name);
         if(!is_array($stats_array)){
@@ -747,7 +747,7 @@ class utils {
 
     static function getStat($stat_name, $time_group = 'second'){
 
-        $store = store::get();
+        $store = dataStore::get();
         $array_indexes = $store->getValue($stat_name);
         if(!is_array($array_indexes)){
             $array_indexes = array();

@@ -30,11 +30,11 @@ class newsletter_controller {
 
 		if(utils::isPost()){
 			if($this->isValid()){
-				if(store::get('db')->getValue($_POST['email'], 'newsletter') === 'true'){
+				if(dataStore::get('db')->getValue($_POST['email'], 'newsletter') === 'true'){
 					messages::setSuccessMessage('You\'ve already subscribed to the newsletter, thanks!');
 				}else{
 					messages::setSuccessMessage('You have successfully subscribed to the newsletter, thanks!');
-					store::get('db')->setValue($_POST['email'], 'true', 'newsletter');
+					dataStore::get('db')->setValue($_POST['email'], 'true', 'newsletter');
 				}
 				$widget->add(function($tpl){ ?>
 				<div class="form_panel padding">

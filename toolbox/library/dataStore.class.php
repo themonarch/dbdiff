@@ -3,7 +3,7 @@ namespace toolbox;
 /**
  * Template helper for rendering ALL output to the user (templates/views/etc.).
  */
-class store {
+class dataStore {
 	private $driver;
 	function __construct($driver = null){
 		if($driver === null){
@@ -85,7 +85,7 @@ class store {
 		}
 
 		return $this;
-		return new store();
+		return new dataStore();
 	}
 
 	function increaseCounter($field, $type = 'none', $type_id = 0){
@@ -163,7 +163,7 @@ class store {
 		}
 
 		return $this;
-		return new store();
+		return new dataStore();
 	}
 
     function getCacheDriver(){
@@ -177,7 +177,7 @@ class store {
 	 */
 	static function create($driver = null){
 		return new self($driver);
-		return new store();
+		return new dataStore();
 	}
 
 
@@ -200,7 +200,7 @@ class store {
 		}
 
 		return self::$instances[$name];
-		return new store();
+		return new dataStore();
 	}
 
 
