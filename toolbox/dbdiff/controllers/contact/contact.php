@@ -32,7 +32,12 @@ class contact_controller {
 			if($this->isValid()){
 
 				messages::setSuccessMessage('Your message has been received, thanks!');
-				appUtils::sendEmail('contact@dbdiff.com', $_POST['subject'], $_POST['body']);
+				appUtils::sendEmail(
+				    config::getSetting('contact_email'),
+				    $_POST['subject'],
+				    $_POST['body'],
+				    $_POST['email']
+                );
 
 
 				return page::get()
