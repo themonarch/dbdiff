@@ -32,10 +32,12 @@ class contact_controller {
 			if($this->isValid()){
 
 				messages::setSuccessMessage('Your message has been received, thanks!');
-				appUtils::sendEmail(
-					$_POST['email'],
-					$_POST['subject'],
-					$_POST['body']);
+        mail('contact@dbdiff.com',
+                $_POST['subject'],
+                $_POST['body'],
+                "From: <".$_POST['email'].">\r\n"
+                    . 'MIME-Version: 1.0' . "\r\n"
+                    . 'Content-type: text/plain; charset=UTF-8');
 
 				return page::get()
 					->addView(function(){ ?>
