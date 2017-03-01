@@ -16,12 +16,12 @@ class appUtils {
 		}
 
         if($from == null){
-            $from = config::get()->getConfig('app_name')." <support@".config::get()->getConfig('HTTP_HOST');
+            $from = config::get()->getConfig('app_name')." <support@".config::get()->getConfig('HTTP_HOST').'>';
         }else{
             $from = '<'.$from.'>';
         }
 
-        mail($email_to,$subject_line,$message,$from);
+        mail($email_to,$subject_line,$body_content,$from);
         return;
 
 		utils::sendEmail($email_to, $subject_line, $body_content
