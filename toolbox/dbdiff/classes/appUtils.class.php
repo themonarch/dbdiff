@@ -23,7 +23,7 @@ class appUtils {
                     .'<br><br>Thanks,'
                     .'<br>'.config::get()->getConfig('app_name').' Team'
                     .'<br>'.config::get()->getConfig('HTTP_PROTOCOL').'://'.config::get()->getConfig('HTTP_HOST').'',
-                "From: ".$from.">\r\n"
+                    "From: ".$from."\r\n"
                     . 'MIME-Version: 1.0' . "\r\n"
                     . 'Content-type: text/html; charset=iso-8859-1');
 
