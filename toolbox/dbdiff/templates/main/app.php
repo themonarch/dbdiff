@@ -148,7 +148,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
 	                  </span>
 	                  <a class="logo" href="<?php echo utils::getHost(); ?>"><span class="name"><?php
                             echo config::getSetting('app_name'); ?></span>
-                            <span class="notifications gold"
+                            <span class="notifications"
                             style="position: absolute; z-index: -1; margin: 50px 0px 0px -4px;">Alpha</span></a>
 	                  <div class="divider hideMobile hideTablet"></div>
 	                  <span data-toggle_id="main_menu_nav" class="menu_toggle showMobile showTablet">

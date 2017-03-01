@@ -156,10 +156,16 @@ sidebarV2::get('top_nav')
     )
     ->addLink(
         sidebarV2::createLink('Download')
-			->setInner('Download <div class="notifications rose">Coming Soon</div>')
+			->setInner('Download <div class="notifications green">Coming Soon</div>')
             ->setMainView('/sidebar/menu_item.php')
-            ->setHref('/download')
+            ->setHref('/newsletter')
             ->setLinkAttributes('data-overlay-id="download"')
+    )
+    ->addLink(
+        sidebarV2::createLink('Contact')
+			->setInner('Contact')
+            ->setMainView('/sidebar/menu_item.php')
+            ->setHref('/contact')
     );
 
 page::get()//add it to the top nav

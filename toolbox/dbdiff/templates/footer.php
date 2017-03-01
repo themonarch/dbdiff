@@ -1,6 +1,16 @@
 <?php namespace toolbox; ?>
-&copy; <?php echo date('Y', time()); ?> <?php
-echo config::get()->getConfig('app_name'); ?>.
+<div class="footer-item">
+    &copy; <?php echo date('Y', time()); ?> <?php
+echo config::get()->getConfig('app_name'); ?>
+</div>
+ &#8226;
+<div class="footer-item">
+<a title="Add your email to our newsletter!" href="/newsletter">Newsletter</a>
+</div>
+ &#8226;
+<div class="footer-item">
+<a title="Contact us with your feedback or questions!" href="/contact">Contact</a>
+</div>
 <br>
 <?php
     if(config::get()->getConfig('environment') !== 'production'

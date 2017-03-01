@@ -1,16 +1,16 @@
 <?php
 namespace toolbox;
-class download_controller {
+class newsletter_controller {
 
     static function setup(){
 
         accessControl::get()
             ->removeRequired('member');
 
-        sidebarV2::get('top_nav')->setActive('Download');
+        sidebarV2::get('top_nav')->setActive('Newsletter');
 
 		title::get()
-		    ->addCrumb('Download');
+		    ->addCrumb('Newsletter');
 
     }
 
@@ -54,7 +54,7 @@ class download_controller {
 		about feature releases and such as when downloading will become available.', 'messages', 'info');
 
 		$widget->add(function($tpl){ ?>
-				<form class="form" method="post" action="/download"
+				<form class="form" method="post" action="/newsletter"
 					data-ajax_form="#<?php echo $tpl->widget_id; ?>">
 					<div class="form_panel padding">
 						<?php
