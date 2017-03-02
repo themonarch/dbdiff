@@ -142,6 +142,7 @@ class router {
             //folder and file exists, append this path to our resolved path if not blank
             if(trim($this->uri_remainder[0]) != '')
                 $this->resolvedPath .= '/'.$this->uri_remainder[0];
+
             //get the expected file name
             $filename = $this->uri2filename($this->uri_remainder[0]);
 
@@ -164,9 +165,11 @@ class router {
                         //call the passThru with the remaining uri
                         $classname::passThru($this->uri_remainder);
                     }
-                }else{
-                    $this->controllerClassName = false;
+                }else{//class doesn't exist
+                    $this->controllerClassName = false;//TODO: make this throw error?
                 }
+            }else{//controller file doesn't exist
+                $this->controllerClassName = false;//TODO: make this throw error?
             }
 
         }while(

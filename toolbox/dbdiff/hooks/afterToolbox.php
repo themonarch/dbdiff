@@ -158,7 +158,7 @@ sidebarV2::get('top_nav')
         sidebarV2::createLink('Download')
 			->setInner('Download <div class="notifications green">Coming Soon</div>')
             ->setMainView('/sidebar/menu_item.php')
-            ->setHref('/newsletter')
+            ->setHref('/download')
             ->setLinkAttributes('data-overlay-id="download"')
     )
     ->addLink(

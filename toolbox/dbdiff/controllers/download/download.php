@@ -1,16 +1,16 @@
 <?php
 namespace toolbox;
-class newsletter_controller {
+class download_controller {
 
     static function setup(){
 
         accessControl::get()
             ->removeRequired('member');
 
-        sidebarV2::get('top_nav')->setActive('Newsletter');
+        sidebarV2::get('top_nav')->setActive('Download');
 
 		title::get()
-		    ->addCrumb('Newsletter');
+		    ->addCrumb('Download');
 
     }
 
@@ -24,7 +24,7 @@ class newsletter_controller {
 
 		$widget = widgetHelper::create()
             ->setHook('inner')
-			->set('title', 'Sign Up for Newsletter')
+			->set('title', 'Download Coming Soon')
 			->set('style', 'max-width: 540px; margin: 0 auto;')
 			->set('class', 'style3');
 
@@ -50,11 +50,11 @@ class newsletter_controller {
 			}
 		}
 
-		messages::setCustomMessage('Sign up to our newsletter to get notifications
-		about new feature releases related specifically to this service.', 'messages', 'info');
+		messages::setCustomMessage('Downloading a self hosted version of DBDiff will be available
+		in the coming months. Please sign up below to be the first to know when it becomes available.', 'messages', 'info');
 
 		$widget->add(function($tpl){ ?>
-				<form class="form" method="post" action="/newsletter"
+				<form class="form" method="post" action="/download"
 					data-ajax_form="#<?php echo $tpl->widget_id; ?>">
 					<div class="form_panel padding">
 						<?php
@@ -71,7 +71,7 @@ class newsletter_controller {
 <div class="datatable ">
 	<div class="datatable-info datatable-section">
 	<div style="max-width: 400px; margin: 0 auto;">
-		<input type="submit" class="btn btn-medium btn-blue" value="Sign Me Up!" name="submit">
+		<input type="submit" class="btn btn-medium btn-blue" value="Notify Me" name="submit">
 	</div>
 	</div>
 	    	<div class="catchall"></div>
