@@ -253,7 +253,7 @@ page::get()->addView(function(){
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo config::getSetting('inspectlet_id'); ?>', 'auto');
+  ga('create', '<?php echo config::getSetting('google_analytics_id'); ?>', 'auto');
   ga('send', 'pageview');
 
 </script>
