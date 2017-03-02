@@ -63,7 +63,7 @@ $sync->updateLastViewed();
 
 		//add sql runner widget
 		widgetHelper::create()
-			->set('title', 'SQL History')
+			->set('title', 'SQL Execution History')
 			->set('class', 'style4')
 			->add('dbdiff/sql_history.php', 'widget-reload.php', 'sql_runner');
 

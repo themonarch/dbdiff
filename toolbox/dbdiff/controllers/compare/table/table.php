@@ -26,7 +26,7 @@ class table_controller {
 		//add sql runner widget
 		widgetHelper::create()
 			->setHook('sql_runner-inner')
-			->set('title', 'SQL History for `'.utils::htmlEncode($table_name).'`')
+			->set('title', 'SQL Execution History for `'.utils::htmlEncode($table_name).'`')
 			->set('class', 'style4')
 			->set('table', $table_name)
 			->add('dbdiff/sql_history.php', 'widget-reload.php', 'table_sql_runner');
