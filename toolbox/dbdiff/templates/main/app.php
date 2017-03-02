@@ -235,13 +235,13 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
                 </table>
             </div>
         <?php } ?>
-        <?php
-        $this->renderViews('before_body_end');
-        ?>
 
         <script type="text/javascript">
            $('body').removeClass('loading');
         </script>
 
+        <?php
+        $this->renderViews('before_body_end');
+        ?>
     </body>
 </html>
