@@ -24,7 +24,7 @@ class download_controller {
 
 		$widget = widgetHelper::create()
             ->setHook('inner')
-			->set('title', 'Download Coming Soon')
+			->set('title', 'Coming Soon!')
 			->set('style', 'max-width: 540px; margin: 0 auto;')
 			->set('class', 'style3');
 
@@ -71,7 +71,7 @@ class download_controller {
 <div class="datatable ">
 	<div class="datatable-info datatable-section">
 	<div style="max-width: 400px; margin: 0 auto;">
-		<input type="submit" class="btn btn-medium btn-blue" value="Notify Me" name="submit">
+		<input type="submit" class="btn btn-medium btn-blue btn-full_width" value="Notify Me" name="submit">
 	</div>
 	</div>
 	    	<div class="catchall"></div>

@@ -71,7 +71,7 @@ class newsletter_controller {
 <div class="datatable ">
 	<div class="datatable-info datatable-section">
 	<div style="max-width: 400px; margin: 0 auto;">
-		<input type="submit" class="btn btn-medium btn-blue" value="Sign Me Up!" name="submit">
+		<input type="submit" class="btn btn-medium btn-blue btn-full_width" value="Sign Me Up!" name="submit">
 	</div>
 	</div>
 	    	<div class="catchall"></div>
