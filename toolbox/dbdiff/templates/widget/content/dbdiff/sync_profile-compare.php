@@ -77,7 +77,7 @@ while($row = $query->fetchRow()){
 });*/
 
 
-
+        ob_implicit_flush(true);
 
 $dt = datatableV2::create()
 	->enableSearch(false)
@@ -137,6 +137,7 @@ $dt = datatableV2::create()
 			return $row->table_name;
     })
     ->defineCol('table_name', 'Details', function($val, $rows, $dt){
+    	sleep(1);
         $this->data['last_row_id'] = utils::getRandomString(8);
 		if($rows->synced == 'synced'){
 			$btn_style = 'gray';
@@ -159,8 +160,6 @@ $dt = datatableV2::create()
         		echo $btn_style; ?> btn-small">Schema Diff</button><?php
         	?></form>
             <?php
-
-
     })
 
     ->setPaginationDestination('#'.$widget_id)
@@ -178,3 +177,5 @@ $dt = datatableV2::create()
 	<?php }, 'footer')
     ->renderViews();
 
+
+        ob_implicit_flush(false);
