@@ -27,6 +27,7 @@ data-ajax_replace="true" data-form_toggle="false"
 data-ajax_form="#<?php echo $widget_id; ?>"
 action="/compare/<?php echo $sync_id; ?>/table/<?php echo $table_name; ?>"
 method="post" style="display: inline-block;">
+<input type="hidden" name="widget_unique_id" value="table_schema_diff">
 <?php
 datatableV2::create()
 	->enableSearch(false)
