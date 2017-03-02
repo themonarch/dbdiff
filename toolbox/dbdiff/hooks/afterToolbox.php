@@ -241,10 +241,12 @@ if(//grant webmaster priviledges (benchmarking, debugging, crons, etc)
     $acl->grant('webmaster');
 }
 
-//add tracking / analytics codes
-if(!$acl->hasRequirement('webmaster')){
-	page::get()->addViews(function(){
-		if(config::hasSetting('google_analytics_id')){ ?>
+	//add tracking / analytics codes
+page::get()->addView(function(){
+	if(accessControl::get()->hasRequirement('webmaster')){
+		return;//no analytics for web admins
+	}
+	if(config::hasSetting('google_analytics_id')){ ?>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -255,8 +257,8 @@ if(!$acl->hasRequirement('webmaster')){
   ga('send', 'pageview');
 
 </script>
-		<?php }
-		if(config::hasSetting('inspectlet_id')){ ?>
+<?php }
+	if(config::hasSetting('inspectlet_id')){ ?>
 <!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">
 window.__insp = window.__insp || [];
@@ -266,7 +268,7 @@ function ldinsp(){if(typeof window.__inspld != "undefined") return;
 window.__inspld = 1; var insp = document.createElement('script');
 insp.type = 'text/javascript'; insp.async = true;
 insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http')
-	+ '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0];
++ '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0];
 	x.parentNode.insertBefore(insp, x); };
 setTimeout(ldinsp, 500);
 document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) <?php
@@ -274,6 +276,7 @@ document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('on
 })();
 </script>
 <!-- End Inspectlet Embed Code -->
-		<?php }
-		}, 'before_body_end');
-}
+<?php }
+}, 'before_body_end')
+->setNoClear('before_body_end');//don't remove analytics on error / 404 pages
+
