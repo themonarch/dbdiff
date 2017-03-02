@@ -72,8 +72,21 @@ class sync{
 
 	private function getCreate($conn, $db, $table){
 		try{
-		return $conn->query('SHOW CREATE TABLE `'
-			.$db.'`.`'.$table.'`')->fetchRow()->{'Create Table'};
+			$schema = $conn->query('SHOW CREATE TABLE `'
+			.$db.'`.`'.appUtils::escapeField($table).'`')->fetchRow()->{'Create Table'};
+
+			//fix for old versions of mysql that lowercase some field properties
+			$schema = explode("\n", $schema);
+			foreach ($schema as &$line) {
+				$tick_position = strrpos ($line, '`');
+				if($tick_position !== false){
+					$before_tick = substr($line, 0, $tick_position);
+					$line = $before_tick.strtoupper(substr($line, $tick_position));
+				}
+			}
+			$schema = implode("\n", $schema);
+
+			return $schema;
 		}catch(toolboxException $e){
 			if(utils::stringStartsWith($e->getMessage(),
 				'Table \''.$db.'.'.$table.'\' doesn\'t exist')){

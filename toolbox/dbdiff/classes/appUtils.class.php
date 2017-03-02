@@ -35,6 +35,10 @@ class appUtils {
 
     }
 
+	static function escapeField($field_name){
+		return str_replace('`', '\`', $field_name);
+	}
+
     static function isProduction(){
         return (config::get()->getConfig('environment') == 'production');
     }

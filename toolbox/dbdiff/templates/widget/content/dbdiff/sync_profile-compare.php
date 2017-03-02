@@ -36,6 +36,7 @@ $query = $target_conn->query('select `TABLE_NAME`,
      where `table_schema` = '.db::quote($sync->getTargetDB()));
 while($row = $query->fetchRow()){
 	$target_create = $sync->getTargetCreate($row->TABLE_NAME);
+
 	if(isset($tables[$row->TABLE_NAME])){
 		$status = 'synced';
 		$auto_inc = utils::getStringBetweenTwoStrings($tables[$row->TABLE_NAME]->source_create, 'AUTO_INCREMENT=', ' ');
