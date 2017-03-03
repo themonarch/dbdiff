@@ -57,7 +57,7 @@ class connection{
 		}
 
 		if($name == ''){
-			return $this->getUser().'@'.$this->getHost();
+			return $this->getHost();
 		}
 
 		return $name;
