@@ -1,7 +1,23 @@
 body{
     font: 15px "Open Sans",sans-serif,Helvetica,Arial;
-    font-weight: 200;
+    font-weight: 300;
+
 }
+/* Chrome 29+ FADED THIN FONT FIX */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+  and (min-resolution:.001dpcm) {
+    body{font-weight: 500;}
+}
+
+input, textarea, select{
+	border-radius: 3px;
+}
+input:focus,
+textarea:focus,
+select:focus{
+	border: 1px solid #44AFFB;
+}
+
 #wrapper {
 
 }
@@ -473,7 +489,9 @@ body .loader-full_page .contents > div {
 .widget.style2 > .widget-content {
 	border-top: 0px none;
 }
-
+.widget.style5 > .widget-header{
+	text-align: center;
+}
 .widget.style3  > .widget-header {
 	text-align: center;
 	font-size: 20px;
@@ -963,10 +981,10 @@ background-color: rgba(146, 146, 146, 0.09);
 .switches.style1 > .container > .switch {
     box-shadow: 1px 1px 2px #d5d5d5 inset;
     display: table-cell;
-    font-variant: all-small-caps;
-padding: 4px 8px;
+	padding: 6px 8px;
     text-transform: uppercase;
     vertical-align: middle;
+    font-size: 10px;
 
 
 }

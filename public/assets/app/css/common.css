@@ -112,13 +112,13 @@ body{
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.36);
 
 }
-.modal-overlay > .ajax_results .widget .widget-content{
+.modal-overlay > .ajax_results > .widget > .widget-content{
 	box-shadow: none;
 	border-right: 0px none;
 	border-left: 0px none;
 	border-bottom: 0px none;
 }
-.modal-overlay > .ajax_results .widget > .widget-header{
+.modal-overlay > .ajax_results > .widget > .widget-header{
 	border: 0px none;
 }
 

@@ -109,7 +109,9 @@ and generate alter SQL to syncronize your MySQL databases.">
             utils::isPost()
             && isset($_POST['choose_db'])
 		){
-			$_POST['display_name-Database'] = $_POST['Database'];
+			if(isset($_POST['Database'])){//if user didn't hit back button
+				$_POST['display_name-Database'] = $_POST['Database'];
+			}
 			formV2::storeValues();
 
         }elseif(//clicked on 'choose database' button
@@ -128,37 +130,15 @@ and generate alter SQL to syncronize your MySQL databases.">
 			widgetHelper::create()
 				->set('name', 'Database['.$index.']')
                 ->set('connection_id', 'dbsync-'.$index)
+				->set('title', 'Choose a Database')
+				->set('class', 'style5')
+				->addView(function($tpl){ ?>
+<div class="widget-header-controls left">
+<button class="btn btn-small btn-silver" type="submit"><i class="icon-angle-double-left"></i> Back</button>
+</div>
+				<?php }, 'header')
 				->setHook('database_table')
-				->add(function($tpl){
-					$_POST['widget_unique_id'] = $tpl->widget_unique_id;
-					datatableV2::create()
-						->setPaginationLimit(1)
-						->setLimit(5)
-						->set('container_class', 'style1')
-						->set('name', $tpl->name)
-						->enableSearch(1, false)
-						->setSortInline()
-					    ->setSelect('*,
-					        "N/A" as `tables`,
-					        "N/A" as `size`')
-					    ->setFrom('`information_schema`.`SCHEMATA`')
-					    ->set('db', $tpl->connection_id)
-					    ->set('post_data', urlencode(json_encode($_POST)))
-					    ->defineCol('SCHEMA_NAME', 'Database')
-					    ->defineCol('SCHEMA_NAME', 'Actions', function($val, $rows, $dt){ ?>
-					            <button type="submit" name="<?php echo $dt->name; ?>"
-					                    class="btn btn-small btn-blue" value=<?php
-					                    echo db::quote($val); ?>>Choose Database</button>
-					    <?php })
-						->addView(function(){ ?>
-					    <div class="catchall spacer-2"></div>
-						<?php }, 'pre-table')
-						->addView(function(){ ?>
-					    <div class="catchall spacer-2"></div>
-						<?php }, 'post-table')
-					    ->renderViews();
-
-				}, 'blank.php', 'database_list');
+				->add('dbdiff/database_list.php', 'widget.php', 'database_list');
 
 
 
@@ -180,7 +160,7 @@ and generate alter SQL to syncronize your MySQL databases.">
             	formV2::storeValues();
             	page::get()->renderViews('database_table');
             	?>
-</form> <?php
+</form><?php
                 }, 'minimal.php', true);
 
 
@@ -228,12 +208,14 @@ and generate alter SQL to syncronize your MySQL databases.">
 			Syncronize Schemas with <span class="text-important">a Click</span>
 			</div>
 			<div class="catchall spacer-3"></div>
+			<div class="catchall spacer-4"></div>
 			<div style="text-align: center; max-width: 850px; margin: 0 auto;">
 
             <div class="header-line style5">
                 <div class="inner">Features</div>
                 <div class="gradient-line"></div>
             </div>
+			<div class="catchall spacer-2"></div>
             <div class="grid-6 grid-s-12">
             <ul class="list">
                 <li><b>Compare Databases</b> - Visually see mismatching or missing tables between two databases across any servers.</li>
@@ -254,9 +236,9 @@ and generate alter SQL to syncronize your MySQL databases.">
                     </li>
             </ul>
             </div>
-            <div class="catchall spacer-1"></div>
-            <div class="catchall spacer-3"></div>
-			<p>Try it now! No signup or email required.</p>
+            <div class="catchall spacer-4"></div>
+            <div class="catchall spacer-4"></div>
+			<p><b>Try it now!</b> No signup or email required.</p>
             <div class="catchall spacer-1"></div>
 			<i class="icon-down-open-big"></i>
 
@@ -288,6 +270,33 @@ and generate alter SQL to syncronize your MySQL databases.">
     }
 
 	function isValidQuickConnectForm(){
+		if(isset($_POST['Host'])){
+		foreach ($_POST['Host'] as $index => $value) {
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'https://');
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'http://');
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'tcp://');
+
+			//extract port
+			$host_parts = explode(':', $_POST['Host'][$index]);
+			if(is_numeric(end($host_parts))){
+				$port = array_pop($host_parts);
+				$host = implode(':', $host_parts);
+				$_POST['Host'][$index] = $host;
+				$_POST['Port'][$index] = $port;
+			}
+
+			//extract user
+			$host_parts = explode('@', $_POST['Host'][$index]);
+			if(count($host_parts) == 2){
+				$user = array_shift($host_parts);
+				$host = implode($host_parts);
+				$_POST['Host'][$index] = $host;
+				$_POST['User'][$index] = $user;
+			}
+			$_POST['Host'][$index] = utils::removeStringFromEnd($_POST['Host'][$index] , '/');
+		}
+		}
+
         validator::validate('Host', 'general');
         validator::validate('User', 'general');
         //validator::validate('Password', 'general');
@@ -511,9 +520,28 @@ and generate alter SQL to syncronize your MySQL databases.">
 		}
 
 		if(isset($_POST['Host'][$index] )){
-			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index] , 'https://');
-			$_POST['Host'][$index]  = utils::removeStringFromBeginning($_POST['Host'][$index] , 'http://');
-			$_POST['Host'][$index]  = utils::removeStringFromEnd($_POST['Host'][$index] , '/');
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'https://');
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'http://');
+			$_POST['Host'][$index] = utils::removeStringFromBeginning($_POST['Host'][$index], 'tcp://');
+
+			//extract port
+			$host_parts = explode(':', $_POST['Host'][$index]);
+			if(is_numeric(end($host_parts))){
+				$port = array_pop($host_parts);
+				$host = implode(':', $host_parts);
+				$_POST['Host'][$index] = $host;
+				$_POST['Port'][$index] = $port;
+			}
+
+			//extract user
+			$host_parts = explode('@', $_POST['Host'][$index]);
+			if(count($host_parts) == 2){
+				$user = array_shift($host_parts);
+				$host = implode($host_parts);
+				$_POST['Host'][$index] = $host;
+				$_POST['User'][$index] = $user;
+			}
+			$_POST['Host'][$index] = utils::removeStringFromEnd($_POST['Host'][$index] , '/');
 		}
 
         validator::validate('Host['.$index.']', function($val){

@@ -49,7 +49,9 @@ class edit_controller {
             utils::isPost()
             && isset($_POST['choose_db'])
 		){
-			$_POST['display_name-Database'] = $_POST['Database'];
+			if(isset($_POST['Database'])){//if user didn't hit back button
+				$_POST['display_name-Database'] = $_POST['Database'];
+			}
 			formV2::storeValues();
 
         }elseif(//clicked on 'choose database' button
@@ -68,20 +70,28 @@ class edit_controller {
 			widgetHelper::create()
 				->set('name', 'Database['.$index.']')
                 ->set('connection_id', 'dbsync-'.$index)
+				->set('title', 'Choose a Database')
+				->set('class', 'style5')
+				->addView(function($tpl){ ?>
+<div class="widget-header-controls left">
+<button class="btn btn-small btn-silver" type="submit"><i class="icon-angle-double-left"></i> Back</button>
+</div>
+				<?php }, 'header')
 				->setHook('database_table')
-				->add('dbdiff/database_list.php', 'blank.php', 'database_list');
+				->add('dbdiff/database_list.php', 'widget.php', 'database_list');
 
 
 		    //render form containing the list of databases
 		    widgetHelper::create()
                 ->setHook('connection-'.$index)
                 ->set('connection_id', 'dbsync-'.$index)
+                ->set('sync_id', $sync->getID())
 				->set('name', 'Database['.$index.']')
 				->set('index', $index)
                 ->add(function($tpl){ ?>
 <form data-ajax_form="#<?php echo $tpl->widget_id; ?>"
     data-show_loader="#<?php echo $tpl->widget_id; ?>"
-    class="form" method="post" action="">
+    class="form" method="post" action="/compare/<?php echo $tpl->sync_id; ?>/edit">
 
 	<input type="hidden" name="choose_db" value="true">
 	<input type="hidden" name="<?php echo $tpl->index; ?>" value="true">
