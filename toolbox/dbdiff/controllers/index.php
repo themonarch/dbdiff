@@ -238,7 +238,8 @@ and generate alter SQL to syncronize your MySQL databases.">
             </div>
             <div class="catchall spacer-4"></div>
             <div class="catchall spacer-4"></div>
-			<p><b>Try it now!</b> No signup or email required.</p>
+			<p><b>Try it now!</b><?php
+				if(!user::isUserLoggedIn()){ ?> No signup or email required.<?php } ?></p>
             <div class="catchall spacer-1"></div>
 			<i class="icon-down-open-big"></i>
 

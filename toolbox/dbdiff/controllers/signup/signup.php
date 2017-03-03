@@ -92,7 +92,7 @@ class signup_controller {
 
 
 		$user->setGrant('member');
-        $user->sendEmailVerification();
+        //$user->sendEmailVerification();
 
 		return true;
 
@@ -100,9 +100,42 @@ class signup_controller {
 
     function __construct(){
 
+
+
+
 		if(utils::isPost()){
 			if($this->isValid() && $this->process()){
-        		utils::redirectTo('/');
+
+
+			messages::setSuccessMessage('You now have your very own account.
+			You\'re logged in and ready to go!');
+
+			page::get()
+				->clearViews('print_messages');
+			widgetHelper::create()
+				->add(function($tpl){ ?>
+<div class="section centered">
+    <div class="contents">
+        <div class="contents-inner">
+        	<div class="form_panel style2">
+            <div class="section-header">
+                <h2 style="text-align: center;">You're Awesome!</h2>
+            </div>
+            <div class="catchall spacer-1"></div>
+            <div class="section-content">
+				<?php messages::printMessages('messages', 'style5'); ?>
+                <div style="text-align: center;">
+                    <a class="btn btn-link" href="/">Continue to Homepage</a>
+                </div>
+            </div>
+           	</div>
+        </div>
+    </div>
+</div>
+			<?php }, 'minimal.php', true);
+			return;
+
+
 			}else{
 				formV2::storeValues($_POST);
 			}
