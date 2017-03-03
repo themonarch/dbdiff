@@ -16,6 +16,34 @@ class signup_controller {
 		    ->addCrumb('Sign Up');
     }
 
+    function isValidRecaptcha(){
+
+        if(!isset($_REQUEST['g-recaptcha-response']) || trim($_REQUEST['g-recaptcha-response']) == ''){
+            return 'Recaptcha checkbox was not checked!';
+        }
+
+
+
+        $response = curlWrapper::create()->addPostFields(
+            array(
+                'secret' => config::getSetting('reCAPTCHA-secret'),
+                'response' => $_REQUEST['g-recaptcha-response'],
+                'remoteip' => $_SERVER['REMOTE_ADDR']
+            )
+        )->execute('https://www.google.com/recaptcha/api/siteverify');
+
+        $json = json_decode($response);
+        if(!isset($json->success)){
+            throw new toolboxException('Unexpected response from google recaptcha api: '.$response);
+        }
+        if($json->success === true){
+            return true;
+        }
+
+        return 'Recaptcha was not validated. Please try again.';
+
+    }
+
 	function isValid(){
 
 
@@ -31,10 +59,11 @@ class signup_controller {
 			return false;
 		}
 
-		if(!isset($_REQUEST['g-recaptcha-response'])){
-            messages::setErrorMessage('Please check the reCAPTHCA box below.');
+        if(($msg = $this->isValidRecaptcha()) !== true){
+            messages::setErrorMessage($msg);
 			return false;
 		}
+
 		return true;
 
 	}
@@ -114,24 +143,14 @@ class signup_controller {
 				->clearViews('print_messages');
 			widgetHelper::create()
 				->add(function($tpl){ ?>
-<div class="section centered">
-    <div class="contents">
-        <div class="contents-inner">
         	<div class="form_panel style2">
-            <div class="section-header">
                 <h2 style="text-align: center;">You're Awesome!</h2>
-            </div>
-            <div class="catchall spacer-1"></div>
-            <div class="section-content">
+                <div class="catchall spacer-1"></div>
 				<?php messages::printMessages('messages', 'style5'); ?>
                 <div style="text-align: center;">
                     <a class="btn btn-link" href="/">Continue to Homepage</a>
                 </div>
-            </div>
            	</div>
-        </div>
-    </div>
-</div>
 			<?php }, 'minimal.php', true);
 			return;
 
