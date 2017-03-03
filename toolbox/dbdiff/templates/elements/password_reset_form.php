@@ -8,7 +8,13 @@
             <div class="section-content">
 
 <div class="form_panel style1" id="password_reset">
-            <form method="post" class="form clearfix">
+    <form method="post" class="form clearfix">
+        <?php
+        messages::output('<b>Warning:</b> Once you submit your new password, some of the settings on your account will
+                    be lost because of the way we encrypt sensitive data using your password as part of
+                    your account\'s encryption key.', 'warning', 'style3'); ?>
+        <div class="catchall spacer-3"></div>
+
     <?php messages::printMessages('reset_password'); ?>
             <table class="steps">
                 <tbody>

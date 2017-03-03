@@ -60,7 +60,7 @@ $dt->defineCol('id', 'Action', function($val, $rows, $dt, $col){ ?>
 	?>`" id="row_<?php echo $val; ?>"
 	data-show_loader="#row_<?php echo $val; ?>"
 	data-ajax_replace="true" data-ajax_form="#row_<?php echo $val;
-	?>" action="/ajax/delete_comparison/<?php echo $val; ?>" style="display: inline-block;">
+	?>" action="/compare/<?php echo $val; ?>/delete" style="display: inline-block;">
 	<button style="padding: 3px 5px;" type="submit" class="btn btn-small btn-silver">
 		<i class="icon-trash-empty single"></i>
 	</button>

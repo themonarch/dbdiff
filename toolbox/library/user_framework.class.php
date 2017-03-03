@@ -530,7 +530,7 @@ class user_framework {
         //get token or throw error if too many
         $token_object = new tokenHelper($this, 'password_reset');
 
-        $url = utils::getHost().'/password_reset/'.$this->getStringID().'/'.$token_object->getToken();
+        $url = utils::getHost().'/login/forgot/reset/'.$this->getStringID().'/'.$token_object->getToken();
 
         //send email
         appUtils::sendEmail($this->getEmail(), config::get()->getConfig('app_name').' Password Recovery Request',

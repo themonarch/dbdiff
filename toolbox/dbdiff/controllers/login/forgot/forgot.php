@@ -1,6 +1,6 @@
 <?php
 namespace toolbox;
-class forgot_password_controller {
+class forgot_controller {
 
     static function setup(){
 
@@ -36,7 +36,8 @@ class forgot_password_controller {
 
         //success
         messages::setSuccessMessage('An email has been sent to <b>'
-        	.htmlspecialchars($user->getEmail(), ENT_QUOTES).'</b> with instructions on how to reset the password.');
+        	.htmlspecialchars($user->getEmail(), ENT_QUOTES).'</b> with instructions on how to reset the password.
+        	   Remember to also check in your spam folder.');
 
 		return true;
 	}
@@ -85,14 +86,15 @@ class forgot_password_controller {
 		//password recovery form
         $widget->add(function($tpl){ ?>
         	<div class="form_panel">
-			<form class="form" method="post" action="/forgot_password"
+			<form class="form" method="post" action="/login/forgot"
 				data-ajax_form="#<?php echo $tpl->widget_id; ?>">
 					<?php
 					messages::printMessages('messages', 'style5');
 					messages::output('Submit the email address associated with your account and we will send you
             				an email containing instructions on how to reset your password.
-            				<br><b>WARNING: Existing connection passwords will be lost after your
-            				account password is changed.</b>', 'notice', 'style5');
+            				<br><br><b>WARNING:</b> Once your password is changed, some data on your account
+            				<b>will be lost</b> because we encrypt sensitive data using your password
+            				as part of your account\'s encryption key.', 'notice', 'style5');
                     form::textField()
                             ->setTypeText()
                             ->setName('email')
@@ -100,7 +102,7 @@ class forgot_password_controller {
                     ?>
                     <div style="text-align: right; margin: 15px 0px 0;">
                         <a style="float: left;" href="/login" class="btn btn-medium">&laquo; Back to Login</a>
-                        <input type="submit" class="btn btn-medium btn-blue" value="Send Recovery Email" name="submit">
+                        <input type="submit" class="btn btn-medium btn-blue" value="Send Reset Instructions" name="submit">
                     </div>
 			</form>
 			</div>

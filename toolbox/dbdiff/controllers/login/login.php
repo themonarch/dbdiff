@@ -74,7 +74,7 @@ class login_controller {
 						?>
 				        <div class="catchall spacer-2"></div>
 						<div style="text-align: right; margin: 15px 0px 0;">
-							<a style="float: left;" href="/forgot_password" class="btn btn-medium">Forgot password?</a>
+							<a style="float: left;" href="/login/forgot" class="btn btn-medium">Forgot password?</a>
 							<input type="submit" class="btn btn-medium btn-blue" value="Login" name="submit">
 						</div>
 				        <div class="catchall"></div>

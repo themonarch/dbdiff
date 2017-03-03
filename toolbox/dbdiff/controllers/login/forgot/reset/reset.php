@@ -1,6 +1,6 @@
 <?php
 namespace toolbox;
-class password_reset_controller {
+class reset_controller {
 
     public function __construct() {
 
@@ -59,13 +59,17 @@ class password_reset_controller {
     <div class="contents">
         <div class="contents-inner">
             <div class="section-header">
-                <h2 style="text-align: center;"><?php if(isset($tpl->title)) echo $tpl->title; ?></h2>
+                <h2 style="text-align: center;">Success!</h2>
             </div>
             <div class="section-content">
-                <?php messages::printMessages('reset_password'); ?>
+                <div class="form_panel">
+                <?php messages::printMessages('reset_password', 'style5'); ?>
+                <div class="catchall spacer-2"></div>
                 <div style="text-align: center;">
-                    <a class="btn btn-link" href="/">Back to Home</a>
+                    <a class="btn btn-link btn-medium" href="/login">Continue to Login</a>
                 </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -86,6 +90,7 @@ class password_reset_controller {
 
         page::get()
             ->addView('elements/password_reset_form.php', 'content-narrow');
+
     }
 
     function invalid($msg = 'Wrong or expired link.'){
