@@ -47,7 +47,7 @@ class index_controller {
 		messages::readMessages('quick_connect-1');
 
 		title::get()//add a descriptive title for the homepage
-		    ->addCrumb('A Quick Schema Comparison & Sync Tool for MySQL Databases');
+		    ->addCrumb('A Schema Comparison & Sync Tool for MySQL Databases');
 
 		//add a meta description
 		page::get()->addView(function(){ ?>
