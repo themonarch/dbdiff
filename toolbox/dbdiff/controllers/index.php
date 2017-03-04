@@ -211,7 +211,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 			<div class="catchall spacer-4"></div>
 			<div style="text-align: center; max-width: 850px; margin: 0 auto;">
 
-            <div class="header-line style5">
+            <div class="header-line style4">
                 <div class="inner">Features</div>
                 <div class="gradient-line"></div>
             </div>
