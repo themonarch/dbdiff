@@ -1244,8 +1244,62 @@ class utils {
         }
     }
 
+	/**
+	 * Generate an encrypted cookie unique to this session.
+	 */
+	static function generateEncryptionCookie($plaintext_password){
+        	//generate a random salt and store in db with a unique id
+        	$enc_token = utils::getRandomString(20);
+        	$enc_salt = openssl_random_pseudo_bytes(20);
+			db::query('insert into `encryption_salt` (`salt_id`, `salt`)
+			values ('.db::quote($enc_token).', '.db::quote($enc_salt).')');
+
+        	//generate a random password
+        	$password = utils::getRandomString(20);
+
+			//encrypt the password with the generated salt we stored in the db
+			$enc_password = utils::encrypt($plaintext_password, $enc_salt, config::getSetting('encryption_salt'));
+
+			//send the encrypted password to the user
+	        $cookieHelper = new cookieHelper();
+	        $cookieHelper->setCookieExpirationToDays(999);
+	        $cookieHelper->setCookieName('encryption_token');
+	        $cookieHelper->setCookieValue($enc_password.'|'.$enc_token);
+	        $cookieHelper->sendCookieTouser();
+
+			$_COOKIE['encryption_token'] = $enc_password.'|'.$enc_token;
+
+			//TODO: encrypt a sample string and store in db as a way to validate decryption for user?
+	}
+
+	static function getEncryptionKey(){
+		if(!isset($_COOKIE['encryption_token']) || trim($_COOKIE['encryption_token']) == ''){
+			//try{
+			//	cookieHelper::create()->destroyCookie('encryption_token');
+			//	cookieHelper::create()->destroyCookie('login');
+			//}catch(toolboxException $e){}
+			//throw new softPublicException('Your session was not found or it may have expired. Please log in to continue.');
+			throw new toolboxException('Encryption token not found!');
+		}
+
+		$parts = explode('|', $_COOKIE['encryption_token']);
+
+		//find the salt from db
+		$encryption_salt = db::query('select * from `encryption_salt`
+		where `salt_id` = '.db::quote($parts[1]))->fetchRow();
+
+		if($encryption_salt === null){
+			throw new toolboxException('Encryption token not found!');
+		}
+
+		$encryption_key = utils::decrypt($parts[0], $encryption_salt->salt);
+
+		return $encryption_key;
+	}
+
     static function encrypt($data, $encryption_key, $initialization_vector = null){
     	if($initialization_vector === null){
+    		//unique iv not neccessary if our $encryption_key is already randomly generated or salted with random string
     		$initialization_vector = config::getSetting('encryption_salt');
     	}
 		return openssl_encrypt($data, 'aes-256-cbc', $encryption_key, OPENSSL_RAW_DATA, $initialization_vector);

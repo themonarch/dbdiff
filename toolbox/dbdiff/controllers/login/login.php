@@ -32,7 +32,7 @@ class login_controller {
 	        //log the user in now.
 	        user::login($user_id);
 
-			user::generateEncryptionCookie($_POST['password']);
+			utils::generateEncryptionCookie($_POST['password']);
 
 			return true;
 	}

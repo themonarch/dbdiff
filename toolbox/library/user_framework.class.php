@@ -161,56 +161,25 @@ class user_framework {
 		}
 
 		if($create_encryption_cookie){
-			user::generateEncryptionCookie($data['password']);
+			utils::generateEncryptionCookie($data['password']);
 		}
 
         return true;
 
     }
 
-	static function generateEncryptionCookie($plaintext_password){
-        	//generate a random salt and store in db with a unique id
-        	$enc_token = utils::getRandomString(20);
-        	$enc_salt = openssl_random_pseudo_bytes(20);
-			db::query('insert into `encryption_salt` (`salt_id`, `salt`)
-			values ('.db::quote($enc_token).', '.db::quote($enc_salt).')');
-
-        	//generate a random password
-        	$password = utils::getRandomString(20);
-
-			//encrypt the password with the generated salt we stored in the db
-			$enc_password = utils::encrypt($plaintext_password, $enc_salt, config::getSetting('encryption_salt'));
-
-			//send the encrypted password to the user
-	        $cookieHelper = new cookieHelper();
-	        $cookieHelper->setCookieExpirationToDays(999);
-	        $cookieHelper->setCookieName('encryption_token');
-	        $cookieHelper->setCookieValue($enc_password.'|'.$enc_token);
-	        $cookieHelper->sendCookieTouser();
-
-			$_COOKIE['encryption_token'] = $enc_password.'|'.$enc_token;
-
-			//TODO: encrypt a sample string and store in db as a way to validate decryption for user?
-	}
-
-	function getEncryptionKey(){
-		if(!isset($_COOKIE['encryption_token']) || trim($_COOKIE['encryption_token']) == ''){
-			try{
-				cookieHelper::create()->destroyCookie('encryption_token');
-				cookieHelper::create()->destroyCookie('login');
-			}catch(toolboxException $e){}
-			throw new softPublicException('Your session was not found or it may have expired. Please log in to continue.');
-		}
-
-		return $_COOKIE['encryption_token'];
-	}
-
 	function encrypt($string){
-		return utils::encrypt($string, $this->getEncryptionKey(), config::getSetting('encryption_salt'));
+		if(!$this->isUserLoggedIn()){
+			throw new toolboxError('Can\'t encrypt data for user that isn\'t logged in!');
+		}
+		return utils::encrypt($string, utils::getEncryptionKey(), config::getSetting('encryption_salt'));
 	}
 
 	function decrypt($string){
-		return utils::decrypt($string, $this->getEncryptionKey(), config::getSetting('encryption_salt'));
+		if(!$this->isUserLoggedIn()){
+			throw new toolboxError('Can\'t decrypt data for user that isn\'t logged in!');
+		}
+		return utils::decrypt($string, utils::getEncryptionKey(), config::getSetting('encryption_salt'));
 	}
 
     public static function createNewLoginToken($user_id){

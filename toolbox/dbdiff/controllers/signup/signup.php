@@ -84,10 +84,10 @@ class signup_controller {
 				where `user_id` = '.db::quote($guest->getID()));
 
 				//get current encrpytion key
-				$old_key = $guest->getEncryptionKey();
+				$old_key = utils::getEncryptionKey();
 
 				//generate new encryption key
-				user::generateEncryptionCookie($_POST['password']);
+				utils::generateEncryptionCookie($_POST['password']);
 
 				//get all user's connections
 				$connections = db::query('select * from db_connections
