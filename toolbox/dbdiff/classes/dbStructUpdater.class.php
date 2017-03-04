@@ -279,13 +279,14 @@ class dbStructUpdater
 	function getTableList($struct)
 	{
 		$result = array();
-		if (preg_match_all('/CREATE(?:\s*TEMPORARY)?\s*TABLE\s*(?:IF NOT EXISTS\s*)?(?:`?(\w+)`?\.)?`?(\w+)`?/i', $struct, $m))
+		if (preg_match_all('/CREATE(?:\s*TEMPORARY)?\s*TABLE\s*(?:IF NOT EXISTS\s*)?(?:`?([^`]+)`?\.)?`?([^`]+)`?/i', $struct, $m))
 		{
 			foreach($m[2] as $match)//m[1] is a database name if any
 			{
 				$result[] = $match;
 			}
 		}
+
 		return $result;
 	}
 
@@ -302,7 +303,7 @@ class dbStructUpdater
 		$result = '';
 		/* create table should be single line in this case*/
 		//1 - part before database, 2-database name, 3 - part after database
-		if (preg_match('/(CREATE(?:\s*TEMPORARY)?\s*TABLE\s*(?:IF NOT EXISTS\s*)?)(?:`?(\w+)`?\.)?(`?('.$tab.')`?(\W|$))/i', $struct, $m, PREG_OFFSET_CAPTURE))
+		if (preg_match('/(CREATE(?:\s*TEMPORARY)?\s*TABLE\s*(?:IF NOT EXISTS\s*)?)(?:`?([^`]+)`?\.)?(`?('.$tab.')`?(\W|$))/i', $struct, $m, PREG_OFFSET_CAPTURE))
 		{
 			$tableDef = $m[0][0];
 			$start = $m[0][1];
@@ -465,12 +466,12 @@ class dbStructUpdater
 		{
 			return false;
 		}
-		//if (preg_match('/^(PRIMARY KEY)|(((UNIQUE )|(FULLTEXT ))?KEY `?\w+`?)/i', $line, $m))//key definition
-		if (preg_match('/^(PRIMARY\s+KEY)|(((UNIQUE\s+)|(FULLTEXT\s+))?KEY\s+`?\w+`?)/i', $line, $m))//key definition
+		//if (preg_match('/^(PRIMARY KEY)|(((UNIQUE )|(FULLTEXT ))?KEY `?[^`]+`?)/i', $line, $m))//key definition
+		if (preg_match('/^(PRIMARY\s+KEY)|(((UNIQUE\s+)|(FULLTEXT\s+))?KEY\s+`?[^`]+`?)/i', $line, $m))//key definition
 		{
 			$key = $m[0];
 		}
-		elseif (preg_match('/^`?\w+`?/i', $line, $m))//field definition
+		elseif (preg_match('/^`?[^`]+`?/i', $line, $m))//field definition
 		{
 			$key = '!'.$m[0];//to make sure fields will be synchronised before the keys
 		}
@@ -532,7 +533,7 @@ class dbStructUpdater
 				}
 				if (!empty($options['forceIfNotExists']))
 				{
-					$destSql = preg_replace('/(CREATE(?:\s*TEMPORARY)?\s*TABLE\s*)(?:IF\sNOT\sEXISTS\s*)?(`?\w+`?)/i', '$1IF NOT EXISTS $2', $destSql);
+					$destSql = preg_replace('/(CREATE(?:\s*TEMPORARY)?\s*TABLE\s*)(?:IF\sNOT\sEXISTS\s*)?(`?[^`]+`?)/i', '$1IF NOT EXISTS $2', $destSql);
 				}
 				$sqls[] = $destSql;
 			}
@@ -579,7 +580,7 @@ class dbStructUpdater
 		$action = strtolower($action);
 		$keyField = '`?\w`?(?:\(\d+\))?';//matches `name`(10)
 		$keyFieldList = '(?:'.$keyField.'(?:,\s?)?)+';//matches `name`(10),`desc`(255)
-		if (preg_match('/((?:PRIMARY )|(?:UNIQUE )|(?:FULLTEXT ))?KEY `?(\w+)?`?\s(\('.$keyFieldList.'\))/i', $sql, $m))
+		if (preg_match('/((?:PRIMARY )|(?:UNIQUE )|(?:FULLTEXT ))?KEY `?([^`]+)?`?\s(\('.$keyFieldList.'\))/i', $sql, $m))
 		{   //key and index operations
 			$type = strtolower(trim($m[1]));
 			$name = trim($m[2]);
