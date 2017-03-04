@@ -33,7 +33,7 @@ RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 #AuthUserFile /var/extra_vhosts/apache.users
 #require valid-user
 
-<ifModule mod_deflate.c>
+<ifModule deflate_module>
 AddOutputFilterByType DEFLATE text/plain
 AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE text/html
