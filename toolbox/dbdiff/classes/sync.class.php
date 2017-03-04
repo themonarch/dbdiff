@@ -75,6 +75,9 @@ class sync{
 			$schema = $conn->query('SHOW CREATE TABLE `'
 			.$db.'`.`'.appUtils::escapeField($table).'`')->fetchRow()->{'Create Table'};
 
+			//fix for old versions of mysql that have double spaces
+			$schema = str_replace('  ', ' ', $schema);
+
 			//fix for old versions of mysql that lowercase some field properties
 			$schema = explode("\n", $schema);
 			foreach ($schema as &$line) {
@@ -84,6 +87,7 @@ class sync{
 					$line = $before_tick.strtoupper(substr($line, $tick_position));
 				}
 			}
+
 			$schema = implode("\n", $schema);
 
 			return $schema;
