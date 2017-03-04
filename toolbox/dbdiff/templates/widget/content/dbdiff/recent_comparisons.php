@@ -1,5 +1,5 @@
 <?php namespace toolbox;
-if(user::isUserLoggedIn() || user::isGuestLoggedIn()){
+if(user::isUserLoggedIn()){
 	$user_id = user::getUserLoggedIn()->getID();
 }else{
 	$user_id = null;

@@ -177,9 +177,9 @@ page::get()//add it to the top nav
 		echo $time; ?> +0000"><?php echo $time; ?></span>
 	<?php }, 'top_nav-left');
 
-if(user::isUserLoggedIn()){
+if(user::isMemberLoggedIn()){
 
-    $acl->grant('member');//allow user to see pages requiring login
+    $acl->grant('member');//allow user to see pages requiring login (including GUEST accounts)
 
     page::get()
 	        ->addView('elements/account_nav.php', 'top_nav_extra_items');

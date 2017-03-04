@@ -102,7 +102,7 @@ $sync->updateLastViewed();
 			});
 
 		//active guest and members have a session
-		if(user::isGuestLoggedIn() || user::isUserLoggedIn()){
+		if(user::isUserLoggedIn()){
 			accessControl::get()->grant('session');
 
 			try{//check if user has access to requested sync id

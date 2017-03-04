@@ -239,7 +239,7 @@ and generate alter SQL to syncronize your MySQL databases.">
             <div class="catchall spacer-4"></div>
             <div class="catchall spacer-4"></div>
 			<p><b>Try it now!</b><?php
-				if(!user::isUserLoggedIn()){ ?> No signup or email required.<?php } ?></p>
+				if(!user::isMemberLoggedIn()){ ?> No signup or email required.<?php } ?></p>
             <div class="catchall spacer-1"></div>
 			<i class="icon-down-open-big"></i>
 
@@ -325,7 +325,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 		$user = null;
 
 		//if not logged in and no guest account...
-		if(!user::isUserLoggedIn() && !user::isGuestLoggedIn()){
+		if(!user::isUserLoggedIn()){
 			user::create(//create guest account
 				array('password' => utils::getRandomString(10)),//with a random password
 				true, //log current user into guest account

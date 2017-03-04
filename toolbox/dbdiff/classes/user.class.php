@@ -29,33 +29,6 @@ class user extends user_framework {
         return $account_status;
     }
 
-    function grantAccessToClient($client_id, $property){
-        $this->setCustomValue($property.'-'.$client_id, date('Y-m-d H:i:s'));
-    }
-
-    function hasAccessToClient($client_id, $property){
-
-        user::getUserLoggedIn()->logActivity('client-unlocked',
-            'Unlocked client: '.$property.':'.$client_id);
-
-        //users with special access don't need to unlock
-        if($this->hasGrant('client_lock_bypass')){
-            return true;
-        }
-
-        try{
-            $date = $this->getCustomValue($property.'-'.$client_id);
-        }catch(whmcsClientException $e){
-            return false;
-        }
-
-        if(strtotime($date) > strtotime('-30 minutes')){
-            return true;
-        }
-
-        return false;
-
-    }
 
     function setAccountStatus($account_status){
 
@@ -95,7 +68,7 @@ class user extends user_framework {
 
     }
 
-    static function isUserLoggedIn(){
+    static function isMemberLoggedIn(){
         if(parent::isUserLoggedIn()){
             if(self::getUserLoggedIn()->hasGrant('member')){
                 return true;
