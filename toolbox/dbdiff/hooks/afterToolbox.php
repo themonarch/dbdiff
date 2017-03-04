@@ -277,6 +277,6 @@ document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('on
 </script>
 <!-- End Inspectlet Embed Code -->
 <?php }
-}, 'before_body_end')
-->setNoClear('before_body_end');//don't remove analytics on error / 404 pages
+}, 'start_of_head_tag')
+->setNoClear('start_of_head_tag');//don't remove analytics on error / 404 pages
 
