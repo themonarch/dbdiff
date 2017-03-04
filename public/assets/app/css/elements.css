@@ -865,12 +865,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00dbdad9', e
 }
 
 .header-line.left > .inner {
-    padding: 5px 0;
+    padding: 0 0 5px 0;
 }
 
 .header-line > .inner {
     display: inline-block;
-    padding: 5px 25px;
+    padding: 0px 25px 5px;
     background-color: rgb(255, 255, 255);
     font-size: 26px;
     position: relative;
@@ -973,6 +973,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
     background-color: #FFFFFF;
     font-size: 22px;
     font-weight: 300;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.header-line.style5 > .inner {
+    background-color: #f7f7f7;
+    font-size: 18px;
+    font-weight: 400;
     text-shadow: 0 1px 0 #ffffff;
 }
 .form_panel {

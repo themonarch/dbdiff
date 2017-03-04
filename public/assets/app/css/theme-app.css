@@ -791,9 +791,7 @@ ul.list > li {
     background-color: #FFFFFF;
     color: #000000;
 }
-.switches > .container > .switch.active > .note {
-    color: #444;
-}
+
 .switches > .container > .switch > .note {
     color: #999999;
     font-size: 12px;
@@ -919,14 +917,18 @@ ul.list > li {
 	bottom: -1px;
 	position: relative;
 }
-
+.switches > .container > .switch > .note{
+	display: block;
+	font-size: 12px;
+	color: #999999;
+}
 .switches.style5 {
 
 	border: 1px solid #CCCCCC;
     display: table;
     table-layout: fixed;
     background-color: #EAEAEA;
-    font-size: 12px;
+    font-size: 14px;
     border-radius: 0px;
   -webkit-user-select: none;  /* Chrome all / Safari all */
   -moz-user-select: none;     /* Firefox all */
@@ -939,6 +941,7 @@ ul.list > li {
 
 .switches.style5 > .container > .switch.active {
     box-shadow: none;
+    font-weight: bold;
 }
 .switches.style5 > .container > .switch {
     box-shadow: 0 0 5px #d5d5d5 inset;
@@ -2193,4 +2196,24 @@ table.table.style4 > tbody > tr > td.diff-same
 	background: rgba(3, 255, 0, 0.09);
 	box-shadow: 1px 1px rgba(155, 181, 157, 0.48) inset;
 	text-shadow: none;
+}
+
+code {
+	white-space: pre-line;
+}
+code.style2 {
+    background-color: #191C1C;
+    color: #eee;
+    padding: 3px 8px;
+}
+
+code.style1 {
+    background-color: #ededed;
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    color: #555;
+    padding: 3px 5px;
+}
+.centertext {
+    text-align: center;
 }

@@ -25,8 +25,8 @@ messages::readMessages($index);
 			formV2::textField()
 				->setLabel('Host')
 				->setPlaceholder('Ex: example.com')
-				->setNote('Need to connect to your localhost? It\'s easy,
-					<a data-ajax_overlay="" href="/learn_localhost" data-overlay-id="learn_localhost">learn how!</a>')
+				->setNote('Need to connect to your localhost?
+				<a data-ajax_overlay="" href="/learn_localhost" data-overlay-id="learn_localhost">Learn how!</a>')
 	            ->setTypeText()
                 ->setDisabled(page::get()->demo)
 	            ->setName('Host['.$index.']')

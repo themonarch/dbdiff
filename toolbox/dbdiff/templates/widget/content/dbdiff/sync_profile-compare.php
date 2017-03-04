@@ -106,8 +106,15 @@ $dt = datatableV2::create()
                     <input type="checkbox"> Ignore</a>
 		<?php
     })*/
-    ->defineCol('table_name', $source_conn->getName().'<br>`'.$sync->getSourceDB().'`', function($val, $row){
-		return $row->table_name;
+    ->defineCol('table_name', $source_conn->getName().'<br>`'.$sync->getSourceDB().'`',
+    	function($val, $row){
+    		if($row->synced == 'left'){ ?>
+			<div style="text-align: center;">
+    		<span class="notifications">MISSING</span>
+    		</div>
+			<?php } else{
+				return $row->table_name;
+			}
     })
     ->defineCol('synced', 'Vs.', function($val, $row, $dt){
 		$dt->{$val}++;
@@ -134,8 +141,16 @@ $dt = datatableV2::create()
             $dt->setColSetting($field_name, 'class', 'diff-same');
         }
     })
-    ->defineCol('target_table_name', $target_conn->getName().'<br>`'.$sync->getTargetDB().'`', function($val, $row){
-			return $row->table_name;
+    ->defineCol('target_table_name',
+    	$target_conn->getName().'<br>`'.$sync->getTargetDB().'`',
+    	function($val, $row){
+    		if($row->synced == 'right'){ ?>
+			<div style="text-align: center;">
+    		<span class="notifications">MISSING</span>
+    		</div>
+			<?php } else{
+				return $row->table_name;
+			}
     })
     ->defineCol('table_name', 'Details', function($val, $rows, $dt){
         $this->data['last_row_id'] = utils::getRandomString(8);

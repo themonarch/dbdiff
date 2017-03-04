@@ -9,7 +9,7 @@ echo config::get()->getConfig('app_name'); ?>
 </div>
  &#8226;
 <div class="footer-item">
-<a title="Contact us with your feedback or questions!" href="/contact">Contact</a>
+<a title="Contact us with your feedback or questions!" href="/contact">Contact the Developer</a>
 </div>
 <br>
 <?php
