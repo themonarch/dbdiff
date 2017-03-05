@@ -2,15 +2,8 @@
 namespace toolbox;
 class table_controller {
 
-	static function setup(){
-		router::get()//require a table name param
-			->setMaxParams(1)
-			->setMinParams(1);
-	}
-
     function __construct(){
 
-		router::get()->extractParam('table_name');
 
         //initializations
         $profile_id = router::get()->getParam('profile_id');
@@ -241,6 +234,9 @@ page::get()->renderViews('expanded_row_contents-footer');
 
 
     static function passThru(){
+
+		router::get()->extractParam('table_name');
+
         title::get()
             ->addCrumb('Table');
 

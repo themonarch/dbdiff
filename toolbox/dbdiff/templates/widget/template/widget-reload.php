@@ -20,7 +20,8 @@
     	    </form>
         </div>
     </div>
-    <div class="widget-content">
+    <div class="widget-content" style="<?php if(isset($style_widget_content)) echo $style_widget_content; ?>">
+    	<div class="catchall"></div>
         <?php $this->renderViews('widget_content'); ?>
     </div>
 <div class="catchall"></div>

@@ -468,11 +468,14 @@ class datatableV2 extends page {
 	}
 
 	function setNoResultView($view = null){
-		$this->clearViews('no-results');
+		$this->clearViews('no_data');
 		if($view === null){
-			$view = page::create()->set('notice', 'No results found!')->set('container_style', 'style-1')->addView('elements/notice.php');
+			$view = page::create()
+				->set('notice', 'No results found!')
+				->set('container_style', 'style-1')
+				->addView('elements/notice.php');
 		}
-		$this->addView($view, 'no-results');
+		$this->addView($view, 'no_data');
 
         return $this;
         return new datatableV2();

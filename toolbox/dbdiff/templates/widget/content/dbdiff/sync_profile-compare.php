@@ -8,12 +8,50 @@ $sync = sync::get($profile_id);
 $source_conn = $sync->getSourceConnection();
 //$source_conn->connect();
 
+$dt = datatableV2::create();
+
+$sql_where = '';
+$excluded_tables = $sync->getExcludedTables(true);
+if(isset($only_excluded_table) && $only_excluded_table === true){
+
+	if(empty($excluded_tables)){
+		$sql_where = ' and `TABLE_NAME` = ""';
+	}else{
+		$sql_where = ' and `TABLE_NAME` in ('.implode(', ', $excluded_tables).')';
+	}
+	$dt->setNoResultView(
+		page::create()
+			->set('notice', 'You haven\'t hidden any tables.')
+			->set('container_style', 'style-1')
+			->addView('elements/notice.php')
+	);
+
+}else{
+	if(!empty($excluded_tables)){
+		$sql_where = ' and `TABLE_NAME` not in ('.implode(', ', $excluded_tables).')';
+	}
+
+	$dt->addView(function($tpl){ ?>
+	    <div class="datatable-info datatable-section">
+	        <b><?php echo $tpl->synced; ?></b> out of <b><?php
+	        echo $tpl->getTotalRows(); ?></b> tables match.
+	    </div>
+	    <div class="datatable-info datatable-section">
+	        <a href="/compare/<?php echo $tpl->profile_id; ?>/edit"
+	        data-max_width="1000"
+	        data-overlay-id="edit"
+	        class="btn btn-small btn-silver">Edit this Comparison</a>
+	    </div>
+	<?php }, 'footer');
+}
+
 //select all tables
 $query = $source_conn->query('select `TABLE_NAME`,
 	`DATA_LENGTH` + `INDEX_LENGTH` as `size`,
      `TABLE_ROWS`
      from `information_schema`.`TABLES`
-     where `table_schema` = '.db::quote($sync->getSourceDB()));
+     where `table_schema` = '.db::quote($sync->getSourceDB()).$sql_where);
+
 while($row = $query->fetchRow()){
 	$tables[$row->TABLE_NAME] = (object)array(
 		'table_name' => $row->TABLE_NAME,
@@ -26,14 +64,13 @@ while($row = $query->fetchRow()){
 
 //connect
 $target_conn = $sync->getTargetConnection();
-//$target_conn->connect();
 
 //select all tables
 $query = $target_conn->query('select `TABLE_NAME`,
 	`DATA_LENGTH` + `INDEX_LENGTH` as `size`,
      `TABLE_ROWS`
      from `information_schema`.`TABLES`
-     where `table_schema` = '.db::quote($sync->getTargetDB()));
+     where `table_schema` = '.db::quote($sync->getTargetDB()).$sql_where);
 while($row = $query->fetchRow()){
 	$target_create = $sync->getTargetCreate($row->TABLE_NAME);
 
@@ -65,23 +102,8 @@ while($row = $query->fetchRow()){
 	}
 }
 
-/*usort($tables, function($a, $b){
-
-	if($a->synced === 'synced' && $b->synced !== 'synced'){
-		return 999999;
-	}
-	if($b->synced === 'synced'){
-		return -999999;
-	}
-	//return strcasecmp($a->table_name, $b->table_name);
-
-});*/
-
-
-        ob_implicit_flush(true);
-
-$dt = datatableV2::create()
-	->enableSearch(false)
+    ob_implicit_flush(true);
+	$dt->enableSearch(false)
 	->enableSort(false)
 	->set('left', 0)
 	->set('right', 0)
@@ -129,7 +151,7 @@ $dt = datatableV2::create()
 		<?php }
     })
 	->setColSetting(1, 'style', 'width: 80px;')
-	->setColSetting(3, 'style', 'width: 130px;')
+	->setColSetting(3, 'style', 'width: 180px;')
     ->setCallback('pretd', function($dt, $col, $val, $row, $field_name){
         if($row->synced === 'different'){
             $dt->setColSetting($field_name, 'class', 'diff-different');
@@ -151,8 +173,15 @@ $dt = datatableV2::create()
 			<?php } else{
 				return $row->table_name;
 			}
-    })
-    ->defineCol('table_name', 'Details', function($val, $rows, $dt){
+    });
+
+
+	if(isset($only_excluded_table) && $only_excluded_table === true){
+
+		$dt->defineCol('table_name', 'Details', function($val, $rows, $dt){ ?>
+		<div id="row_<?php echo utils::htmlEncode($val); ?>">
+		<?php
+
         $this->data['last_row_id'] = utils::getRandomString(8);
 		if($rows->synced == 'synced'){
 			$btn_style = 'gray';
@@ -161,7 +190,7 @@ $dt = datatableV2::create()
 		}
 
         ?><form style="display: inline-block;" method="post" action="/compare/<?php
-        echo $dt->profile_id; ?>/table/<?php echo $val; ?>" <?php
+        echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>" <?php
         	?>data-ajax_form="#<?php
         		echo $this->widget_id
         	?> .row_expand-<?php
@@ -173,23 +202,66 @@ $dt = datatableV2::create()
         		?> .row_expand-<?php echo $this->data['last_row_id']; ?> .destination "><?php
         	?><button type="submit" value="Schema Diff" class="btn btn-<?php
         		echo $btn_style; ?> btn-small">Schema Diff</button><?php
-        	?></form>
+        	?></form> &nbsp; <form data-show_loader="#row_<?php echo utils::htmlEncode($val); ?>"
+	data-ajax_replace="true" data-ajax_form="#row_<?php echo utils::htmlEncode($val);
+	?>" action="/compare/<?php
+        echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>/unhide" style="display: inline-block;">
+	<button title="Move table back to unhidden." style="padding: 5px 5px;" type="submit" class="btn btn-small btn-silver">
+		<i class="icon-eye single"></i>
+	</button>
+	</form>
+	</div>
             <?php
-    })
+    });
 
-    ->setPaginationDestination('#'.$widget_id)
-	->addView(function($tpl){ ?>
-	    <div class="datatable-info datatable-section">
-	        <b><?php echo $tpl->synced; ?></b> out of <b><?php
-	        echo $tpl->getTotalRows(); ?></b> tables match.
-	    </div>
-	    <div class="datatable-info datatable-section">
-	        <a href="/compare/<?php echo $tpl->profile_id; ?>/edit"
-	        data-max_width="1000"
-	        data-overlay-id="edit"
-	        class="btn btn-small btn-silver">Edit this Comparison</a>
-	    </div>
-	<?php }, 'footer')
+
+
+
+
+
+
+	}else{
+
+	    $dt->defineCol('table_name', 'Details', function($val, $rows, $dt){ ?>
+	    	<div id="row_<?php echo utils::htmlEncode($val); ?>">
+	    	<?php
+
+	        $this->data['last_row_id'] = utils::getRandomString(8);
+			if($rows->synced == 'synced'){
+				$btn_style = 'gray';
+			}else{
+				$btn_style = 'rose';
+			}
+
+	        ?><form style="display: inline-block;" method="post" action="/compare/<?php
+	        echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>" <?php
+	        	?>data-ajax_form="#<?php
+	        		echo $this->widget_id
+	        	?> .row_expand-<?php
+				echo $this->data['last_row_id']
+	        	?> .destination " <?php
+	        	?>data-form_toggle="true" <?php
+	        	?>data-ajax_replace="false" <?php
+	        	?>data-show_loader="#<?php echo $this->widget_id;
+	        		?> .row_expand-<?php echo $this->data['last_row_id']; ?> .destination "><?php
+	        	?><button type="submit" value="Schema Diff" class="btn btn-<?php
+	        		echo $btn_style; ?> btn-small">Schema Diff</button><?php
+	        	?></form> &nbsp; <form data-confirm="Hide this table? (`<?php echo utils::htmlEncode($val);
+		?>`) It will be moved to the hidden tables section."
+		data-show_loader="#row_<?php echo utils::htmlEncode($val); ?>"
+		data-ajax_replace="true" data-ajax_form="#row_<?php echo utils::htmlEncode($val);
+		?>" action="/compare/<?php
+	        echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>/hide" style="display: inline-block;">
+		<button title="Move to Table to Hidden Widget" style="padding-left: 5px 5px;" type="submit" class="btn btn-small btn-silver">
+			<i class="icon-eye-off single"></i>
+		</button>
+		</form>
+		</div>
+	            <?php
+	    });
+	}
+
+    $dt->setPaginationDestination('#'.$widget_id)
     ->renderViews();
 
 

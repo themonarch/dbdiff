@@ -18,6 +18,31 @@ class sync{
 		return $this->getData('id');
 	}
 
+	function excludeTable($table_name){
+		$tables_excluded = $this->getExcludedTables();
+
+		$tables_excluded[] = $table_name;
+
+		db::query('update `db_sync_profiles`
+			set `tables_excluded` = '.db::quote(json_encode(array_unique($tables_excluded))).'
+			where `id` = '.db::quote($this->getID()));
+
+
+	}
+
+	function includeTable($table_name){
+		$tables_excluded = $this->getExcludedTables();
+		if(($key = array_search($table_name, $tables_excluded)) !== false) {
+		    unset($tables_excluded[$key]);
+		}
+
+		db::query('update `db_sync_profiles`
+			set `tables_excluded` = '.db::quote(json_encode(array_unique($tables_excluded))).'
+			where `id` = '.db::quote($this->getID()));
+
+
+	}
+
 	function updateLastViewed(){
 		db::query('update `db_sync_profiles` set `last_viewed` = now() where `id` = '.db::quote($this->getID()));
 		return $this;
@@ -25,10 +50,6 @@ class sync{
 	}
 
 	function getData($key){
-		if(!isset($this->data->{$key})){
-			throw new toolboxException("Error: $key not set!", 1);
-		}
-
 		return $this->data->{$key};
 	}
 
@@ -60,6 +81,18 @@ class sync{
 	function getSourceConnection(){
 		return connection::get($this->getData('source_conn_id'), $this->getSourceDB(), '-source');
 		return new connection();
+	}
+
+	function getExcludedTables($escape = false){
+		$tables = (array)json_decode($this->getData('tables_excluded', true));
+
+		if($escape){
+			array_walk($tables, function(&$item1, $key){
+			    $item1 = db::quote($item1);
+			});
+		}
+
+		return $tables;
 	}
 
 	function getSourceCreate($table_name){

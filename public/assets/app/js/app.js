@@ -385,6 +385,11 @@ var App = function() {
         });
         */
 
+
+		$('body').delegate('.widget > .widget-header > .widget-header-controls > .collapse', 'click', function(){
+			$(this).parent().parent().parent().find('.widget-content').slideToggle();
+		});
+
         /** toggles **/
         $('[data-toggle_id]').on('click', function(){
             var el = $('#'+$(this).attr('data-toggle_id'));

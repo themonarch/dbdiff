@@ -55,6 +55,36 @@ $sync->updateLastViewed();
 			<div class="catchall spacer-2"></div>
 			<div class="catchall spacer-5"></div>
 <div class="header-line style2">
+    <div class="inner">Tables You've Excpluded From This Comparison</div>
+    <div class="gradient-line"></div>
+</div>
+<div class="catchall spacer-1"></div>
+		<?php }, 'content-narrow');
+
+		//add sql runner widget
+		widgetHelper::create()
+			->set('title', 'Hidden Tables')
+			->set('class', 'style4')
+			->set('profile_id', $profile_id)
+			->set('only_excluded_table', true)
+			->addView(function(){ ?>
+<div class="widget-header-controls left">
+<button class="btn btn-small btn-silver collapse" href="/"><i class="icon-down-open-big single"></i></button>
+</div>
+			<?php }, 'header')
+			->set('style_widget_content', 'display: none;')
+			->add('dbdiff/sync_profile-compare.php', 'widget-reload.php');
+
+
+
+
+
+
+		//some spacing
+		page::get()->addView(function(){ ?>
+			<div class="catchall spacer-2"></div>
+			<div class="catchall spacer-5"></div>
+<div class="header-line style2">
     <div class="inner">SQL History for this Comparison</div>
     <div class="gradient-line"></div>
 </div>
