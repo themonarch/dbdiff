@@ -151,7 +151,7 @@ while($row = $query->fetchRow()){
 		<?php }
     })
 	->setColSetting(1, 'style', 'width: 80px;')
-	->setColSetting(3, 'style', 'width: 180px;')
+	->setColSetting(3, 'style', 'width: 190px;')
     ->setCallback('pretd', function($dt, $col, $val, $row, $field_name){
         if($row->synced === 'different'){
             $dt->setColSetting($field_name, 'class', 'diff-different');
@@ -201,8 +201,8 @@ while($row = $query->fetchRow()){
         	?>data-show_loader="#<?php echo $this->widget_id;
         		?> .row_expand-<?php echo $this->data['last_row_id']; ?> .destination "><?php
         	?><button type="submit" value="Schema Diff" class="btn btn-<?php
-        		echo $btn_style; ?> btn-small">Schema Diff</button><?php
-        	?></form> &nbsp; <form data-show_loader="#row_<?php echo utils::htmlEncode($val); ?>"
+        		echo $btn_style; ?> btn-small"><i class="icon-down-open"></i> &nbsp;Schema Diff</button><?php
+        	?></form> <form data-show_loader="#row_<?php echo utils::htmlEncode($val); ?>"
 	data-ajax_replace="true" data-ajax_form="#row_<?php echo utils::htmlEncode($val);
 	?>" action="/compare/<?php
         echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>/unhide" style="display: inline-block;">
@@ -245,8 +245,8 @@ while($row = $query->fetchRow()){
 	        	?>data-show_loader="#<?php echo $this->widget_id;
 	        		?> .row_expand-<?php echo $this->data['last_row_id']; ?> .destination "><?php
 	        	?><button type="submit" value="Schema Diff" class="btn btn-<?php
-	        		echo $btn_style; ?> btn-small">Schema Diff</button><?php
-	        	?></form> &nbsp; <form data-confirm="Hide this table? (`<?php echo utils::htmlEncode($val);
+	        		echo $btn_style; ?> btn-small"><i class="icon-down-open"></i> &nbsp;Schema Diff</button><?php
+	        	?></form> <form data-confirm="Hide this table? (`<?php echo utils::htmlEncode($val);
 		?>`) It will be moved to the hidden tables section."
 		data-show_loader="#row_<?php echo utils::htmlEncode($val); ?>"
 		data-ajax_replace="true" data-ajax_form="#row_<?php echo utils::htmlEncode($val);
