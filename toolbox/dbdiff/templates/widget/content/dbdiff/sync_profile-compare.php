@@ -252,7 +252,7 @@ while($row = $query->fetchRow()){
 		data-ajax_replace="true" data-ajax_form="#row_<?php echo utils::htmlEncode($val);
 		?>" action="/compare/<?php
 	        echo $dt->profile_id; ?>/table/<?php echo urlencode($val); ?>/hide" style="display: inline-block;">
-		<button title="Move to Table to Hidden Widget" style="padding-left: 5px 5px;" type="submit" class="btn btn-small btn-silver">
+		<button title="Move to Table to Hidden Widget" style="padding: 5px 5px;" type="submit" class="btn btn-small btn-silver">
 			<i class="icon-eye-off single"></i>
 		</button>
 		</form>
