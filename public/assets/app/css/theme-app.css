@@ -1342,10 +1342,8 @@ table.table.style4 td.insert_null > .insert_null {
 table.table.style4 > thead > tr > th > input {
     box-sizing: border-box;
     width: 100%;
-    border-right: 0px none;
-    border-bottom: 0px none;
-    border-left: 0px none;
     padding: 4px 5px 4px 50px;
+    border-radius: 0px 0px 0px 0px;
 }
 table.table.style4 > thead > tr > th > input:disabled {
     padding: 4px 5px 4px 5px;

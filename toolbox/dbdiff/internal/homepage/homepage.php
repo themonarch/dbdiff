@@ -239,11 +239,13 @@ and generate alter SQL to syncronize your MySQL databases.">
 
 		widgetHelper::create()
 			->set('title', 'Changelog / Recent Updates')
-			->add(function(){
+			->add(function($tpl){
 datatableV2::create()
 	->enableSearch(2, false)
 	->enableSort(0, false)
 	->setSort(2, 'desc')
+	->set('widget_id', $tpl->widget_id)
+	->setPaginationDestination('#'.$tpl->widget_id)
 	->setColSetting(0, 'style-td', 'white-space: pre-line;')
 	->setColSetting(2, 'style', 'width: 300px;')
     ->setTableClass('style4')
@@ -263,7 +265,7 @@ datatableV2::create()
     ->setFrom('changelog')
     ->renderViews();
 
-			}, 'widget-reload.php');
+			}, 'widget-reload.php', utils::isAjax());
 
 
 
