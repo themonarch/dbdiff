@@ -99,10 +99,10 @@ page::get()->setMainView('main/app.php')
     <?php }, 'bottom_spacing')
     ->addView(function($tpl){
         $tpl->renderViews('top_spacing');
-    }, 'pre-header')
+    }, 'pre-pre-content')
     ->addView(function($tpl){
         $tpl->renderViews('bottom_spacing');
-    }, 'content')
+    }, 'post-content')
     ->addView(function($tpl){//wrap messages in a view so that we can disable it if needed.
         $tpl->renderViews('print_messages');
     }, 'pre-content')
@@ -148,12 +148,31 @@ $acl->requires('member', function(){
 
 //create navigation menu
 sidebarV2::get('top_nav')
-	->setMainView('/sidebar/main_menu_nav.php')
-    ->addLink(
-        sidebarV2::createLink('Home')
-            ->setMainView('/sidebar/menu_item.php')
-            ->setHref('/')
-    )
+	->setMainView('/sidebar/main_menu_nav.php');
+
+if(user::isMemberLoggedIn()){
+	sidebarV2::get('top_nav')
+	    ->addLink(
+	        sidebarV2::createLink('Home')
+	            ->setMainView('/sidebar/menu_item.php')
+	            ->setHref('/home')
+	    )
+	    ->addLink(
+	        sidebarV2::createLink('Dashboard')
+	            ->setMainView('/sidebar/menu_item.php')
+	            ->setHref('/')
+	    );
+
+}else{
+	sidebarV2::get('top_nav')
+	    ->addLink(
+	        sidebarV2::createLink('Home')
+	            ->setMainView('/sidebar/menu_item.php')
+	            ->setHref('/')
+	    );
+}
+
+sidebarV2::get('top_nav')
     ->addLink(
         sidebarV2::createLink('Download')
 			->setInner('Download <div class="notifications green">Coming Soon</div>')

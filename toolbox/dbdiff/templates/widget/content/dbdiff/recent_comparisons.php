@@ -6,6 +6,7 @@ if(user::isUserLoggedIn()){
 }
 
 $_POST['widget_unique_id'] = $widget_unique_id;
+
 $dt = datatableV2::create()
 	->set('widget_id', $widget_id)
 	->setOrderBy('`last_viewed` desc')

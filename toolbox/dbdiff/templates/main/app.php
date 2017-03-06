@@ -171,11 +171,11 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
                <div id="content" class="">
                   <?php $this->renderViews('app-header'); ?>
 
-                  <div id="global-container" class="<?php
+                  <div id="global-container">
+                  <?php $this->renderViews('pre-pre-content'); ?>
+                  <div class="clear-sidebar <?php
                   	if(page::get()->countViews('content-narrow') > 0){ ?>restrict-width centered<?php }
                   ?>">
-                  <?php $this->renderViews('pre-pre-content'); ?>
-                  <div class="clear-sidebar">
                   <?php $this->renderViews('pre-header'); ?>
                   <?php title::get()->renderViews(); ?>
                   <?php $this->renderViews('pre-content'); ?>
@@ -185,6 +185,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
                       $this->renderViews('content');
                   ?>
                   </div>
+                  <?php $this->renderViews('post-content'); ?>
                   </div>
                   <div class="catchall"></div>
 
