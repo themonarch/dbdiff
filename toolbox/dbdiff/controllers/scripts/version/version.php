@@ -3,7 +3,7 @@ namespace toolbox;
 class version_controller {
 
 	function __construct(){
-		utils::vd(exec('pwd'));
+
 		$git_log = array();
 		exec("git log -1", $git_log);
 		$git_log = implode("\n", $git_log);
