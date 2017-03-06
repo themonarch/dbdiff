@@ -92,7 +92,8 @@ $dt->setSelect('`id`, `source`.`host` as `sourcename`,
     ')
 	->setWhere('db_sync_profiles.`user_id` = '.db::quote($user_id))
     ->enableSort()
-    ->setPaginationDestination('#'.$widget_id)->addView(function($tpl){ ?>
+    ->setPaginationDestination('#'.$widget_id)
+    ->addView(function($tpl){ ?>
     <div class="datatable-info datatable-section">
 <span>Found <b><?php echo $tpl->getTotalRows(); ?></b> results.</span>
     </div>
