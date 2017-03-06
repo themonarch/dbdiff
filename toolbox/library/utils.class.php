@@ -27,6 +27,39 @@ class utils {
         return $out;
     }
 
+	static function parseGitLog($log) {
+		$lines = explode("\n", $log);
+		$history = array();
+		foreach($lines as $key => $line) {
+			if(strpos($line, 'commit') === 0 || $key + 1 == count($lines)){
+				if(!empty($commit)){
+					if($commit['message'] === ''){
+						$commit['message'] = substr($line, 4);
+					}else{
+						$commit['message'] = substr($commit['message'], 5);
+					}
+					array_push($history, $commit);
+					unset($commit);
+				}
+				$commit['hash'] = substr($line, strlen('commit') + 1);
+			} else if(strpos($line, 'Author') === 0){
+				$commit['author'] = substr($line, strlen('Author:') + 1);
+			} else if(strpos($line, 'Date') === 0){
+				$commit['date'] = substr($line, strlen('Date:') + 3);
+			} elseif (strpos($line, 'Merge') === 0) {
+				$commit['merge'] = substr($line, strlen('Merge:') + 1);
+				$commit['merge'] = explode(' ', $commit['merge']);
+			} else {
+				if(isset($commit['message'])) {
+					$commit['message'] .= "\n".$line;
+				} else {
+					$commit['message'] = $line;
+				}
+			}
+		}
+		return $history;
+	}
+
 	static function postHas($index, $value = null){
 		if(!isset($_POST[$index])){
 			return false;
@@ -1010,7 +1043,7 @@ class utils {
     }
 
     static function isPost(){
-        return ($_SERVER['REQUEST_METHOD'] == 'POST') ? true : false;
+        return (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') ? true : false;
     }
 
     static function domain2SLD($domain_name){

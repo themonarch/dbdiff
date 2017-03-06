@@ -121,6 +121,11 @@ page::get()->setMainView('main/app.php')
     ->addView('elements/top_nav.php', 'header-with-nav')
     ->setNoClear('header-with-nav');
 
+if(php_sapi_name() === 'cli'){
+	page::get()
+        ->setMainView('main/cli.php');
+}
+
 db::connect(//connect to database
     $config->getConfig('db', 'host'),
     $config->getConfig('db', 'user'),
