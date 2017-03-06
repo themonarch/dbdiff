@@ -225,6 +225,46 @@ and generate alter SQL to syncronize your MySQL databases.">
 
 
 
+		//some spacing after the quick connect form
+		page::get()->addView(function(){ ?>
+<div class="catchall spacer-5"></div>
+<div class="catchall spacer-2"></div>
+<div class="header-line style2">
+    <div class="inner">Changelog</div>
+    <div class="gradient-line"></div>
+</div>
+<div class="catchall spacer-2"></div>
+		<?php }, 'content-narrow');
+
+
+		widgetHelper::create()
+			->set('title', 'Changelog / Recent Updates')
+			->add(function(){
+datatableV2::create()
+	->enableSearch(2, false)
+	->enableSort(0, false)
+	->setSort(2, 'desc')
+	->setColSetting(0, 'style-td', 'white-space: pre-line;')
+	->setColSetting(2, 'style', 'width: 300px;')
+    ->setTableClass('style4')
+	->setColSetting(1, 'style', 'width: 300px;')
+	->defineCol('message', 'Description', function($val){
+		return utils::htmlEncode($val);
+	})
+	->defineCol('author', 'Commit Author', function($val){
+		$val = explode(' <', $val);
+		return utils::htmlEncode($val[0]);
+	})
+	->defineCol('date', 'Date', function($val){ ?>
+		<span class="timeago" title="<?php echo $val; ?>+0000"><?php echo $val; ?></span>
+	<?php })
+	->setSortInline()
+	->setSelect('*')
+    ->setFrom('changelog')
+    ->renderViews();
+
+			}, 'widget-reload.php');
+
 
 
 
