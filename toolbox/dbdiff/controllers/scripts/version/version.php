@@ -14,8 +14,6 @@ class version_controller {
 		exec("git describe --long", $version);
 		$version = $version[0];
 
-
-
 		foreach($parsed_log as $key => $log){
 			db::query('insert ignore into `changelog` (
 				`hash`,
