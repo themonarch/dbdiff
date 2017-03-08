@@ -16,25 +16,25 @@ class compare_controller {
         $widget = widgetHelper::create();
 		$sync = sync::get($profile_id);
 
-try{//connect
-	$source_conn = $sync->getSourceConnection();
-	$source_conn->connect();
-}catch(connectionException $e){
-	messages::setErrorMessage($e->getMessage(), 'quick_connect-0');
-	utils::redirectTo('/compare/'.$sync->getID().'/edit');
-	//router::get()->to('/compare/'.$sync->getID().'/edit');
-}
+		try{//connect
+			$source_conn = $sync->getSourceConnection();
+			$source_conn->connect();
+		}catch(connectionException $e){
+			messages::setErrorMessage($e->getMessage(), 'quick_connect-0');
+			utils::redirectTo('/compare/'.$sync->getID().'/edit');
+			//router::get()->to('/compare/'.$sync->getID().'/edit');
+		}
 
-try{//connect
-	$target_conn = $sync->getTargetConnection();
-	$target_conn->connect();
-}catch(connectionException $e){
-	messages::setErrorMessage($e->getMessage(), 'quick_connect-1');
-	utils::redirectTo('/compare/'.$sync->getID().'/edit');
-	//router::get()->to('/compare/'.$sync->getID().'/edit');
-}
+		try{//connect
+			$target_conn = $sync->getTargetConnection();
+			$target_conn->connect();
+		}catch(connectionException $e){
+			messages::setErrorMessage($e->getMessage(), 'quick_connect-1');
+			utils::redirectTo('/compare/'.$sync->getID().'/edit');
+			//router::get()->to('/compare/'.$sync->getID().'/edit');
+		}
 
-$sync->updateLastViewed();
+		$sync->updateLastViewed();
 		$widget
             ->set('grid_classes', '')
 			->set('profile_id', $profile_id)
@@ -74,10 +74,6 @@ $sync->updateLastViewed();
 			<?php }, 'header')
 			->set('style_widget_content', 'display: none;')
 			->add('dbdiff/sync_profile-compare.php', 'widget-reload.php');
-
-
-
-
 
 
 		//some spacing
@@ -141,6 +137,13 @@ $sync->updateLastViewed();
 				router::get()->toInternal('access_denied');
 			}
 		}
+
+		//add some assets required for the comparison
+		page::get()->addView(function(){ ?>
+	        <link rel="stylesheet" type="text/css" href="/assets/app/css/db.css">
+			<script src="/assets/app/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+		<?php }, 'end_of_head_tag');
+
 
     }
 

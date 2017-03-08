@@ -13,21 +13,24 @@ class index_controller {
 
     function __construct(){
 
-		//if a visitor is a member
-        if(user::isMemberLoggedIn()){
-			//take them to the dashboard
+		//guests and members have a different homepage
+		//so we internally re-route them to their respective homepage
+        if(user::isMemberLoggedIn()){//visitor is a member
+
+			//take them to the dashboard in toolbox/APP/internal/dashboard
             router::get()->toInternal('dashboard');
-        }else{
-        	//take them to the homepage
+
+        }else{//visitor is a guest
+
+        	//take them to the homepage in toolbox/APP/internal/homepage
             router::get()->toInternal('homepage');
+
         }
 	}
 
+
 	static function passThru(){
-		page::get()->addView(function(){ ?>
-	        <link rel="stylesheet" type="text/css" href="/assets/app/css/db.css">
-			<script src="/assets/app/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-		<?php }, 'end_of_head_tag');
+
 	}
 
 }
