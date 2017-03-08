@@ -25,7 +25,7 @@ $dt = datatableV2::create()
 		<div class="catchall spacer-3"></div>
 	<?php }, 'no_data');
 
-$dt->defineCol('sourcename', '[Development] Filter by Database Name', function($val, $rows, $dt, $col){
+$dt->defineCol('sourcename', '[Source] Filter by Database Name', function($val, $rows, $dt, $col){
     echo utils::htmlEncode($val).'<br>`'.utils::htmlEncode($rows->source_db).'`</span>';
 });
 $dt->setColSetting('sourcename', 'internal_field_name', '`source_db`');
@@ -33,7 +33,7 @@ $dt->setColSetting('sourcename', 'internal_field_name', '`source_db`');
 $dt->enableSearch(2, false);
 $dt->enableSort(2, false);
 
-$dt->defineCol('targetname', '[Production] Filter by Database Name', function($val, $rows, $dt, $col){
+$dt->defineCol('targetname', '[Target] Filter by Database Name', function($val, $rows, $dt, $col){
     echo utils::htmlEncode($val).'<br>`'.utils::htmlEncode($rows->target_db).'`';
 });
 $dt->setColSetting('targetname', 'internal_field_name', '`target_db`');

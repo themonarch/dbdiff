@@ -15,7 +15,7 @@
 <div class="grid-6">
 	<div class="form_panel padding" style="padding-top: 0px; padding-bottom: 0px;">
 				<div class="header-line style1">
-		    <div class="inner">Development</div>
+		    <div class="inner">Source DB</div>
 		    <div class="gradient-line"></div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 <div class="grid-6">
 	<div class="form_panel padding" style="padding-top: 0px; padding-bottom: 0px;">
 				<div class="header-line style1">
-		    <div class="inner">Production</div>
+		    <div class="inner">Target DB</div>
 		    <div class="gradient-line"></div>
 		</div>
 	</div>

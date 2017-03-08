@@ -3,7 +3,7 @@
 <div class="catchall"></div>
 <div class="catchall spacer-2"></div>
 <div class="grid-6">
-<div style="text-align: center; margin: -7px 0px 0px; position: relative; z-index: 1; font-variant: all-small-caps;">[ Development ]</div>
+<div style="text-align: center; margin: -7px 0px 0px; position: relative; z-index: 1; font-variant: all-small-caps;">[ Source ]</div>
 	<div class="header-line style4">
 	    <div class="inner"><?php echo $source_name; ?></div>
 	    <div class="gradient-line"></div>
@@ -12,7 +12,7 @@
 </div>
 
 <div class="grid-6">
-<div style="text-align: center; margin: -7px 0px 0px; position: relative; z-index: 1; font-variant: all-small-caps;">[ Production ]</div>
+<div style="text-align: center; margin: -7px 0px 0px; position: relative; z-index: 1; font-variant: all-small-caps;">[ Target ]</div>
 	<div class="header-line style4">
 	    <div class="inner"><?php echo $target_name; ?></div>
 	    <div class="gradient-line"></div>
@@ -64,7 +64,7 @@ datatableV2::create()
 			<td class="diff diff-source" data-col="line">
 				<div class="catchall spacer-3"></div>
 				<div class="header-line style2">
-    <div class="inner">Alter to Look Like Production</div>
+    <div class="inner">Alter Source DB</div>
     <div class="gradient-line"></div>
 </div>
 			<div class="catchall spacer-1"></div>
@@ -111,7 +111,7 @@ if(!$changes) echo '#table schemas match!';
 
 				<div class="catchall spacer-3"></div>
 <div class="header-line style2">
-    <div class="inner">Alter to Look Like Development</div>
+    <div class="inner">Alter Target DB</div>
     <div class="gradient-line"></div>
 </div>
 			<div class="catchall spacer-1"></div>
@@ -157,7 +157,7 @@ if(!$changes) echo '#table schemas match!';
 				<div class="catchall spacer-1"></div>
 			<div style="text-align: center;">
 
-	<button class="btn btn-black btn-medium" value="dev" name="alter" type="submit">Run Selected SQL on Development</button>
+	<button class="btn btn-black btn-medium" value="dev" name="alter" type="submit">Deploy on Source DB</button>
 
 
 			</div>
@@ -166,7 +166,7 @@ if(!$changes) echo '#table schemas match!';
 			<td class="diff diff-target" data-col="line2">
 				<div class="catchall spacer-1"></div>
 			<div style="text-align: center;">
-	<button class="btn btn-black btn-medium" value="prod" name="alter" type="submit">Run Selected SQL on Production</button>
+	<button class="btn btn-black btn-medium" value="prod" name="alter" type="submit">Deploy on Target DB</button>
 
 			</div>
 
