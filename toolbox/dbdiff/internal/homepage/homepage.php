@@ -169,12 +169,13 @@ and generate alter SQL to syncronize your MySQL databases.">
     		->addView(function($tpl){ ?>
 			<div class="catchall"></div>
 			<div title="Not ready to use your own DB? Try a demo on our live test DB."
-			style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1 tooltip
-			tooltip-open">
+			 style="float: right; max-width: 120px; margin: 7px 7px 0px;"
+			 class="switches style1 tooltip tooltip-open ">
 				<div class="container">
 					<span class="switch <?php if(!$tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="live">
 						Live</span>
-					<span class="switch <?php if($tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="demo">
+					<span
+					class="switch <?php if($tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="demo">
 						Demo</span>
 				</div>
 			</div>
