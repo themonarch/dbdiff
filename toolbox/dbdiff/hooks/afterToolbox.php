@@ -301,6 +301,16 @@ document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('on
 </script>
 <!-- End Inspectlet Embed Code -->
 <?php }
+	if(config::hasSetting('smartlook_id')){ ?>
+<script type="text/javascript">
+    window.smartlook||(function(d) {
+    var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+    var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+    c.charset='utf-8';c.src='//rec.smartlook.com/recorder.js';h.appendChild(c);
+    })(document);
+    smartlook('init', '<?php echo config::getSetting('smartlook_id'); ?>');
+</script>
+<?php }
 }, 'start_of_head_tag')
 ->setNoClear('start_of_head_tag');//don't remove analytics on error / 404 pages
 
