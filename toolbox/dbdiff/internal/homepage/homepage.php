@@ -168,7 +168,9 @@ and generate alter SQL to syncronize your MySQL databases.">
 		page::get()
     		->addView(function($tpl){ ?>
 			<div class="catchall"></div>
-			<div style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1">
+			<div title="Not ready to use your own DB? Try it out a demo on our live test DB."
+			style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1 tooltip
+			tooltip-open">
 				<div class="container">
 					<span class="switch <?php if(!$tpl->demo) echo 'active'; ?>" data-dynamic_form_submit="live">
 						Live</span>
@@ -216,6 +218,8 @@ and generate alter SQL to syncronize your MySQL databases.">
                     even if you are behind a NAT or firewall</li>
                 <li><b>Save Comparisons</b> - All your comparisons are saved to your account with encryption so you can
                     quickly and securely re-run your comparisons at any time.
+                    </li>
+                <li><b>FREE!</b> - 100% completely free!
                     </li>
             </ul>
             </div>

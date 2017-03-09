@@ -71,10 +71,14 @@ datatableV2::create()
 <table style="width: 100%;">
 	<tbody>
 <?php
-$updater = new dbStructUpdater();
 $lines = 0;
 $changes = false;
-foreach($updater->getUpdates($dt->source_create, $dt->target_create) as $sql){
+
+$diff = schemaDiff::getDiff($dt->source_create, $dt->target_create);
+$alters = explode(';', $diff);
+
+foreach($alters as $sql){
+	if(trim($sql) == '') continue;
 $editor1_id = utils::getRandomString();
 ?>
 		<tr>
@@ -118,10 +122,14 @@ if(!$changes) echo '#table schemas match!';
 		<table style="width: 100%;">
 	<tbody>
 <?php
-$updater = new dbStructUpdater();
 $lines = 0;
 $changes = false;
-foreach($updater->getUpdates($dt->target_create, $dt->source_create) as $sql){
+
+$diff = schemaDiff::getDiff($dt->target_create, $dt->source_create);
+$alters = explode(';', $diff);
+
+foreach($alters as $sql){
+	if(trim($sql) == '') continue;
 $editor2_id = utils::getRandomString();
 ?>
 		<tr><td style="width: 20px; vertical-align: middle; padding: 0px 5px;">

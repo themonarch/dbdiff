@@ -89,6 +89,8 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
                jQuery.timeago.settings.allowFuture = true;
                $(".timeago").timeago();
                $('.tooltip').tipsy({gravity: 's'});
+               $('.tooltip.tooltip-open').tipsy({gravity: 's', trigger:'manual'});
+               $('.tooltip.tooltip-open').tipsy("show");;
 
                $('.nav-button-dropdown').bind('mouseenter', function(){
                       $(this).parent().find('.nav-button-dropdown-contents').stop().slideToggle();

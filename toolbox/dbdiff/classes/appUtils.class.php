@@ -309,77 +309,30 @@ class appUtils {
 		db::setDB();
 
 		//create the table(s) on db1
-		db::query("DROP TABLE IF EXISTS `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."`", 'demo');
-		db::query("CREATE TABLE `dbdiff-demos-1`.`wp_posts-".$user->getStringID()."` (
-			`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-			`post_date` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-			`post_date_gmt` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-			`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`post_status` ENUM('publish','draft','trash') NOT NULL DEFAULT 'publish' COLLATE 'utf8mb4_unicode_520_ci',
-			`comment_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
-			`ping_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
-			`post_password` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-			`post_name` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-			`to_ping` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`pinged` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`post_modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			`post_modified_gmt` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-			`post_content_filtered` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-			`post_parent` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-			`guid` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-			`menu_order` INT(11) NOT NULL DEFAULT '0',
-			`post_type` VARCHAR(20) NOT NULL DEFAULT 'post' COLLATE 'utf8mb4_unicode_520_ci',
-			`post_mime_type` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-			`comment_count` BIGINT(20) NOT NULL DEFAULT '0',
-			PRIMARY KEY (`id`),
-			UNIQUE INDEX `post_name` (`post_name`),
-			INDEX `post_parent` (`post_parent`),
-			INDEX `post_author` (`post_author`),
-			INDEX `type_status_date` (`post_type`, `post_date`, `id`)
-		)
-		COLLATE='utf8mb4_unicode_520_ci'
-		ENGINE=InnoDB
-		", 'demo');
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-1`.`table-1[".$user->getStringID()."]`", 'demo');
+		db::query("CREATE TABLE `dbdiff-demos-1`.`table-1[".$user->getStringID()."]` (
+					`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+					`field1` VARCHAR(50) NULL DEFAULT NULL,
+					`field2` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+					PRIMARY KEY (`id`),
+					INDEX `field2` (`field2`)
+				)
+				COLLATE='utf8_general_ci'
+				ENGINE=InnoDB", 'demo');
 
 
 
 		//create the table(s) on db2
-		db::query("DROP TABLE IF EXISTS `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."`", 'demo');
-		db::query("CREATE TABLE `dbdiff-demos-2`.`wp_posts-".$user->getStringID()."` (
-					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`post_author` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-					`post_date` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-					`post_date_gmt` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-					`post_content` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`post_title` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`post_excerpt` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`post_status` VARCHAR(20) NOT NULL DEFAULT 'publish' COLLATE 'utf8mb4_unicode_520_ci',
-					`comment_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
-					`ping_status` VARCHAR(20) NOT NULL DEFAULT 'open' COLLATE 'utf8mb4_unicode_520_ci',
-					`post_password` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-					`post_name` VARCHAR(200) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-					`to_ping` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`pinged` TEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`post_modified` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-					`post_modified_gmt` DATETIME NOT NULL DEFAULT '2017-02-25 00:00:00',
-					`post_content_filtered` LONGTEXT NOT NULL COLLATE 'utf8mb4_unicode_520_ci',
-					`post_parent` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-					`guid` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-					`menu_order` INT(11) NOT NULL DEFAULT '0',
-					`post_type` VARCHAR(20) NOT NULL DEFAULT 'post' COLLATE 'utf8mb4_unicode_520_ci',
-					`post_mime_type` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_520_ci',
-					`comment_count` BIGINT(20) NOT NULL DEFAULT '0',
-					PRIMARY KEY (`ID`),
-					INDEX `type_status_date` (`post_type`, `post_date`, `ID`),
-					INDEX `post_parent` (`post_parent`),
-					INDEX `post_author` (`post_author`)
+		db::query("DROP TABLE IF EXISTS `dbdiff-demos-2`.`table-1[".$user->getStringID()."]`", 'demo');
+		db::query("CREATE TABLE `dbdiff-demos-2`.`table-1[".$user->getStringID()."]` (
+					`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+					`field1` TEXT NULL,
+					`field2` DATETIME NULL DEFAULT NULL,
+					PRIMARY KEY (`id`)
 				)
-				COLLATE='utf8mb4_unicode_520_ci'
-				ENGINE=InnoDB
-				AUTO_INCREMENT=4", 'demo');
+				COLLATE='utf8_general_ci'
+				ENGINE=InnoDB", 'demo');
+
 
 		//create user on db1 with access to table(s)
 		$username = 'demo_'.$user->getStringID();
@@ -394,16 +347,16 @@ class appUtils {
 		db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
-		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-1`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
+		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-1`.`table-1["
+		.$user->getStringID()."]` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 
 		//create user on db2 with access to table(s)
 		//db::query("CREATE USER 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."' IDENTIFIED BY ''");
 		//db::query("GRANT USAGE ON *.* TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'");
 		db::query("GRANT SELECT, ALTER, DELETE, DROP,
 		INDEX, INSERT, REFERENCES, UPDATE, CREATE,
-		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-2`.`wp_posts-"
-		.$user->getStringID()."` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
+		SHOW VIEW, CREATE VIEW  ON TABLE `dbdiff-demos-2`.`table-1["
+		.$user->getStringID()."]` TO 'demo_".$user->getStringID()."'@'".$_SERVER['SERVER_ADDR']."'", 'demo');
 
 		appUtils::setDemoConnectionPostData();
 
