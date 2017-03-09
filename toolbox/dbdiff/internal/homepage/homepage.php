@@ -168,7 +168,7 @@ and generate alter SQL to syncronize your MySQL databases.">
 		page::get()
     		->addView(function($tpl){ ?>
 			<div class="catchall"></div>
-			<div title="Not ready to use your own DB? Try it out a demo on our live test DB."
+			<div title="Not ready to use your own DB? Try a demo on our live test DB."
 			style="float: right; max-width: 120px; margin: 7px 7px 0px;" class="switches style1 tooltip
 			tooltip-open">
 				<div class="container">
