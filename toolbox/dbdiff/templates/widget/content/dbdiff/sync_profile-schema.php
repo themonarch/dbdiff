@@ -78,9 +78,9 @@ $diff = schemaDiff::getDiff($dt->source_create, $dt->target_create);
 $alters = explode(';', $diff);
 
 foreach($alters as $sql){
-	if(trim($sql) == '') continue;
-$editor1_id = utils::getRandomString();
-?>
+	$sql = trim($sql);
+	if($sql == '') continue;
+	$editor1_id = utils::getRandomString(); ?>
 		<tr>
 			<td style="width: 20px; vertical-align: middle; padding: 0px 5px;">
 			    <input type="checkbox" name="sqls[dev][]" class="btn btn-tiny btn-blue" value="<?php
@@ -129,9 +129,9 @@ $diff = schemaDiff::getDiff($dt->target_create, $dt->source_create);
 $alters = explode(';', $diff);
 
 foreach($alters as $sql){
-	if(trim($sql) == '') continue;
-$editor2_id = utils::getRandomString();
-?>
+	$sql = trim($sql);
+	if($sql == '') continue;
+	$editor2_id = utils::getRandomString(); ?>
 		<tr><td style="width: 20px; vertical-align: middle; padding: 0px 5px;">
                 <input type="checkbox" name="sqls[prod][]" class="btn btn-tiny btn-blue" value="<?php
                 echo utils::htmlEncode($sql);

@@ -27,7 +27,7 @@ class table_controller {
 		page::get()->addView(function(){ ?>
 			<div style="text-align: center; color: #777777;">
 				<b>Pro Tip:</b> Long running alter? Click the reload button on the
-				widget below to view query status and available actions.</div>
+				widget below to view query status.</div>
 			<div class="catchall spacer-2"></div>
 
 			<div class="header-line style2">
