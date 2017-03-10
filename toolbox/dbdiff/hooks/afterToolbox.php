@@ -266,10 +266,14 @@ if(//grant webmaster priviledges (benchmarking, debugging, crons, etc)
 }
 
 	//add tracking / analytics codes
-page::get()->addView(function(){
-	if(accessControl::get()->hasRequirement('webmaster')){
-		return;//no analytics for web admins
-	}
+page::get()
+	->addView(function(){
+		if(accessControl::get()->hasRequirement('webmaster')){
+			return;//no analytics for web admins
+		}
+		page::get()->renderViews('analytics_codes');
+	}, 'start_of_head_tag')
+	->addView(function(){
 	if(config::hasSetting('google_analytics_id')){ ?>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -311,6 +315,7 @@ document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('on
     smartlook('init', '<?php echo config::getSetting('smartlook_id'); ?>');
 </script>
 <?php }
-}, 'start_of_head_tag')
-->setNoClear('start_of_head_tag');//don't remove analytics on error / 404 pages
+}, 'analytics_codes')
+->setNoClear('analytics_codes')//don't remove analytics on error / 404 pages
+->setNoClear('start_of_head_tag');//don't remove on error / 404 pages
 

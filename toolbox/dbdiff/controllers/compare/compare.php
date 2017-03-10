@@ -5,6 +5,12 @@ class compare_controller {
     function __construct(){
 		title::get()->setSubtitle('Database Diff Results');
 
+		page::get()
+			->addView(function(){//conversion tracking
+				if(config::hasSetting('compare_conversion_pixels')){
+					echo config::getSetting('compare_conversion_pixels');
+				}
+			}, 'analytics_codes');
 
 		//some spacing
 		page::get()->addView(function(){ ?>
