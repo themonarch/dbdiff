@@ -62,7 +62,7 @@ h2{
     margin: 0px 0;
     padding: 0px 0px;
     width: 100%;
-    content: &no-open-quote;
+    content: "&no-open-quote";
 }
 
 .catchall:before,

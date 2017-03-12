@@ -20,7 +20,7 @@ class homepage_internal {
 		page::get()->addView(function(){ ?>
 <meta name="description" content="A free-to-use web-based app to visually compare
 and generate alter SQL to syncronize your MySQL databases.">
-		<?php }, 'start_of_head_tag');
+		<?php }, 'head');
 
 	    page::get()->set('demo', false);
 

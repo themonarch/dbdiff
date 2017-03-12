@@ -272,7 +272,7 @@ page::get()
 			return;//no analytics for web admins
 		}
 		page::get()->renderViews('analytics_codes');
-	}, 'start_of_head_tag')
+	}, 'head')
 	->addView(function(){
 	if(config::hasSetting('google_analytics_id')){ ?>
 <script>
@@ -317,5 +317,5 @@ document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('on
 <?php }
 }, 'analytics_codes')
 ->setNoClear('analytics_codes')//don't remove analytics on error / 404 pages
-->setNoClear('start_of_head_tag');//don't remove on error / 404 pages
+->setNoClear('head');//don't remove on error / 404 pages
 

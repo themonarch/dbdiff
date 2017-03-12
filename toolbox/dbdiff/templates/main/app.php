@@ -11,9 +11,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title><?php echo title::get()->getTitleString(); ?></title>
-        <?php
-        $this->renderViews('start_of_head_tag');
-		?>
+        <?php $this->renderViews('head'); ?>
 
         <link rel="stylesheet" type="text/css" href="/assets/app/fontello/css/fontello.css">
 
@@ -129,6 +127,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
         $this->renderViews('head_js');
         ?>
         </script>
+        <?php $this->renderViews('head-end'); ?>
     </head>
 
     <body class="loading">
@@ -199,7 +198,7 @@ $this->renderViews('pre-http-header-fullpage');//hook only for main content page
                </div><!-- END #footer-catcher -->
            </div><!-- END #content-container -->
            <div class="catchall"></div>
-
+		<?php $this->renderViews('pre-footer'); ?>
         <?php if($render_footer){ ?>
         <div id="footer">
                <?php page::get()->renderViews('footer-pre-contents'); ?>
